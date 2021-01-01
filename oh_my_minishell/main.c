@@ -1,23 +1,23 @@
 #include "minishell.h"
 #include <stdio.h>
 
-int which_command(t_list *cmd)
+int which_command(char *cmd)
 {
-	if (!ft_strncmp(string_tolower(cmd->content),"echo",10))
+	if (!ft_strncmp(string_tolower(cmd),"echo",10))
 		return (ECHO);
-	if (!ft_strncmp(string_tolower(cmd->content),"cd",10))
+	if (!ft_strncmp(string_tolower(cmd),"cd",10))
 		return (CD);
-	if (!ft_strncmp(string_tolower(cmd->content),"pwd",10))
+	if (!ft_strncmp(string_tolower(cmd),"pwd",10))
 		return (PWD);
-	if (!ft_strncmp(string_tolower(cmd->content),"export",10))
+	if (!ft_strncmp(string_tolower(cmd),"export",10))
 		return (EXPORT);
-	if (!ft_strncmp(string_tolower(cmd->content),"unset",10))
+	if (!ft_strncmp(string_tolower(cmd),"unset",10))
 		return (UNSET);
-	if (!ft_strncmp(string_tolower(cmd->content),"env",10))
+	if (!ft_strncmp(string_tolower(cmd),"env",10))
 		return (ENV);
-	if (!ft_strncmp(string_tolower(cmd->content),"exit",10))
+	if (!ft_strncmp(string_tolower(cmd),"exit",10))
 		return (EXIT);
-	if (!ft_strncmp(string_tolower(cmd->content),"ls",10))
+	if (!ft_strncmp(string_tolower(cmd),"ls",10))
 		return (LS);
 	else
 		return (-1);
@@ -119,7 +119,7 @@ int command_execve(int i_cmd, char **argv, char **envp)
 		if (pid == 0)
 		{
 			printf("children fork\n");
-			execve("/bin/export", argv, envp);
+			execve("/bin/sh", argv, envp);
 		}
 		else
 		{
@@ -137,7 +137,7 @@ int command_execve(int i_cmd, char **argv, char **envp)
 		if (pid == 0)
 		{
 			printf("children fork\n");
-			execve("/bin/unset", argv, envp);
+			execve("/bin/sh", argv, envp);
 		}
 		else
 		{
@@ -155,7 +155,7 @@ int command_execve(int i_cmd, char **argv, char **envp)
 		if (pid == 0)
 		{
 			printf("children fork\n");
-			execve("/bin/env", argv, envp);
+			execve("/usr/bin/env", argv, envp);
 		}
 		else
 		{
@@ -173,31 +173,36 @@ int commands_execve(t_list *cmd, char **envp)
 	int index;
 	int pid;
 	char **argv = NULL;
-	argv = get_double_argv(cmd);
-	// print_double_argv(argv);
-	command_execve(cmd->i_cmd, argv, envp); //정상적으로 들어왔을 때의 한해서
-	free_double_argv(argv);
+	t_list *head = cmd;
+	while (cmd != NULL)
+	{
+		argv = cmd->split;
+		// print_double_argv(argv);
+		command_execve(cmd->i_cmd, argv, envp); //정상적으로 들어왔을 때의 한해서
+		free_split(argv);
+		cmd = cmd->next;
+	}
 	return 1;
 }
 
 
 int main(int argc, char *argv[], char **envp)
 {
-	t_list *cmd;
+	t_list *cmds = NULL;
 	char *line;
-	cmd = NULL;
 	while (TRUE)
 	{
 		ft_putstr_fd("bash-3.2$ ", 1);
 		if (get_next_line(0, &line) >  0)
 		{
-			input_raw_cmd(&cmd, line); // 오직 띄어쓰기만을 기준으로 나누어서 void *content에 넣어준다. + i_cmd값
-			//영환이 형이 여기서 파싱을 해준다.
-			print_cmd_list(cmd); // linked list에 들어가있는 값을 '확인차' 출력해봄
-			commands_execve(cmd, envp);
+			get_cmd_from_gnl(&cmds, line); //먼저 ';'을 기준으로 string이 각각의 노드에 나눠들어가도록하고 그안에서 split해줌
+			// | 로도 나눠줘야하는데 아직 못함
+			
+			// print_cmd_list(cmds); // linked list에 들어가있는 값을 '확인차' 출력해봄
+			commands_execve(cmds, envp);
 			free(line);
 		}
-		ft_lstclear(&cmd, NULL);
+		ft_lstclear(&cmds, NULL);
 	}
 	return (0);
 }

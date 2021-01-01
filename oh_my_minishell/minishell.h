@@ -23,14 +23,13 @@ char	*ft_strsep(char **stringp, const char *delim);
 void	del(void *content);
 void	print_cmd_list(t_list *cmd);
 
-void free_double_argv(char **argv);
-void print_double_argv(char **argv);
-char **get_double_argv(t_list *cmd);
+void free_split(char **argv);
+void print_split(char **split);
 
 int commands_execve(t_list *cmd, char **envp);
 int command_execve(int i_cmd, char **argv, char **envp);
 char *string_tolower(char *str);
-void input_raw_cmd(t_list **cmd, char *line);
-int which_command(t_list *cmd);
+void get_cmd_from_gnl(t_list **cmd, char *line);
+int which_command(char *cmd);
 
 #endif
