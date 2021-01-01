@@ -48,3 +48,38 @@ char		*ft_strsep(char **command, const char *delim)
 	*command = command_index;
 	return (init_str);
 }
+
+
+void print_cmd_list(t_list *cmd)
+{
+	int i;
+	int lst_length;
+
+	i = 0;
+	lst_length = ft_lstsize(cmd);
+	while (i < lst_length)
+	{
+		printf("%d번 째 cmd: %s i_cmd : %d\n", i, cmd->content, cmd->i_cmd);
+		cmd = cmd->next;
+		i++;
+	}
+}
+
+
+void input_raw_cmd(t_list **cmd, char *line)
+{
+	char *substr;
+	t_list *add;
+
+	while (TRUE)
+	{
+		substr = ft_strsep(&line, " ");
+		if (substr == NULL)
+			break ;
+		if (ft_strlen(substr) == 0)
+			continue ;
+		add = ft_lstnew(substr);
+		add->i_cmd = which_command(add);
+		ft_lstadd_back(cmd, add);
+	}
+}

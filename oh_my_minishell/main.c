@@ -24,38 +24,6 @@ int which_command(t_list *cmd)
 }
 
 
-void input_raw_cmd(t_list **cmd, char *line)
-{
-	char *substr;
-	t_list *add;
-
-	while (TRUE)
-	{
-		substr = ft_strsep(&line, " ");
-		if (substr == NULL)
-			break ;
-		if (ft_strlen(substr) == 0)
-			continue ;
-		add = ft_lstnew(substr);
-		add->i_cmd = which_command(add);
-		ft_lstadd_back(cmd, add);
-	}
-}
-
-void print_cmd(t_list *cmd)
-{
-	int i;
-	int lst_length;
-
-	i = 0;
-	lst_length = ft_lstsize(cmd);
-	while (i < lst_length)
-	{
-		printf("%d번 째 cmd: %s i_cmd : %d\n", i, cmd->content, cmd->i_cmd);
-		cmd = cmd->next;
-		i++;
-	}
-}
 
 char *string_tolower(char *str)
 {
@@ -72,44 +40,15 @@ char *string_tolower(char *str)
 	return (str);
 }
 
-
-char **input_double_argv(t_list *cmd)
+int command_execve(int i_cmd, char **argv, char **envp)
 {
-	if (cmd->i_cmd == -1)
-	{
-		printf("Error i_cmd : -1\n");
-		return (NULL);
-	}
-}
-
-char **input_argv(t_list *cmd)
-{
-	int i = 0;
-	while (cmd->i_cmd != -1)
-	{
-		
-		i++;
-	}
-}
-
-int command_execve(t_list *cmd, char **envp)
-{
-	int index;
 	int pid;
-	char **argv;
-	char *str[4] = {
-		"ls",
-		// "-a"
-		// "-l",
-		0
-	};
-	printf("%d\n", index = which_command(cmd));
-	index = which_command(cmd);
-	if (index == -1)
+	if (i_cmd == -1)
 	{
 		printf("i_cmd == -1, no fork()\n");
+		return (1);
 	}
-	if (index == LS)
+	if (i_cmd == LS)
 	{
 		if (-1 == (pid = fork()))
 		{
@@ -119,7 +58,7 @@ int command_execve(t_list *cmd, char **envp)
 		if (pid == 0)
 		{
 			printf("children fork\n");
-			execve("/bin/ls", str, envp);
+			execve("/bin/ls", argv, envp);
 		}
 		else
 		{
@@ -127,6 +66,117 @@ int command_execve(t_list *cmd, char **envp)
 			wait(NULL);
 		}
 	}
+	if (i_cmd == ECHO)
+	{
+		if (-1 == (pid = fork()))
+		{
+			printf("fork() error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			printf("children fork\n");
+			execve("/bin/echo", argv, envp);
+		}
+		else
+		{
+			printf("parent fork\n");
+			wait(NULL);
+		}
+	}
+	if (i_cmd == CD) //built-in 함수를 써야함
+	{
+		printf("CD command\n");
+		int buf[100];
+		chdir(argv[1]);
+		// getcwd(buf,100);
+	}
+	if (i_cmd == PWD)
+	{
+		if (-1 == (pid = fork()))
+		{
+			printf("fork() error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			printf("children fork\n");
+			execve("/bin/pwd", argv, envp);
+		}
+		else
+		{
+			printf("parent fork\n");
+			wait(NULL);
+		}
+	}
+	if (i_cmd == EXPORT)
+	{
+		if (-1 == (pid = fork()))
+		{
+			printf("fork() error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			printf("children fork\n");
+			execve("/bin/export", argv, envp);
+		}
+		else
+		{
+			printf("parent fork\n");
+			wait(NULL);
+		}
+	}
+	if (i_cmd == UNSET)
+	{
+		if (-1 == (pid = fork()))
+		{
+			printf("fork() error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			printf("children fork\n");
+			execve("/bin/unset", argv, envp);
+		}
+		else
+		{
+			printf("parent fork\n");
+			wait(NULL);
+		}
+	}
+	if (i_cmd == ENV)
+	{
+		if (-1 == (pid = fork()))
+		{
+			printf("fork() error\n");
+			return (-1);
+		}
+		if (pid == 0)
+		{
+			printf("children fork\n");
+			execve("/bin/env", argv, envp);
+		}
+		else
+		{
+			printf("parent fork\n");
+			wait(NULL);
+		}
+	}
+	if (i_cmd == EXIT) //built-in 함수 써야함
+		exit(0);
+	return (1);
+}
+
+int commands_execve(t_list *cmd, char **envp)
+{
+	int index;
+	int pid;
+	char **argv = NULL;
+	argv = get_double_argv(cmd);
+	// print_double_argv(argv);
+	command_execve(cmd->i_cmd, argv, envp); //정상적으로 들어왔을 때의 한해서
+	free_double_argv(argv);
 	return 1;
 }
 
@@ -141,10 +191,10 @@ int main(int argc, char *argv[], char **envp)
 		ft_putstr_fd("bash-3.2$ ", 1);
 		if (get_next_line(0, &line) >  0)
 		{
-			/* Ctrl + D 누르면 EOF 되어 exit minishell 누르는 함수가 있다고 가정 */
-			input_raw_cmd(&cmd, line);
-			print_cmd(cmd);
-			command_execve(cmd, envp);
+			input_raw_cmd(&cmd, line); // 오직 띄어쓰기만을 기준으로 나누어서 void *content에 넣어준다. + i_cmd값
+			//영환이 형이 여기서 파싱을 해준다.
+			print_cmd_list(cmd); // linked list에 들어가있는 값을 '확인차' 출력해봄
+			commands_execve(cmd, envp);
 			free(line);
 		}
 		ft_lstclear(&cmd, NULL);
