@@ -36,7 +36,7 @@ void print_cmd_list(t_list *cmd)
 	lst_length = ft_lstsize(cmd);
 	while (i < lst_length)
 	{
-		printf("linked|%d번째:%s|i_cmd:%d\n", i, cmd->content, cmd->i_cmd);
+		printf("linked|%d번째:%s\n", i, cmd->content);
 		cmd = cmd->next;
 		i++;
 	}

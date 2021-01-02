@@ -7,11 +7,11 @@ UTILS		= ./libft/ft_memset.c ./libft/ft_bzero.c  ./libft/ft_memcpy.c  ./libft/ft
 				 		./libft/ft_substr.c  ./libft/ft_strjoin.c  ./libft/ft_strtrim.c  ./libft/ft_split.c  ./libft/ft_itoa.c ./libft/ft_strmapi.c ./libft/ft_putchar_fd.c ./libft/ft_putstr_fd.c ./libft/ft_putendl_fd.c ./libft/ft_putnbr_fd.c\
 				 			./libft/ft_lstnew.c ./libft/ft_lstadd_front.c ./libft/ft_lstsize.c ./libft/ft_lstlast.c ./libft/ft_lstadd_back.c ./libft/ft_lstdelone.c ./libft/ft_lstclear.c ./libft/ft_lstiter.c ./libft/ft_lstmap.c\
 								./gnl/get_next_line.c ./gnl/get_next_line_utils.c
-SRCS		= main.c get_commands_from_gnl.c print.c
+SRCS		= main.c execute_commands.c get_commands_from_gnl.c print.c
 OBJS		= $(SRCS:.c=.o)
 OBJS_UTILS	= $(UTILS:.c=.o)
 CC			= gcc
-CFLAG		= -g3 -fsanitize=address
+CFLAG		= 
 
 # ./libft/libft.a :
 # 	$(MAKE) -C ./libft all
@@ -24,7 +24,10 @@ $(NAME) : $(OBJS) $(LIBRARY)
 $(LIBRARY)	: $(OBJS_UTILS)
 	ar rc $(LIBRARY) $(OBJS_UTILS)
 	ranlib $(LIBRARY)
-	
+
+debug :
+	gcc -g ./gnl/*.c ./libft/*.c \
+		$(SRCS)
 all	: $(NAME)
 clean :
 	rm -rf $(OBJS)

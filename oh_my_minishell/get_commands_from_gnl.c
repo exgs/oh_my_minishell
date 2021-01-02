@@ -50,7 +50,7 @@ char		*ft_strsep(char **command, const char *delim)
 }
 
 
-void get_cmd_from_gnl(t_list **cmd, char *line)
+void get_commands_from_gnl(t_list **cmd, char *line, t_setting *setting)
 {
 	char *substr;
 	t_list *new;
@@ -63,8 +63,7 @@ void get_cmd_from_gnl(t_list **cmd, char *line)
 		if (ft_strlen(substr) == 0)
 			continue ;
 		new = ft_lstnew(substr);
-		new->split = ft_split(substr, ' ');
-		new->i_cmd = which_command(new->split[0]);
+		new->split_by_pipes = ft_split(substr, '|');
 		// print_split(new->split); // 이중포인터인 split에 무엇이 담겼나 확인하는 디버깅
 		ft_lstadd_back(cmd, new);
 	}
