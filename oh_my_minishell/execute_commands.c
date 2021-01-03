@@ -17,6 +17,8 @@ char *string_tolower(char *str)
 
 int which_command(char *cmd)
 {
+	if (cmd == NULL)
+		return (-1);
 	if (!ft_strncmp(string_tolower(cmd),"echo",10))
 		return (ECHO);
 	if (!ft_strncmp(string_tolower(cmd),"cd",10))
@@ -44,7 +46,7 @@ int execve_nopipe(int num_cmd, char **argv, t_setting *setting)
 	int pid;
 	int *pipe_fd;
 	int temp;
-	
+
 	pipe_fd = setting->pipe_fd;
 	if (num_cmd == LS)
 	{
@@ -192,7 +194,7 @@ int execve_pipe(int num_cmd, char **argv, t_setting *setting)
 	int pid;
 	int *pipe_fd;
 	int temp;
-	
+
 	pipe_fd = setting->pipe_fd;
 	if (num_cmd == LS)
 	{
@@ -344,7 +346,7 @@ int execve_pipe(int num_cmd, char **argv, t_setting *setting)
 int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
 {
 	int num_cmd;
-	
+
 	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
 	{
 		printf("command not found: %s\n", one_cmd_splited[0]);
@@ -361,7 +363,7 @@ int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
 int passing_to_pipe(char **one_cmd_splited, t_setting *setting)
 {
 	int num_cmd;
-	
+
 	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
 	{
 		printf("command not found: %s\n", one_cmd_splited[0]);
@@ -381,7 +383,7 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 	char *one_cmd_trimed;
 	char **one_cmd_splited;
 	int i = 0;
-	
+
 	if (-1 == pipe(setting->pipe_fd))
 	{
 		printf("pipe error\n");
@@ -402,7 +404,7 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 			printf("뒤에 파이프가 더 있다.\n");
 			passing_to_pipe(one_cmd_splited, setting);
 		}
-	
+
 		free_split(one_cmd_splited);
 		free(one_cmd_trimed);
 		i++;
