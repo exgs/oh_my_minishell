@@ -4,7 +4,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1024
+#  define BUFFER_SIZE 50
 # endif
 
 int		ft_strlen2(char *str);

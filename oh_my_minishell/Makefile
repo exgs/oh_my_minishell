@@ -11,7 +11,7 @@ SRCS		= main.c execute_commands.c get_commands_from_gnl.c print.c
 OBJS		= $(SRCS:.c=.o)
 OBJS_UTILS	= $(UTILS:.c=.o)
 CC			= gcc
-CFLAG		= 
+CFLAG		= -g
 
 # ./libft/libft.a :
 # 	$(MAKE) -C ./libft all

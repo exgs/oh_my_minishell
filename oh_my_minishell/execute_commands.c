@@ -45,43 +45,35 @@ int execve_nopipe(int num_cmd, char **argv, t_setting *setting)
 {
 	int pid;
 	int *pipe_fd;
-	int temp;
+	int dup_stdin;
+	int dup_stdout;
 
 	pipe_fd = setting->pipe_fd;
+	dup_stdin = dup(STDIN_FILENO);
+	dup_stdout = dup(STDOUT_FILENO);
+	dup2(pipe_fd[READ], STDIN_FILENO);
 	if (num_cmd == LS)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/ls", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == ECHO)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/echo", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == CD) //built-in 함수를 써야함
@@ -94,153 +86,147 @@ int execve_nopipe(int num_cmd, char **argv, t_setting *setting)
 	if (num_cmd == PWD)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/pwd", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == EXPORT)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/sh", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == UNSET)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/sh", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == ENV)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/usr/bin/env", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
 		exit(0);
 	if (num_cmd == GREP)
 	{
-		temp = dup(STDIN_FILENO);
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
 		{
-			// printf("children fork\n");
-			dup2(pipe_fd[READ], STDIN_FILENO);
 			execve("/usr/bin/grep", argv, setting->envp);
+			printf("whow?\n");
+			exit(0);
 		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
-			// dup2(temp, STDIN_FILENO);
+			dup2(dup_stdin, STDIN_FILENO);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	return (1);
 }
 
-int execve_pipe(int num_cmd, char **argv, t_setting *setting)
+
+int flush_pipe_fd(t_setting *setting)
+{
+	close(setting->pipe_fd[READ]);
+	close(setting->pipe_fd[WRITE]);
+	if (-1 == pipe(setting->pipe_fd))
+	{
+		printf("pipe error\n");
+		return (-1);
+	}
+	return (1);
+}
+int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 {
 	int pid;
 	int *pipe_fd;
-	int temp;
+	int dup_stdin;
+	int dup_stdout;
 
+	dup_stdin = dup(STDIN_FILENO);
+	dup_stdout = dup(STDOUT_FILENO);
+	dup2(pipe_fd[READ], STDIN_FILENO);
+	dup2(pipe_fd[WRITE], STDOUT_FILENO);
 	pipe_fd = setting->pipe_fd;
-	if (num_cmd == LS)
+	if (num_cmd == GREP)
 	{
-		temp = dup(STDOUT_FILENO);
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// close(pipe_fd[READ]);
-			// dup2(pipe_fd[READ], STDIN_FILENO);
-			dup2(pipe_fd[WRITE], STDOUT_FILENO);
-			// printf("children fork\n");
-			execve("/bin/ls", argv, setting->envp);
-		}
+			execve("/usr/bin/grep", argv, setting->envp);
 		else
 		{
-			// close(pipe_fd[WRITE]);
-			// printf("parent fork\n");
 			wait(NULL);
-			dup2(temp, STDOUT_FILENO);
+			dup2(dup_stdin, STDIN_FILENO);
+			dup2(dup_stdout, STDOUT_FILENO);
+		}
+	}
+	return (1);
+}
+int	execve_w_pipe(int num_cmd, char **argv, t_setting *setting)
+{
+	int pid;
+	int *pipe_fd;
+	int dup_stdout;
+	
+	pipe_fd = setting->pipe_fd;
+	dup_stdout = dup(STDOUT_FILENO);
+	dup2(pipe_fd[WRITE], STDOUT_FILENO);
+	if (num_cmd == LS)
+	{
+		if (-1 == (pid = fork()))
+			return (-1);
+		if (pid == 0)
+			execve("/bin/ls", argv, setting->envp);
+		else
+		{
+			wait(NULL);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	if (num_cmd == ECHO)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/echo", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
-		// printf("CD command\n");
 		int buf[100];
 		chdir(argv[1]);
 		// getcwd(buf,100);
@@ -248,99 +234,70 @@ int execve_pipe(int num_cmd, char **argv, t_setting *setting)
 	if (num_cmd == PWD)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
-		{
-			// printf("children fork\n");
 			execve("/bin/pwd", argv, setting->envp);
-		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	if (num_cmd == EXPORT)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
 		{
-			// printf("children fork\n");
 			execve("/bin/sh", argv, setting->envp);
 		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	if (num_cmd == UNSET)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
 		{
-			// printf("children fork\n");
 			execve("/bin/sh", argv, setting->envp);
 		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
 		}
 	}
 	if (num_cmd == ENV)
 	{
 		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
 			return (-1);
-		}
 		if (pid == 0)
 		{
-			// printf("children fork\n");
 			execve("/usr/bin/env", argv, setting->envp);
 		}
 		else
 		{
-			// printf("parent fork\n");
 			wait(NULL);
+			dup2(dup_stdout, STDOUT_FILENO);
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
 		exit(0);
-	if (num_cmd == GREP)
-	{
-		// temp = dup(STDIN_FILENO);
-		if (-1 == (pid = fork()))
-		{
-			// printf("fork() error\n");
-			return (-1);
-		}
-		if (pid == 0)
-		{
-			// dup2(pipe_fd[READ], STDIN_FILENO);
-			// printf("children fork\n");
-			execve("/usr/bin/grep", argv, setting->envp);
-		}
-		else
-		{
-			// printf("parent fork\n");
-			wait(NULL);
-			// dup2(temp, STDOUT_FILENO);
-		}
-	}
 	return (1);
+}
+int which_typeof_command(int num_cmd)
+{
+	int n = num_cmd;
+	if (n == ECHO || n == CD || n == PWD || n == EXPORT || n == UNSET ||
+				n == ENV || n == EXIT || n == LS)
+		return (WRONLY);
+	else if (n == GREP)
+		return (RDWR);
+	else
+		return (-1);
 }
 
 int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
@@ -363,13 +320,23 @@ int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
 int passing_to_pipe(char **one_cmd_splited, t_setting *setting)
 {
 	int num_cmd;
+	int temp;
 
 	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
 	{
 		printf("command not found: %s\n", one_cmd_splited[0]);
 		return (-1);
 	}
-	if (-1 == (execve_pipe(num_cmd, one_cmd_splited, setting)))
+	if (which_typeof_command(num_cmd) == WRONLY)
+		temp = execve_w_pipe(num_cmd, one_cmd_splited, setting);
+	else if (which_typeof_command(num_cmd) == RDWR)
+	{
+		// if (-1 == flush_pipe_fd(setting))
+		// 	return (-1);
+		temp = execve_rw_pipe(num_cmd, one_cmd_splited, setting);
+	}
+	
+	if (temp == -1)
 	{
 		printf("fork error\n");
 		return (-1);
@@ -409,6 +376,8 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 		free(one_cmd_trimed);
 		i++;
 	}
+	// close(setting->pipe_fd[READ]);
+	// close(setting->pipe_fd[WRITE]);
 	return (1);
 }
 

@@ -23,6 +23,10 @@
 # define READ 0
 # define WRITE 1
 
+# define RDONLY 0
+# define WRONLY 1
+# define RDWR 2
+
 typedef struct s_setting
 {
 	char **envp;
@@ -40,14 +44,20 @@ void	print_cmd_list(t_list *cmd);
 void	free_split(char **argv);
 void	print_split(char **split);
 
-//execute_commands
+//execute_commands.c
 int		execute_multi_commands(t_list *cmd, t_setting *setting);
 int		execute_command(char **split_by_pipes, t_setting *setting);
+
 int		passing_to_stdout(char **one_cmd_split, t_setting *setting);
-int		passing_to_pipe(char **one_cmd_split, t_setting *setting);
-int		execve_pipe(int num_cmd, char **argv, t_setting *setting);
 int		execve_nopipe(int num_cmd, char **argv, t_setting *setting);
+
+int		passing_to_pipe(char **one_cmd_split, t_setting *setting);
+int		execve_rw_pipe(int num_cmd, char **argv, t_setting *setting);
+int		execve_w_pipe(int num_cmd, char **argv, t_setting *setting);
+
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
+int		which_typeof_command(int num_cmd);
+int		flush_pipe_fd(t_setting *setting);
 
 #endif
