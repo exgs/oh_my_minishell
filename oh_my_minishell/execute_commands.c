@@ -41,17 +41,19 @@ int which_command(char *cmd)
 		return (-1);
 }
 
-int execve_nopipe(int num_cmd, char **argv, t_setting *setting)
+int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting)
 {
 	int pid;
 	int *pipe_fd;
 	int dup_stdin;
 	int dup_stdout;
+	int i;
 
 	pipe_fd = setting->pipe_fd;
 	dup_stdin = dup(STDIN_FILENO);
 	dup_stdout = dup(STDOUT_FILENO);
 	dup2(pipe_fd[READ], STDIN_FILENO);
+	close(pipe_fd[READ]);
 	if (num_cmd == LS)
 	{
 		if (-1 == (pid = fork()))
@@ -64,17 +66,12 @@ int execve_nopipe(int num_cmd, char **argv, t_setting *setting)
 			dup2(dup_stdin, STDIN_FILENO);
 		}
 	}
+	/* 이번 시도에서는 문자열로 들어오는 one_cmd_trimed로 구현할 것임 */
 	if (num_cmd == ECHO)
 	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-			execve("/bin/echo", argv, setting->envp);
-		else
-		{
-			wait(NULL);
-			dup2(dup_stdin, STDIN_FILENO);
-		}
+		/* 여기선 STDIN 안쓴다. */
+		dup2(dup_stdin, STDIN_FILENO);
+		execute_echo(one_cmd_trimed);
 	}
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
@@ -197,7 +194,7 @@ int	execve_w_pipe(int num_cmd, char **argv, t_setting *setting)
 	int pid;
 	int *pipe_fd;
 	int dup_stdout;
-	
+
 	pipe_fd = setting->pipe_fd;
 	dup_stdout = dup(STDOUT_FILENO);
 	dup2(pipe_fd[WRITE], STDOUT_FILENO);
@@ -300,7 +297,7 @@ int which_typeof_command(int num_cmd)
 		return (-1);
 }
 
-int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
+int passing_to_stdout(char **one_cmd_splited, char *one_cmd_trimed, t_setting *setting)
 {
 	int num_cmd;
 
@@ -309,7 +306,7 @@ int passing_to_stdout(char **one_cmd_splited, t_setting *setting)
 		printf("command not found: %s\n", one_cmd_splited[0]);
 		return (-1);
 	}
-	if (-1 == (execve_nopipe(num_cmd, one_cmd_splited, setting)))
+	if (-1 == (execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed, setting)))
 	{
 		printf("fork error\n");
 		return (-1);
@@ -335,7 +332,7 @@ int passing_to_pipe(char **one_cmd_splited, t_setting *setting)
 		// 	return (-1);
 		temp = execve_rw_pipe(num_cmd, one_cmd_splited, setting);
 	}
-	
+
 	if (temp == -1)
 	{
 		printf("fork error\n");
@@ -364,7 +361,7 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 		if (split_by_pipes[i + 1] == NULL)
 		{
 			printf("뒤에 파이프가 없다. stdout으로 출력하자.\n");
-			passing_to_stdout(one_cmd_splited, setting);
+			passing_to_stdout(one_cmd_splited, one_cmd_trimed, setting);
 		}
 		else
 		{
