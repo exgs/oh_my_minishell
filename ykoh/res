@@ -1,0 +1,36 @@
+-------------------
+size : 31
+USER=ykoh
+__CFBundleIdentifier=com.microsoft.VSCode
+COMMAND_MODE=unix2003
+LOGNAME=ykoh
+PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin
+SSH_AUTH_SOCK=/private/tmp/com.apple.launchd.jVHtLp0aM0/Listeners
+SHELL=/bin/zsh
+HOME=/Users/ykoh
+__CF_USER_TEXT_ENCODING=0x1F5:0x0:0x0
+TMPDIR=/var/folders/y1/3tzl01xs1g10j0gr4bjbgwl80000gn/T/
+XPC_SERVICE_NAME=0
+XPC_FLAGS=0x0
+ORIGINAL_XDG_CURRENT_DESKTOP=undefined
+SHLVL=1
+PWD=/Users/ykoh/Desktop/env2
+OLDPWD=/Users/ykoh/Desktop/env2
+ZSH=/Users/ykoh/.oh-my-zsh
+PAGER=less
+LESS=-R
+LSCOLORS=Gxfxcxdxbxegedabagacad
+MAIL=ykoh@student.42seoul.kr
+TERM_PROGRAM=vscode
+TERM_PROGRAM_VERSION=1.52.1
+LANG=en_US.UTF-8
+COLORTERM=truecolor
+VSCODE_GIT_IPC_HANDLE=/var/folders/y1/3tzl01xs1g10j0gr4bjbgwl80000gn/T/vscode-git-d9431148f3.sock
+GIT_ASKPASS=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass.sh
+VSCODE_GIT_ASKPASS_NODE=/Applications/Visual Studio Code.app/Contents/Frameworks/Code Helper (Renderer).app/Contents/MacOS/Code Helper (Renderer)
+VSCODE_GIT_ASKPASS_MAIN=/Applications/Visual Studio Code.app/Contents/Resources/app/extensions/git/dist/askpass-main.js
+TERM=xterm-256color
+_=/Users/ykoh/Desktop/env2/./a.out
+a
+a
+-------------------
