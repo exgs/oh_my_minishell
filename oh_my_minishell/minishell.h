@@ -52,7 +52,6 @@ int		passing_to_stdout(char **one_cmd_split, char *one_cmd_trimed, t_setting *se
 int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting);
 
 int		passing_to_pipe(char **one_cmd_split, t_setting *setting);
-int		execve_rw_pipe(int num_cmd, char **argv, t_setting *setting);
 int		execve_w_pipe(int num_cmd, char **argv, t_setting *setting);
 
 char	*string_tolower(char *str);
