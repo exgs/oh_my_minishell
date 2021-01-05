@@ -111,15 +111,15 @@ int command_execve(int i_cmd, char **argv, char **envp)
 	}
 	if (i_cmd == EXPORT)
 	{
-		if (-1 == (pid = fork()))
-		{
-			printf("fork() error\n");
-			return (-1);
-		}
+		// if (-1 == (pid = fork()))
+		// {
+		// 	printf("fork() error\n");
+		// 	return (-1);
+		// }
 		if (pid == 0)
 		{
-			printf("children fork\n");
-			execve("/bin/sh", argv, envp);
+			// printf("children fork\n");
+			ft_export("/bin/sh", argv, envp);
 		}
 		else
 		{
@@ -129,17 +129,14 @@ int command_execve(int i_cmd, char **argv, char **envp)
 	}
 	if (i_cmd == UNSET)
 	{
-/*
-		if (-1 == (pid = fork()))
-		{
-			printf("fork() error\n");
-			return (-1);
-		}
-*/
+		// if (-1 == (pid = fork()))
+		// {
+		// 	printf("fork() error\n");
+		// 	return (-1);
+		// }
 		if (pid == 0)
 		{
 //			printf("children fork\n");
-//			execve("/bin/sh", argv, envp);
 			ft_unset("안쓰임", argv, envp);
 		}
 		else
@@ -150,17 +147,14 @@ int command_execve(int i_cmd, char **argv, char **envp)
 	}
 	if (i_cmd == ENV)
 	{
-/*
-		if (-1 == (pid = fork()))
-		{
-			printf("fork() error\n");
-			return (-1);
-		}
-*/
+		// if (-1 == (pid = fork()))
+		// {
+		// 	printf("fork() error\n");
+		// 	return (-1);
+		// }
 		if (pid == 0)
 		{
 //			printf("children fork\n");
-//			execve("/usr/bin/env", argv, envp);
 			ft_env("안쓰임", argv, envp);
 		}
 		else
