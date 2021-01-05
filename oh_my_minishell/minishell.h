@@ -40,4 +40,13 @@ char *string_tolower(char *str);
 void get_cmd_from_gnl(t_list **cmd, char *line);
 int which_command(char *cmd);
 
+
+
+/*vector 관련함수들 추가 */
+void	vector_erase(char *arr[], int target);
+void	vector_sort(char *arr[]);
+int		vector_size(char *arr[]);
+void	vector_clear(char *arr[]);
+char	**vector_dup(char *arr[]);
+void	vector_push_back(char **arr[], char str[]);
 #endif
