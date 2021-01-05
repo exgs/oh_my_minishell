@@ -52,4 +52,5 @@ void	vector_push_back(char **arr[], char str[]);
 
 /*환경변수 관련 함수들 */
 int		ft_env(const char *path, char *const argv[], char *const envp[]);
+int		ft_unset(const char *path, char *const argv[], char *const envp[]);
 #endif
