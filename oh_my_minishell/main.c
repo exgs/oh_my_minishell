@@ -199,6 +199,9 @@ int main(int argc, char *argv[], char **envp)
 {
 	t_list *cmds = NULL;
 	char *line;
+
+	get_param()->envp = vector_dup(envp); // 구조체에 복사하게
+
 	while (TRUE)
 	{
 		ft_putstr_fd("bash-3.2$ ", 1);
@@ -208,10 +211,12 @@ int main(int argc, char *argv[], char **envp)
 			// | 로도 나눠줘야하는데 아직 못함
 			
 			// print_cmd_list(cmds); // linked list에 들어가있는 값을 '확인차' 출력해봄
-			commands_execve(cmds, envp);
+			commands_execve(cmds, get_param()->envp);
 			free(line);
 		}
 		ft_lstclear(&cmds, NULL);
 	}
+	vector_clear(get_param()->envp);
+	free(get_param());
 	return (0);
 }
