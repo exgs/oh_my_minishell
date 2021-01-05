@@ -41,7 +41,35 @@ int which_command(char *cmd)
 		return (-1);
 }
 
-int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting)
+int execve_rw_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting)
+{
+	int pid;
+	int *pipe_fd;
+	int i;
+
+	pipe_fd = setting->pipe_fd;
+	
+	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
+	{
+		if (-1 == (pid = fork()))
+			return (-1);
+		if (pid == 0)
+		{
+			int temp;
+			close(pipe_fd[WRITE]);
+			temp = dup2(pipe_fd[READ], STDIN_FILENO);
+			execve("/usr/bin/grep", argv, setting->envp);
+		}
+		else
+		{
+			close(pipe_fd[READ]);
+			wait(NULL);
+		}
+	}
+	return (1);
+}
+
+int execve_w_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting)
 {
 	int pid;
 	int *pipe_fd;
@@ -54,7 +82,6 @@ int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *set
 			return (-1);
 		if (pid == 0)
 		{
-			dup2(pipe_fd[READ], STDIN_FILENO);
 			execve("/bin/ls", argv, setting->envp);
 		}
 		else
@@ -120,28 +147,13 @@ int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *set
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
 		exit(0);
-	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
-	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-		{
-			int temp;
-			close(pipe_fd[WRITE]);
-			temp = dup2(pipe_fd[READ], STDIN_FILENO);
-			execve("/usr/bin/grep", argv, setting->envp);
-		}
-		else
-		{
-			close(pipe_fd[READ]);
-			wait(NULL);
-		}
-	}
 	return (1);
 }
 
 int flush_pipe_fd(t_setting *setting)
 {
+	// printf("1:%d\n", setting->pipe_fd[READ]);
+	// printf("2:%d\n", setting->pipe_fd[WRITE]);
 	close(setting->pipe_fd[READ]);
 	close(setting->pipe_fd[WRITE]);
 	if (-1 == pipe(setting->pipe_fd))
@@ -149,26 +161,33 @@ int flush_pipe_fd(t_setting *setting)
 		printf("pipe error\n");
 		return (-1);
 	}
+	// printf("1:%d\n", setting->pipe_fd[READ]);
+	// printf("2:%d\n", setting->pipe_fd[WRITE]);
 	return (1);
 }
 int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 {
 	int pid;
 	int *pipe_fd;
+	int *pipe_fd2;
 
 	pipe_fd = setting->pipe_fd;
+	pipe_fd2 = setting->pipe_fd2;
 	if (num_cmd == GREP)
 	{
 		if (-1 == (pid = fork()))
 			return (-1);
 		if (pid == 0)
 		{
-			close(pipe_fd[WRITE]);
-			dup2(pipe_fd[READ], STDOUT_FILENO);
+			dup2(pipe_fd[READ], STDIN_FILENO);
+			dup2(pipe_fd[WRITE], STDOUT_FILENO);
+			close(pipe_fd2[WRTIE]);
+			close(pipe_fd[READ]);
 			execve("/usr/bin/grep", argv, setting->envp);
 		}
 		else
 		{
+			close(pipe_fd2[READ]);
 			close(pipe_fd[WRITE]);
 			wait(NULL);
 		}
@@ -309,27 +328,23 @@ int passing_to_stdout(char **one_cmd_splited, char *one_cmd_trimed, t_setting *s
 		printf("command not found: %s\n", one_cmd_splited[0]);
 		return (-1);
 	}
-	if (-1 == (execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed, setting)))
+	
+	if (which_typeof_command(num_cmd) == WRONLY)
+	{
+		if (-1 == flush_pipe_fd(setting))
+			return (-1);
+		temp = execve_w_endofpipe(num_cmd, one_cmd_splited, one_cmd_trimed, setting);
+	}
+	else if (which_typeof_command(num_cmd) == RDWR)
+	{
+		temp = execve_rw_endofpipe(num_cmd, one_cmd_splited, one_cmd_trimed, setting);
+	}
+	if (temp == -1)
 	{
 		printf("fork error\n");
 		return (-1);
 	}
-	
-	// if (which_typeof_command(num_cmd) == WRONLY)
-	// 	temp = execve_r_nopipe(num_cmd, one_cmd_splited, setting);
-	// else if (which_typeof_command(num_cmd) == RDWR)
-	// {
-	// 	if (-1 == flush_pipe_fd(setting))
-	// 		return (-1);
-	// 	temp = execve_rw_nopipe(num_cmd, one_cmd_splited, setting);
-	// }
-
-	// if (temp == -1)
-	// {
-	// 	printf("fork error\n");
-	// 	return (-1);
-	// }
-	// return (1);
+	return (1);
 }
 
 int passing_to_pipe(char **one_cmd_splited, t_setting *setting)
