@@ -19,6 +19,14 @@
 # define EXIT 6
 # define LS 7
 
+typedef struct	s_data
+{
+	char		**envp;
+	char		**argv;
+}				t_data;
+
+t_data		*get_param();
+
 char	*ft_strsep(char **stringp, const char *delim);
 void	del(void *content);
 void	print_cmd_list(t_list *cmd);

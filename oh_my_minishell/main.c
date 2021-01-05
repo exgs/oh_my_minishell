@@ -185,6 +185,12 @@ int commands_execve(t_list *cmd, char **envp)
 	return 1;
 }
 
+t_data		*get_param()
+{
+	static t_data	param;
+
+	return (&param);
+}
 
 int main(int argc, char *argv[], char **envp)
 {
