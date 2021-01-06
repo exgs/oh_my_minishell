@@ -63,6 +63,12 @@ int		flush_pipe_fd(t_setting *setting);
 //execute_echo.c
 void	execute_echo(char *one_cmd_trimed);
 
+//execute_pwd.c
+void execute_pwd(void);
+
+//execute_exit.c
+void execute_exit(char **argv);
+
 //utils_jikang.c
 int		ft_is_whitespace(char c);
 

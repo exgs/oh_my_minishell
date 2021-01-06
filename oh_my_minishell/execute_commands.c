@@ -76,21 +76,17 @@ int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *set
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
 		// printf("CD command\n");
+		/* 여기선 STDIN 안쓴다. */
+		dup2(dup_stdin, STDIN_FILENO);
 		int buf[100];
 		chdir(argv[1]);
 		// getcwd(buf,100);
 	}
 	if (num_cmd == PWD)
 	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-			execve("/bin/pwd", argv, setting->envp);
-		else
-		{
-			wait(NULL);
-			dup2(dup_stdin, STDIN_FILENO);
-		}
+		/* 여기선 STDIN 안쓴다. */
+		dup2(dup_stdin, STDIN_FILENO);
+		execute_pwd();
 	}
 	if (num_cmd == EXPORT)
 	{
@@ -129,7 +125,7 @@ int execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *set
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
-		exit(0);
+		execute_exit(argv);
 	if (num_cmd == GREP)
 	{
 		if (-1 == (pid = fork()))
@@ -282,7 +278,9 @@ int	execve_w_pipe(int num_cmd, char **argv, t_setting *setting)
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
+	{
 		exit(0);
+	}
 	return (1);
 }
 int which_typeof_command(int num_cmd)
