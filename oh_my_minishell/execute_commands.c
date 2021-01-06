@@ -393,9 +393,15 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 	char *one_cmd;
 	char *one_cmd_trimed;
 	char **one_cmd_splited;
+	int pipe_fd[2];
 	int i = 0;
 
-	if (-1 == pipe(setting->pipe_fd))
+	if (split_by_pipes[1] == NULL)
+	{
+		execute_command_nopipe(split_by_pipes[0], setting);
+		return (1);
+	}
+	if (-1 == pipe(pipe_fd))
 	{
 		printf("pipe error\n");
 		return (-1);

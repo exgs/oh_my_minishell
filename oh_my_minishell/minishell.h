@@ -82,4 +82,7 @@ void execute_exit(char **argv);
 t_data	*get_param();
 int		ft_is_whitespace(char c);
 
+//1.7_yunslee.c
+int	execute_command_nopipe(char *one_cmd, t_setting *setting);
+
 #endif
