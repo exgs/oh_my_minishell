@@ -170,7 +170,9 @@ int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 	int pid;
 	int *pipe_fd;
 	int *pipe_fd2;
-
+	int dup_stdout;
+	
+	dup_stdout = dup(STDOUT_FILENO);
 	pipe_fd = setting->pipe_fd;
 	pipe_fd2 = setting->pipe_fd2;
 	if (num_cmd == GREP)
@@ -179,15 +181,32 @@ int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 			return (-1);
 		if (pid == 0)
 		{
-			dup2(pipe_fd[READ], STDIN_FILENO);
-			dup2(pipe_fd[WRITE], STDOUT_FILENO);
-			close(pipe_fd2[WRTIE]);
+			int pipe_child[2];
+			int pid2;
+			pipe(pipe_child);
+			// dup2(pipe_fd[WRITE], STDOUT_FILENO);
+			dup2(pipe_fd[1],pipe_child[1]);
+			pid2 = fork();
+			if (pid2 == 0)
+			{
+				close(pipe_fd[WRITE]);
+				close(pipe_child[READ]);
+				dup2(pipe_fd[READ], STDIN_FILENO);
+				dup2(pipe_child[WRITE], STDOUT_FILENO);
+				execve("/usr/bin/grep", argv, setting->envp);
+			}
+			close(pipe_child[WRITE]);
 			close(pipe_fd[READ]);
-			execve("/usr/bin/grep", argv, setting->envp);
+			wait(NULL);
+			exit(0);
+			
+			// dup2(pipe_fd2[READ], STDIN_FILENO);
+			// close(pipe_fd2[WRTIE]);
+			// execve("/usr/bin/grep", argv, setting->envp);
 		}
 		else
 		{
-			close(pipe_fd2[READ]);
+			// close(pipe_fd2[READ]);
 			close(pipe_fd[WRITE]);
 			wait(NULL);
 		}
