@@ -3,6 +3,9 @@
 
 # include <stdio.h>
 # include <unistd.h>
+# include <limits.h>
+# include <errno.h>
+# include <string.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
 # define READ 0
@@ -26,6 +29,10 @@
 # define RDONLY 0
 # define WRONLY 1
 # define RDWR 2
+
+typedef struct	s_data {
+	unsigned char	exit_status;
+}				t_data;
 
 typedef struct s_setting
 {
@@ -72,6 +79,7 @@ void execute_pwd(void);
 void execute_exit(char **argv);
 
 //utils_jikang.c
+t_data	*get_param();
 int		ft_is_whitespace(char c);
 
 #endif

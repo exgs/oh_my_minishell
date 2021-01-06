@@ -6,24 +6,32 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/06 19:29:31 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/06 23:43:51 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* 숫자만 있으면 1, 숫자 아닌 것도 있으면 0 */
-static int is_only_num(char *str)
+static int	is_numeric(char *str)
 {
-	int i;
+	int	len;
 
-	i = 0;
-	while (str[i] != '\0')
+	len = ft_strlen(str);
+	if (len == 0)
+		return (0);
+	else if (len == 1 && !ft_isdigit(str[0]))
+		return (0);
+	else
 	{
-		/* 숫자 아닌 것이 있으면 */
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
+		if (*str == '-' || *str == '+')
+			str++;
+		while (*str)
+		{
+			if (!ft_isdigit(*str))
+				return (0);
+			str++;
+		}
 	}
 	return (1);
 }
@@ -31,7 +39,7 @@ static int is_only_num(char *str)
 static void one_argv(char *argv)
 {
 	/* 숫자만 있냐 아니냐? 판단하기 */
-	if (is_only_num(argv))
+	if (is_numeric(argv))
 	{
 		ft_putendl_fd("exit", 1);
 		exit((unsigned char)ft_atoi(argv));
@@ -49,11 +57,12 @@ static void one_argv(char *argv)
 static void more_than_one_argv(char *argv)
 {
 	/* 숫자만 있냐 아니냐? 판단하기 */
-	if (is_only_num(argv))
+	if (is_numeric(argv))
 	{
 		ft_putendl_fd("exit", 1);
 		ft_putendl_fd("bash: exit: too many arguments", 1);
-		exit(1);
+		// exit(1); // <== 이 경우에는 종료 안됨 하지만 exitcode가 1이 되는 건 맞음.
+		get_param()->exit_status = 1;
 	}
 	else
 	{
@@ -77,7 +86,7 @@ void execute_exit(char **argv)
 	if (i == 1)
 	{
 		// printf("i: %i\n", i);
-		exit(EXIT_SUCCESS);
+		exit(get_param()->exit_status);
 	}
 	/* i = 2 일 경우, 명령어 제대로 들어옴 */
 	/* argv[2] 에 숫자가 아닌 문자가 하나라도 있다면 문자 취급 */

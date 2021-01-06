@@ -7,6 +7,8 @@ int main(int argc, char *argv[], char **envp)
 	t_setting setting;
 	setting.envp = envp;
 	char *line;
+	get_param()->exit_status = 0; // exit 할 때, error 코드 초기화
+
 	while (TRUE)
 	{
 		ft_putstr_fd("bash-3.2$ ", 1);
