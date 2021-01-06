@@ -48,7 +48,7 @@ int execve_rw_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_settin
 	int i;
 
 	pipe_fd = setting->pipe_fd;
-	
+
 	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
 	{
 		if (-1 == (pid = fork()))
@@ -103,14 +103,7 @@ int execve_w_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting
 	}
 	if (num_cmd == PWD)
 	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-			execve("/bin/pwd", argv, setting->envp);
-		else
-		{
-			wait(NULL);
-		}
+		execute_pwd();
 	}
 	if (num_cmd == EXPORT)
 	{
@@ -146,7 +139,7 @@ int execve_w_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
-		exit(0);
+		execute_exit(argv);
 	return (1);
 }
 
@@ -171,7 +164,7 @@ int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 	int *pipe_fd;
 	int *pipe_fd2;
 	int dup_stdout;
-	
+
 	dup_stdout = dup(STDOUT_FILENO);
 	pipe_fd = setting->pipe_fd;
 	pipe_fd2 = setting->pipe_fd2;
@@ -199,7 +192,7 @@ int	execve_rw_pipe(int num_cmd, char **argv, t_setting *setting)
 			close(pipe_fd[READ]);
 			wait(NULL);
 			exit(0);
-			
+
 			// dup2(pipe_fd2[READ], STDIN_FILENO);
 			// close(pipe_fd2[WRTIE]);
 			// execve("/usr/bin/grep", argv, setting->envp);
@@ -347,7 +340,7 @@ int passing_to_stdout(char **one_cmd_splited, char *one_cmd_trimed, t_setting *s
 		printf("command not found: %s\n", one_cmd_splited[0]);
 		return (-1);
 	}
-	
+
 	if (which_typeof_command(num_cmd) == WRONLY)
 	{
 		if (-1 == flush_pipe_fd(setting))
