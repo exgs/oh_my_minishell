@@ -9,9 +9,7 @@ void	catch_sigint(int pid)
 
 void	catch_sigquit(int pid)
 {
-	int		status;
-
-	pid = waitpid(-1, &status, WNOHANG);
+	pid = waitpid(-1, &g_status, WNOHANG);
 	if (!pid)
 		ft_putstr_fd("Quit: 3\n", 1);
 }

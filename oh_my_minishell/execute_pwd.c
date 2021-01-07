@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:00:50 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/06 20:12:55 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/07 22:18:33 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,14 @@ void execute_pwd(void)
 	char *pwd;
 
 	if (!(pwd = getcwd(NULL, PATH_MAX)))
+	{
 		ft_putendl_fd(strerror(errno), 2);
+		g_status = 1 * 256;
+	}
 	else
+	{
 		ft_putendl_fd(pwd, 1);
+		g_status = 0;
+	}
 	free(pwd);
 }

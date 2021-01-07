@@ -37,6 +37,8 @@ int		which_command(char *cmd)
 		return (LS);
 	if (!ft_strncmp(string_tolower(cmd),"grep",10))
 		return (GREP);
+	if (!ft_strncmp(string_tolower(cmd),"$?",10))
+		return (DQMARK);
 	else
 		return (-1);
 }
@@ -82,7 +84,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 		}
 		else
 		{
-			wait(NULL);
+			waitpid(pid, &g_status, 0);
 		}
 	}
 	/* 이번 시도에서는 문자열로 들어오는 one_cmd_trimed로 구현할 것임 */
@@ -93,9 +95,15 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
 		// printf("CD command\n");
-		int buf[100];
-		chdir(argv[1]);
-		// getcwd(buf,100);
+		if (chdir(argv[1]) == -1) /* 실패 시 */
+		{
+			g_status = 1 * 256;
+			ft_putstr_fd("bash : cd: ", 1);
+			ft_putstr_fd(argv[1], 1);
+			ft_putendl_fd(": No such file or directory", 1);
+		}
+		else /* 성공 시 */
+			g_status = 0;
 	}
 	if (num_cmd == PWD)
 	{
@@ -109,7 +117,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 			execve("/bin/sh", argv, get_param()->envp);
 		else
 		{
-			wait(NULL);
+			waitpid(pid, &g_status, 0);
 		}
 	}
 	if (num_cmd == UNSET)
@@ -120,7 +128,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 			execve("/bin/sh", argv, get_param()->envp);
 		else
 		{
-			wait(NULL);
+			waitpid(pid, &g_status, 0);
 		}
 	}
 	if (num_cmd == ENV)
@@ -131,7 +139,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 			execve("/usr/bin/env", argv, get_param()->envp);
 		else
 		{
-			wait(NULL);
+			waitpid(pid, &g_status, 0);
 		}
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
@@ -146,8 +154,15 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 		}
 		else
 		{
-			wait(NULL);
+			waitpid(pid, &g_status, 0);
 		}
+	}
+	if (num_cmd == DQMARK) // $? 일 경우
+	{
+		/* zz 작업 중 zz*/
+		ft_putstr_fd("bash: ", 1);
+		ft_putnbr_fd(g_status / 256, 1);
+		ft_putendl_fd(": command not found", 1);
 	}
 	return (1);
 }
@@ -161,16 +176,18 @@ int		execute_command_nopipe(char *one_cmd)
 
 	one_cmd_trimed = ft_strtrim(one_cmd, " ");
 	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
-	
+
 	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
 	{
 		printf("command not found: %s\n", one_cmd_splited[0]);
+		g_status = 127 * 256;
 		return (-1);
 	}
 	temp = execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed);
 	if (temp == -1)
 	{
 		printf("fork error\n");
+		g_status = 1 * 256;
 		return (-1);
 	}
 	free_split(one_cmd_splited);
@@ -221,9 +238,8 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 	char **one_cmd_splited;
 	int num_cmd;
 	int temp;
-	int status;
 	pid_t pid;
-	
+
 	one_cmd = split_by_pipes[i];
 	one_cmd_trimed = ft_strtrim(one_cmd, " ");
 	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
@@ -232,7 +248,7 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 		child_process(one_cmd_splited, fd);
 	else
 	{
-		waitpid(pid, &status, 0);
+		waitpid(pid, &g_status, 0);
 		if (split_by_pipes[i+1])
 			parent_process(split_by_pipes, fd, i+1);
 	}
