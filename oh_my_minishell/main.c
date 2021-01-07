@@ -8,7 +8,7 @@ int main(int argc, char *argv[], char **envp)
 	minishell_init(argc, argv, envp);
 	catch_signals();
 	char *line;
-	get_param()->envp = envp;
+	get_param()->envp = vector_dup(envp);
 	g_status = 0; // $? 의 코드
 
 	while (TRUE)
@@ -31,5 +31,6 @@ int main(int argc, char *argv[], char **envp)
 		free(line);
 		ft_lstclear(&cmds, NULL);
 	}
+	vector_clear(get_param()->envp);
 	return (0);
 }

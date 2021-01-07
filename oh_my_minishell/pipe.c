@@ -122,14 +122,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 	}
 	if (num_cmd == UNSET)
 	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-			execve("/bin/sh", argv, get_param()->envp);
-		else
-		{
-			waitpid(pid, &g_status, 0);
-		}
+		execute_unset(argv[0], argv, get_param()->envp);
 	}
 	if (num_cmd == ENV)
 	{

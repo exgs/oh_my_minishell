@@ -118,4 +118,5 @@ char	**vector_dup(char *arr[]);
 void	vector_push_back(char **arr[], char str[]);
 
 int		execute_env(const char *path, char *const argv[], char *const envp[]);
+int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 #endif
