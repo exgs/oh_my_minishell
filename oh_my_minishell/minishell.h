@@ -6,6 +6,8 @@
 # include <limits.h>
 # include <errno.h>
 # include <string.h>
+# include <sys/wait.h>
+# include <sys/types.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
 # define READ 0
@@ -56,19 +58,6 @@ void	print_split(char **split);
 int		execute_multi_commands(t_list *cmd, t_setting *setting);
 int		execute_command(char **split_by_pipes, t_setting *setting);
 
-int		passing_to_stdout(char **one_cmd_split, char *one_cmd_trimed, t_setting *setting);
-int		execve_rw_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting);
-int		execve_w_endofpipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting);
-
-int		passing_to_pipe(char **one_cmd_split, t_setting *setting);
-int		execve_rw_pipe(int num_cmd, char **argv, t_setting *setting);
-int		execve_w_pipe(int num_cmd, char **argv, t_setting *setting);
-
-char	*string_tolower(char *str);
-int		which_command(char *cmd);
-int		which_typeof_command(int num_cmd);
-int		flush_pipe_fd(t_setting *setting);
-
 //execute_echo.c
 void	execute_echo(char *one_cmd_trimed);
 
@@ -82,7 +71,13 @@ void execute_exit(char **argv);
 t_data	*get_param();
 int		ft_is_whitespace(char c);
 
-//1.7_yunslee.c
-int	execute_command_nopipe(char *one_cmd, t_setting *setting);
-
+//pipe.c
+int		execute_command_nopipe(char *one_cmd, t_setting *setting);
+int		execute_command_pipe(char **split_by_pipes, t_setting *setting, int *fd, int i);
+char	*string_tolower(char *str);
+int		which_command(char *cmd);
+char	*which_command2(int num_cmd);
+int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting);
+void	parent_process(char **split_by_pipes, t_setting *setting, int *fd, int i);
+void	child_process(char **one_cmd_splited, t_setting *setting, int *fd);
 #endif
