@@ -32,22 +32,43 @@
 # define WRONLY 1
 # define RDWR 2
 
+enum	e_quotes
+{
+	Q_E = -3,
+	Q_B,
+	Q_S,
+	OUT,
+	DQ_S,
+	DQ_B,
+	DQ_E
+};
+
+enum	e_except
+{
+	NONE,
+	SYNTAX,
+	EX_END
+};
+
+enum	e_flag
+{
+	CTRL_D,
+	CTRL_BS,
+	F_END
+};
+
+
+int	g_flag[F_END];
 typedef struct	s_data {
 	unsigned char	exit_status;
-}				t_data;
-
-typedef struct s_setting
-{
 	char **envp;
-	int pipe_fd[2];
-	int pipe_fd2[2];
-}t_setting;
+}				t_data;
 
 //get_commands_from_gnl.c
 char	*ft_strsep(char **stringp, const char *delim);
 void	del(void *content);
 char	*string_tolower(char *str);
-void	get_commands_from_gnl(t_list **cmd, char *line, t_setting *setting);
+void	get_commands_from_gnl(t_list **cmd, char *line);
 
 //print.c
 void	print_cmd_list(t_list *cmd);
@@ -55,8 +76,8 @@ void	free_split(char **argv);
 void	print_split(char **split);
 
 //execute_commands.c
-int		execute_multi_commands(t_list *cmd, t_setting *setting);
-int		execute_command(char **split_by_pipes, t_setting *setting);
+int		execute_multi_commands(t_list *cmd);
+int		execute_command(char **split_by_pipes);
 
 //execute_echo.c
 void	execute_echo(char *one_cmd_trimed);
@@ -72,12 +93,17 @@ t_data	*get_param();
 int		ft_is_whitespace(char c);
 
 //pipe.c
-int		execute_command_nopipe(char *one_cmd, t_setting *setting);
-int		execute_command_pipe(char **split_by_pipes, t_setting *setting, int *fd, int i);
+int		execute_command_nopipe(char *one_cmd);
+int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
 char	*which_command2(int num_cmd);
-int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting);
-void	parent_process(char **split_by_pipes, t_setting *setting, int *fd, int i);
-void	child_process(char **one_cmd_splited, t_setting *setting, int *fd);
+int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed);
+void	parent_process(char **split_by_pipes, int *fd, int i);
+void	child_process(char **one_cmd_splited, int *fd);
+
+// signal.c
+void	catch_signals(void);
+// init.c
+void	minishell_init(int argc, char *argv[], char **envp);
 #endif

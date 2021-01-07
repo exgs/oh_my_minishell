@@ -50,7 +50,7 @@ char		*ft_strsep(char **command, const char *delim)
 }
 
 
-void get_commands_from_gnl(t_list **cmd, char *line, t_setting *setting)
+void get_commands_from_gnl(t_list **cmd, char *line)
 {
 	char *substr;
 	t_list *new;

@@ -48,17 +48,17 @@ char	*which_command2(int num_cmd)
 	if (num_cmd == 0)
 		return ("/bin/echo");
 	if (num_cmd == 1)
-		return ("/bin/cd"); //cd
+		return ("/bin/cd");
 	if (num_cmd == 2)
-		return ("/bin/pwd"); //pwd
+		return ("/bin/pwd");
 	if (num_cmd == 3)
-		return ("/bin/export"); // export
+		return ("/bin/export");
 	if (num_cmd == 4)
-		return ("/bin/unset"); //unset
+		return ("/bin/unset");
 	if (num_cmd == 5)
-		return ("/bin/env"); //env
+		return ("/bin/env");
 	if (num_cmd == 6)
-		return ("/bin/exit"); //exit
+		return ("/bin/exit");
 	if (num_cmd == 7)
 		return ("/bin/ls");
 	if (num_cmd == 8)
@@ -67,7 +67,7 @@ char	*which_command2(int num_cmd)
 		return 0;
 }
 
-int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *setting)
+int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 {
 	int pid;
 	int i;
@@ -78,7 +78,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 			return (-1);
 		if (pid == 0)
 		{
-			execve("/bin/ls", argv, setting->envp);
+			execve("/bin/ls", argv, get_param()->envp);
 		}
 		else
 		{
@@ -106,7 +106,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 		if (-1 == (pid = fork()))
 			return (-1);
 		if (pid == 0)
-			execve("/bin/sh", argv, setting->envp);
+			execve("/bin/sh", argv, get_param()->envp);
 		else
 		{
 			wait(NULL);
@@ -117,7 +117,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 		if (-1 == (pid = fork()))
 			return (-1);
 		if (pid == 0)
-			execve("/bin/sh", argv, setting->envp);
+			execve("/bin/sh", argv, get_param()->envp);
 		else
 		{
 			wait(NULL);
@@ -128,7 +128,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 		if (-1 == (pid = fork()))
 			return (-1);
 		if (pid == 0)
-			execve("/usr/bin/env", argv, setting->envp);
+			execve("/usr/bin/env", argv, get_param()->envp);
 		else
 		{
 			wait(NULL);
@@ -142,7 +142,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 			return (-1);
 		if (pid == 0)
 		{
-			execve("/usr/bin/grep", argv, setting->envp);
+			execve("/usr/bin/grep", argv, get_param()->envp);
 		}
 		else
 		{
@@ -152,7 +152,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed, t_setting *se
 	return (1);
 }
 
-int		execute_command_nopipe(char *one_cmd, t_setting *setting)
+int		execute_command_nopipe(char *one_cmd)
 {
 	char *one_cmd_trimed;
 	char **one_cmd_splited;
@@ -167,7 +167,7 @@ int		execute_command_nopipe(char *one_cmd, t_setting *setting)
 		printf("command not found: %s\n", one_cmd_splited[0]);
 		return (-1);
 	}
-	temp = execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed, setting);
+	temp = execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed);
 	if (temp == -1)
 	{
 		printf("fork error\n");
@@ -178,7 +178,7 @@ int		execute_command_nopipe(char *one_cmd, t_setting *setting)
 	return (1);
 }
 
-void	child_process(char **one_cmd_splited, t_setting *setting, int *fd)
+void	child_process(char **one_cmd_splited, int *fd)
 {
 	int	i;
 	int num_cmd;
@@ -196,11 +196,11 @@ void	child_process(char **one_cmd_splited, t_setting *setting, int *fd)
 		return ;
 	}
 	path = which_command2(num_cmd);
-	execve(path, one_cmd_splited, setting->envp);
+	execve(path, one_cmd_splited, get_param()->envp);
 	exit(0);
 }
 
-void	parent_process(char **split_by_pipes, t_setting *setting, int *fd, int i)
+void	parent_process(char **split_by_pipes, int *fd, int i)
 {
 	int		fd2[2];
 
@@ -211,10 +211,10 @@ void	parent_process(char **split_by_pipes, t_setting *setting, int *fd, int i)
 	fd2[1] = 1;
 	if (split_by_pipes[i + 1] != 0)
 		pipe(fd2);
-	execute_command_pipe(split_by_pipes, setting, fd2, i);
+	execute_command_pipe(split_by_pipes, fd2, i);
 }
 
-int		execute_command_pipe(char **split_by_pipes, t_setting *setting, int *fd, int i)
+int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 {
 	char *one_cmd;
 	char *one_cmd_trimed;
@@ -229,12 +229,12 @@ int		execute_command_pipe(char **split_by_pipes, t_setting *setting, int *fd, in
 	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
 	pid = fork();
 	if (pid == 0)
-		child_process(one_cmd_splited, setting, fd);
+		child_process(one_cmd_splited, fd);
 	else
 	{
 		waitpid(pid, &status, 0);
 		if (split_by_pipes[i+1])
-			parent_process(split_by_pipes, setting, fd, i+1);
+			parent_process(split_by_pipes, fd, i+1);
 	}
 	free_split(one_cmd_splited);
 	free(one_cmd_trimed);

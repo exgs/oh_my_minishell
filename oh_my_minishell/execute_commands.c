@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int execute_command(char **split_by_pipes, t_setting *setting)
+int execute_command(char **split_by_pipes)
 {
 	char *one_cmd;
 	char *one_cmd_trimed;
@@ -12,22 +12,22 @@ int execute_command(char **split_by_pipes, t_setting *setting)
 
 	if (split_by_pipes[1] == NULL)
 	{
-		execute_command_nopipe(split_by_pipes[0], setting);
+		execute_command_nopipe(split_by_pipes[0]);
 		return (1);
 	}
 	pipe(fd);
-	execute_command_pipe(split_by_pipes, setting, fd, 0);
+	execute_command_pipe(split_by_pipes, fd, 0);
 	dup2(dup_stdin, STDIN_FILENO);
 	return (1);
 }
 
-int execute_multi_commands(t_list *cmd, t_setting *setting)
+int execute_multi_commands(t_list *cmd)
 {
 	int split_index = 0;
 	char **argv = NULL;
 	while (cmd != NULL)
 	{
-		if (-1 == execute_command(cmd->split_by_pipes, setting))
+		if (-1 == execute_command(cmd->split_by_pipes))
 		{
 			printf("execute_command error\n");
 		}
