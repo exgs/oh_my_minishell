@@ -108,4 +108,12 @@ void	child_process(char **one_cmd_splited, int *fd);
 void	catch_signals(void);
 // init.c
 void	minishell_init(int argc, char *argv[], char **envp);
+
+// vector.c
+void	vector_erase(char *arr[], int target);
+void	vector_sort(char *arr[]);
+int		vector_size(char *arr[]);
+void	vector_clear(char *arr[]);
+char	**vector_dup(char *arr[]);
+void	vector_push_back(char **arr[], char str[]);
 #endif
