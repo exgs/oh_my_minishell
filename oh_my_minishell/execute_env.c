@@ -9,7 +9,7 @@ int		execute_env(const char *path, char *const argv[], char *const envp[])
 	i = 0;
 	while (envp[i])
 	{
-//		if (ft_strchr(envp[i], '='))
+		if (ft_strchr(envp[i], '='))
 			ft_putendl_fd(envp[i], 1);
 		i++;
 	}
