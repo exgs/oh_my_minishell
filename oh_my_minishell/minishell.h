@@ -24,6 +24,7 @@
 # define EXIT 6
 # define LS 7
 # define GREP 8
+# define DQMARK 9
 
 # define READ 0
 # define WRITE 1
@@ -59,8 +60,9 @@ enum	e_flag
 
 
 int	g_flag[F_END];
+int g_status; // 이걸 256으로 나누면 exit status
 typedef struct	s_data {
-	unsigned char	exit_status;
+	// unsigned char	exit_status;
 	char **envp;
 }				t_data;
 

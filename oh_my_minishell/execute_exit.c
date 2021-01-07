@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/06 23:43:51 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/07 22:18:13 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void more_than_one_argv(char *argv)
 		ft_putendl_fd("exit", 1);
 		ft_putendl_fd("bash: exit: too many arguments", 1);
 		// exit(1); // <== 이 경우에는 종료 안됨 하지만 exitcode가 1이 되는 건 맞음.
-		get_param()->exit_status = 1;
+		g_status = 1 * 256;
 	}
 	else
 	{
@@ -86,7 +86,7 @@ void execute_exit(char **argv)
 	if (i == 1)
 	{
 		// printf("i: %i\n", i);
-		exit(get_param()->exit_status);
+		exit(g_status);
 	}
 	/* i = 2 일 경우, 명령어 제대로 들어옴 */
 	/* argv[2] 에 숫자가 아닌 문자가 하나라도 있다면 문자 취급 */

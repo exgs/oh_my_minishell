@@ -94,5 +94,7 @@ void execute_echo(char *one_cmd_trimed)
 			}
 		}
 	}
-		ft_putchar_fd('\n', 1);
+	/* -n 옵션 들어갈 시 무시 */
+	ft_putchar_fd('\n', 1);
+	g_status = 0;
 }
