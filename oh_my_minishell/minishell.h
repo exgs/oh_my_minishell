@@ -63,6 +63,8 @@ int	g_flag[F_END];
 int g_status; // 이걸 256으로 나누면 exit status
 typedef struct	s_data {
 	// unsigned char	exit_status;
+	char **cmd_splited;
+	char *cmd_trimed;
 	char **envp;
 }				t_data;
 
@@ -106,8 +108,12 @@ void	child_process(char **one_cmd_splited, int *fd);
 
 // signal.c
 void	catch_signals(void);
-// init.c
+// init_exit.c
 void	minishell_init(int argc, char *argv[], char **envp);
+void	minishell_exit(t_list *cmds);
+void	gnl_exit(t_list *cmds);
+void	cmds_exit(t_list *cmd);
+void	cmd_exit();
 
 // vector.c
 void	vector_erase(char *arr[], int target);

@@ -232,6 +232,7 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 		if (split_by_pipes[i+1])
 			parent_process(split_by_pipes, fd, i+1);
 	}
+	cmd_exit();
 	free_split(one_cmd_splited);
 	free(one_cmd_trimed);
 	return (1);
