@@ -1,7 +1,8 @@
 #include "minishell.h"
 
-void execute_echo(char *one_cmd_trimed)
+int execute_echo(const char *path, char *const argv[], char *const envp[])
 {
+	char *one_cmd_trimed = get_param()->cmd_trimed;
 	int i;
 	/* echo <--는 건너띄고 index 5번 부터 검사시작 */
 	i = 5;
@@ -97,4 +98,5 @@ void execute_echo(char *one_cmd_trimed)
 	/* -n 옵션 들어갈 시 무시 */
 	ft_putchar_fd('\n', 1);
 	g_status = 0;
+	return (1);
 }

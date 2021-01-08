@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/07 22:18:13 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/09 03:30:43 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,14 @@ static void more_than_one_argv(char *argv)
 	}
 }
 
-void execute_exit(char **argv)
+int execute_exit(const char *path, char *const argv[], char *const envp[])
 {
+	char **cmd_splited = get_param()->cmd_splited;
 	int i;
 
 	i = 0;
-	// printf("argv[0]: %s\n", argv[0]);
-	while (argv[i] != NULL)
+	// printf("cmd_splited[0]: %s\n", cmd_splited[0]);
+	while (cmd_splited[i] != NULL)
 		i++;
 	/* i = 1 일 경우, 명령어 제대로 들어옴 */
 	if (i == 1)
@@ -89,18 +90,19 @@ void execute_exit(char **argv)
 		exit(g_status);
 	}
 	/* i = 2 일 경우, 명령어 제대로 들어옴 */
-	/* argv[2] 에 숫자가 아닌 문자가 하나라도 있다면 문자 취급 */
+	/* cmd_splited[2] 에 숫자가 아닌 문자가 하나라도 있다면 문자 취급 */
 	if (i == 2)
 	{
 		// printf("i: %i\n", i);
-		// printf("argv[1]: %s\n", argv[1]);
-		one_argv(argv[1]);
+		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
+		one_argv(cmd_splited[1]);
 	}
 	else
 	{
 		// printf("i: %i\n", i);
-		// printf("argv[1]: %s\n", argv[1]);
-		// printf("argv[2]: %s\n", argv[2]);
-		more_than_one_argv(argv[1]);
+		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
+		// printf("cmd_splited[2]: %s\n", cmd_splited[2]);
+		more_than_one_argv(cmd_splited[1]);
 	}
+	return (1);
 }

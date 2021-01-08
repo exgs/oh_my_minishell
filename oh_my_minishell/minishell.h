@@ -89,13 +89,13 @@ int		execute_multi_commands(t_list *cmd);
 int		execute_command(char **split_by_pipes);
 
 //execute_echo.c
-void	execute_echo(char *one_cmd_trimed);
+int	execute_echo(const char *path, char *const argv[], char *const envp[]);
 
 //execute_pwd.c
-void execute_pwd(void);
+int execute_pwd(const char *path, char *const argv[], char *const envp[]);
 
 //execute_exit.c
-void execute_exit(char **argv);
+int execute_exit(const char *path, char *const argv[], char *const envp[]);
 
 //utils_jikang.c
 t_data	*get_param();

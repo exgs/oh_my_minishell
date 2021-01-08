@@ -92,7 +92,7 @@ int		execve_nopipe(int num_cmd)
 	/* 이번 시도에서는 문자열로 들어오는 one_cmd_trimed로 구현할 것임 */
 	if (num_cmd == ECHO)
 	{
-		execute_echo(one_cmd_trimed);
+		execute_echo(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
@@ -110,7 +110,7 @@ int		execve_nopipe(int num_cmd)
 	}
 	if (num_cmd == PWD)
 	{
-		execute_pwd();
+		execute_pwd(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == EXPORT)
 	{
@@ -125,7 +125,7 @@ int		execve_nopipe(int num_cmd)
 		execute_env(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
-		execute_exit(cmd_splited);
+		execute_exit(cmd_splited[0], cmd_splited, get_param()->envp);
 	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
 	{
 		if (-1 == (pid = fork()))
