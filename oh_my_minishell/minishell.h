@@ -7,6 +7,8 @@
 # include <errno.h>
 # include <string.h>
 # include <sys/wait.h>
+# include <string.h>
+# include <dirent.h>
 # include <sys/types.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
@@ -68,6 +70,9 @@ typedef struct	s_data {
 	char **envp;
 }				t_data;
 
+//builtin함수의 prototype 다 맞춰야 check_command 조건문 사용가능
+typedef int	(*t_builtin)(const char *, char *const[], char *const[]);
+
 //get_commands_from_gnl.c
 char	*ft_strsep(char **stringp, const char *delim);
 void	del(void *content);
@@ -102,7 +107,7 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
 char	*which_command2(int num_cmd);
-int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed);
+int		execve_nopipe(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
 

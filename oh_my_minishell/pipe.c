@@ -69,10 +69,12 @@ char	*which_command2(int num_cmd)
 		return 0;
 }
 
-int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
+int		execve_nopipe(int num_cmd)
 {
 	int pid;
 	int i;
+	char **cmd_splited = get_param()->cmd_splited;
+	char *one_cmd_trimed = get_param()->cmd_trimed;
 
 	if (num_cmd == LS)
 	{
@@ -80,7 +82,7 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 			return (-1);
 		if (pid == 0)
 		{
-			execve("/bin/ls", argv, get_param()->envp);
+			execve("/bin/ls", cmd_splited, get_param()->envp);
 		}
 		else
 		{
@@ -94,13 +96,13 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 	}
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
-		execute_cd(argv[0], argv, get_param()->envp); // g_status 변수 세팅은 함수 안에서 해줘야할것같음 (?)
+		execute_cd(cmd_splited[0], cmd_splited, get_param()->envp); // g_status 변수 세팅은 함수 안에서 해줘야할것같음 (?)
 		// // printf("CD command\n");
-		// if (chdir(argv[1]) == -1) /* 실패 시 */
+		// if (chdir(cmd_splited[1]) == -1) /* 실패 시 */
 		// {
 		// 	g_status = 1 * 256;
 		// 	ft_putstr_fd("bash : cd: ", 1);
-		// 	ft_putstr_fd(argv[1], 1);
+		// 	ft_putstr_fd(cmd_splited[1], 1);
 		// 	ft_putendl_fd(": No such file or directory", 1);
 		// }
 		// else /* 성공 시 */
@@ -112,25 +114,25 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 	}
 	if (num_cmd == EXPORT)
 	{
-		execute_export(argv[0], argv, get_param()->envp);
+		execute_export(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == UNSET)
 	{
-		execute_unset(argv[0], argv, get_param()->envp);
+		execute_unset(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == ENV)
 	{
-		execute_env(argv[0], argv, get_param()->envp);
+		execute_env(cmd_splited[0], cmd_splited, get_param()->envp);
 	}
 	if (num_cmd == EXIT) //built-in 함수 써야함
-		execute_exit(argv);
+		execute_exit(cmd_splited);
 	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
 	{
 		if (-1 == (pid = fork()))
 			return (-1);
 		if (pid == 0)
 		{
-			execve("/usr/bin/grep", argv, get_param()->envp);
+			execve("/usr/bin/grep", cmd_splited, get_param()->envp);
 		}
 		else
 		{
@@ -149,29 +151,24 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 
 int		execute_command_nopipe(char *one_cmd)
 {
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int num_cmd;
 	int temp;
 
-	one_cmd_trimed = ft_strtrim(one_cmd, " ");
-	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
-
-	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
+	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
+	get_param()->cmd_splited = ft_split(get_param()->cmd_trimed, ' ');;
+	if (-1 == (num_cmd = which_command(get_param()->cmd_splited[0])))
 	{
-		printf("command not found: %s\n", one_cmd_splited[0]);
+		printf("command not found: %s\n", get_param()->cmd_splited[0]);
 		g_status = 127 * 256;
 		return (-1);
 	}
-	temp = execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed);
+	temp = execve_nopipe(num_cmd);
 	if (temp == -1)
 	{
 		printf("fork error\n");
 		g_status = 1 * 256;
 		return (-1);
 	}
-	free_split(one_cmd_splited);
-	free(one_cmd_trimed);
 	return (1);
 }
 

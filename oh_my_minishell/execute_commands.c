@@ -2,9 +2,6 @@
 
 int execute_command(char **split_by_pipes)
 {
-	char *one_cmd;
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int fd[2];
 	int i = 0;
 	int dup_stdin;
