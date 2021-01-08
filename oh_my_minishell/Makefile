@@ -8,7 +8,8 @@ UTILS		= ./libft/ft_memset.c ./libft/ft_bzero.c  ./libft/ft_memcpy.c  ./libft/ft
 				 			./libft/ft_lstnew.c ./libft/ft_lstadd_front.c ./libft/ft_lstsize.c ./libft/ft_lstlast.c ./libft/ft_lstadd_back.c ./libft/ft_lstdelone.c ./libft/ft_lstclear.c ./libft/ft_lstiter.c ./libft/ft_lstmap.c\
 								./gnl/get_next_line.c ./gnl/get_next_line_utils.c
 SRCS		= main.c execute_commands.c get_commands_from_gnl.c print.c utils_jikang.c pipe.c signal.c init_exit.c vector.c\
-				 check_command.c execute_echo.c execute_pwd.c execute_exit.c execute_env.c execute_unset.c execute_export.c execute_cd.c
+				 check_command.c execute_echo.c execute_pwd.c execute_exit.c execute_env.c execute_unset.c execute_export.c execute_cd.c\
+				 	is_execve.c
 OBJS		= $(SRCS:.c=.o)
 OBJS_UTILS	= $(UTILS:.c=.o)
 CC			= gcc

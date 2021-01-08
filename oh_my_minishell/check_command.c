@@ -85,7 +85,8 @@ void check_command(char *argv[], char *envp[])
 	else
 	{
 		if ((path = is_command(argv[0], envp)))
-			execve(path, argv, envp);
+			is_execve(path, argv, envp);
+			// execve(path, argv, envp);
 		else
 		{
 			ft_putstr_fd("bash: ", 1);

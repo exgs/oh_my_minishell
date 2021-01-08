@@ -27,6 +27,7 @@
 # define LS 7
 # define GREP 8
 # define DQMARK 9
+# define CLEAR 10
 
 # define READ 0
 # define WRITE 1
@@ -132,4 +133,8 @@ int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
+//check_command.c
+void check_command(char *argv[], char *envp[]);
+//is_execve.c
+int is_execve(char *path, char **cmd_split, char *envp[]);
 #endif

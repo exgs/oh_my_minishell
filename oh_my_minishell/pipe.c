@@ -39,6 +39,8 @@ int		which_command(char *cmd)
 		return (GREP);
 	if (!ft_strncmp(string_tolower(cmd),"$?",10))
 		return (DQMARK);
+	if (!ft_strncmp(string_tolower(cmd),"clear",10))
+		return (CLEAR);
 	else
 		return (-1);
 }
@@ -76,76 +78,7 @@ int		execve_nopipe(int num_cmd)
 	char **cmd_splited = get_param()->cmd_splited;
 	char *one_cmd_trimed = get_param()->cmd_trimed;
 
-	if (num_cmd == LS)
-	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-		{
-			execve("/bin/ls", cmd_splited, get_param()->envp);
-		}
-		else
-		{
-			waitpid(pid, &g_status, 0);
-		}
-	}
-	/* 이번 시도에서는 문자열로 들어오는 one_cmd_trimed로 구현할 것임 */
-	if (num_cmd == ECHO)
-	{
-		execute_echo(cmd_splited[0], cmd_splited, get_param()->envp);
-	}
-	if (num_cmd == CD) //built-in 함수를 써야함
-	{
-		execute_cd(cmd_splited[0], cmd_splited, get_param()->envp); // g_status 변수 세팅은 함수 안에서 해줘야할것같음 (?)
-		// // printf("CD command\n");
-		// if (chdir(cmd_splited[1]) == -1) /* 실패 시 */
-		// {
-		// 	g_status = 1 * 256;
-		// 	ft_putstr_fd("bash : cd: ", 1);
-		// 	ft_putstr_fd(cmd_splited[1], 1);
-		// 	ft_putendl_fd(": No such file or directory", 1);
-		// }
-		// else /* 성공 시 */
-		// 	g_status = 0;
-	}
-	if (num_cmd == PWD)
-	{
-		execute_pwd(cmd_splited[0], cmd_splited, get_param()->envp);
-	}
-	if (num_cmd == EXPORT)
-	{
-		execute_export(cmd_splited[0], cmd_splited, get_param()->envp);
-	}
-	if (num_cmd == UNSET)
-	{
-		execute_unset(cmd_splited[0], cmd_splited, get_param()->envp);
-	}
-	if (num_cmd == ENV)
-	{
-		execute_env(cmd_splited[0], cmd_splited, get_param()->envp);
-	}
-	if (num_cmd == EXIT) //built-in 함수 써야함
-		execute_exit(cmd_splited[0], cmd_splited, get_param()->envp);
-	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
-	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-		{
-			execve("/usr/bin/grep", cmd_splited, get_param()->envp);
-		}
-		else
-		{
-			waitpid(pid, &g_status, 0);
-		}
-	}
-	if (num_cmd == DQMARK) // $? 일 경우
-	{
-		/* zz 작업 중 zz*/
-		ft_putstr_fd("bash: ", 1);
-		ft_putnbr_fd(g_status / 256, 1);
-		ft_putendl_fd(": command not found", 1);
-	}
+	check_command(cmd_splited, get_param()->envp);
 	return (1);
 }
 
