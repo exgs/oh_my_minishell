@@ -10,6 +10,7 @@
 # include <string.h>
 # include <dirent.h>
 # include <sys/types.h>
+# include <fcntl.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
 # define READ 0
@@ -73,6 +74,8 @@ enum	e_redirect
 int	g_flag[F_END];
 int g_status; // 이걸 256으로 나누면 exit status
 char g_buf[1000];
+int g_dup_stdin;
+int g_dup_stdout;
 typedef struct	s_data {
 	// unsigned char	exit_status;
 	char **cmd_splited;
@@ -129,9 +132,9 @@ void	catch_signals(void);
 // init_exit.c
 void	minishell_init(int argc, char *argv[], char **envp);
 void	minishell_exit(t_list *cmds);
-void	gnl_exit(t_list *cmds);
 void	cmds_exit(t_list *cmd);
 void	cmd_exit();
+void	dup_initalize();
 
 // vector.c
 void	vector_erase(char *arr[], int target);
@@ -152,4 +155,5 @@ int is_execve(char *path, char **cmd_split, char *envp[]);
 //redirection.c
 char	***splited_by_redirect(char **one_cmd_splited, char **array);
 int		parsing_redirect(char *str);
+int		execute_nopipe_redirect();
 #endif

@@ -4,17 +4,19 @@ int execute_command(char **split_by_pipes)
 {
 	int fd[2];
 	int i = 0;
-	int dup_stdin;
-	dup_stdin = dup(STDIN_FILENO);
 
 	if (split_by_pipes[1] == NULL)
 	{
-		execute_command_nopipe(split_by_pipes[0]);
+		if (-1 == (execute_command_nopipe(split_by_pipes[0])))
+		{
+			ft_putstr_fd("Error:execute_command_nopipe\n", 1);
+			return (-1);
+		}
 		return (1);
 	}
 	pipe(fd);
 	execute_command_pipe(split_by_pipes, fd, 0);
-	dup2(dup_stdin, STDIN_FILENO);
+	dup2(g_dup_stdin, STDIN_FILENO);
 	cmd_exit();
 	return (1);
 }

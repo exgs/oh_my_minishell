@@ -73,20 +73,35 @@ char	*which_command2(int num_cmd)
 
 int		execute_command_nopipe(char *one_cmd)
 {
-	int num_cmd;
-	int temp;
+	int i = 0;
 
 	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
 	parsing_redirect(get_param()->cmd_trimed);
 	get_param()->cmd_splited = ft_split(g_buf, ' ');
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
-	// print_3d_split(get_param()->cmd_redirect);
-	// for (size_t i = 0; get_param()->symbol_array[i]; i++)
-	// {
-	// 	printf("%d|", get_param()->symbol_array[i]);
-	// }
-	check_command(get_param()->cmd_splited, get_param()->envp);
+	print_3d_split(get_param()->cmd_redirect);
+	for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
+	{
+		printf("%d|", get_param()->symbol_array[i]);
+	}
+	printf("\n");
+	while (get_param()->symbol_array[i] != 0)
+	{
+		if (get_param()->symbol_array[i] == -1)
+			return (-1);
+		i++;
+	}
+	if (get_param()->symbol_array[0] == 0)
+	{
+		check_command(get_param()->cmd_splited, get_param()->envp);
+		return (1);
+	}
+	else
+	{
+		if (-1 == execute_nopipe_redirect())
+			return (-1);
+	}
 	return (1);
 }
 
