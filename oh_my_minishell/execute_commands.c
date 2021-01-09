@@ -2,9 +2,6 @@
 
 int execute_command(char **split_by_pipes)
 {
-	char *one_cmd;
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int fd[2];
 	int i = 0;
 	int dup_stdin;
@@ -18,21 +15,24 @@ int execute_command(char **split_by_pipes)
 	pipe(fd);
 	execute_command_pipe(split_by_pipes, fd, 0);
 	dup2(dup_stdin, STDIN_FILENO);
+	cmd_exit();
 	return (1);
 }
 
-int execute_multi_commands(t_list *cmd)
+int execute_multi_commands(t_list *cmds)
 {
 	int split_index = 0;
 	char **argv = NULL;
-	while (cmd != NULL)
+	t_list *cur = cmds;
+	while (cur != NULL)
 	{
-		if (-1 == execute_command(cmd->split_by_pipes))
+		if (-1 == execute_command(cur->split_by_pipes))
 		{
 			printf("execute_command error\n");
 		}
-		free_split(cmd->split_by_pipes);
-		cmd = cmd->next;
+		cmd_exit();
+		cur = cur->next;
 	}
+	cmds_exit(cmds);
 	return (1);
 }

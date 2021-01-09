@@ -39,6 +39,8 @@ int		which_command(char *cmd)
 		return (GREP);
 	if (!ft_strncmp(string_tolower(cmd),"$?",10))
 		return (DQMARK);
+	if (!ft_strncmp(string_tolower(cmd),"clear",10))
+		return (CLEAR);
 	else
 		return (-1);
 }
@@ -69,109 +71,37 @@ char	*which_command2(int num_cmd)
 		return 0;
 }
 
-int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
+int		execve_nopipe(int num_cmd)
 {
 	int pid;
 	int i;
+	char **cmd_splited = get_param()->cmd_splited;
+	char *one_cmd_trimed = get_param()->cmd_trimed;
 
-	if (num_cmd == LS)
-	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-		{
-			execve("/bin/ls", argv, get_param()->envp);
-		}
-		else
-		{
-			waitpid(pid, &g_status, 0);
-		}
-	}
-	/* 이번 시도에서는 문자열로 들어오는 one_cmd_trimed로 구현할 것임 */
-	if (num_cmd == ECHO)
-	{
-		execute_echo(one_cmd_trimed);
-	}
-	if (num_cmd == CD) //built-in 함수를 써야함
-	{
-		execute_cd(argv[0], argv, get_param()->envp); // g_status 변수 세팅은 함수 안에서 해줘야할것같음 (?)
-		// // printf("CD command\n");
-		// if (chdir(argv[1]) == -1) /* 실패 시 */
-		// {
-		// 	g_status = 1 * 256;
-		// 	ft_putstr_fd("bash : cd: ", 1);
-		// 	ft_putstr_fd(argv[1], 1);
-		// 	ft_putendl_fd(": No such file or directory", 1);
-		// }
-		// else /* 성공 시 */
-		// 	g_status = 0;
-	}
-	if (num_cmd == PWD)
-	{
-		execute_pwd();
-	}
-	if (num_cmd == EXPORT)
-	{
-		execute_export(argv[0], argv, get_param()->envp);
-	}
-	if (num_cmd == UNSET)
-	{
-		execute_unset(argv[0], argv, get_param()->envp);
-	}
-	if (num_cmd == ENV)
-	{
-		execute_env(argv[0], argv, get_param()->envp);
-	}
-	if (num_cmd == EXIT) //built-in 함수 써야함
-		execute_exit(argv);
-	if (num_cmd == GREP) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
-	{
-		if (-1 == (pid = fork()))
-			return (-1);
-		if (pid == 0)
-		{
-			execve("/usr/bin/grep", argv, get_param()->envp);
-		}
-		else
-		{
-			waitpid(pid, &g_status, 0);
-		}
-	}
-	if (num_cmd == DQMARK) // $? 일 경우
-	{
-		/* zz 작업 중 zz*/
-		ft_putstr_fd("bash: ", 1);
-		ft_putnbr_fd(g_status / 256, 1);
-		ft_putendl_fd(": command not found", 1);
-	}
+	check_command(cmd_splited, get_param()->envp);
 	return (1);
 }
 
 int		execute_command_nopipe(char *one_cmd)
 {
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int num_cmd;
 	int temp;
 
-	one_cmd_trimed = ft_strtrim(one_cmd, " ");
-	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
-
-	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
+	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
+	get_param()->cmd_splited = ft_split(get_param()->cmd_trimed, ' ');;
+	if (-1 == (num_cmd = which_command(get_param()->cmd_splited[0])))
 	{
-		printf("command not found: %s\n", one_cmd_splited[0]);
+		printf("command not found: %s\n", get_param()->cmd_splited[0]);
 		g_status = 127 * 256;
 		return (-1);
 	}
-	temp = execve_nopipe(num_cmd, one_cmd_splited, one_cmd_trimed);
+	temp = execve_nopipe(num_cmd);
 	if (temp == -1)
 	{
 		printf("fork error\n");
 		g_status = 1 * 256;
 		return (-1);
 	}
-	free_split(one_cmd_splited);
-	free(one_cmd_trimed);
 	return (1);
 }
 
@@ -187,13 +117,7 @@ void	child_process(char **one_cmd_splited, int *fd)
 		close(fd[0]);
 	if (fd[1] != 1)
 		close(fd[1]);
-	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
-	{
-		printf("command not found: %s\n", one_cmd_splited[0]);
-		return ;
-	}
-	path = which_command2(num_cmd);
-	execve(path, one_cmd_splited, get_param()->envp);
+	check_command(one_cmd_splited, get_param()->envp);
 	exit(0);
 }
 
@@ -214,25 +138,22 @@ void	parent_process(char **split_by_pipes, int *fd, int i)
 int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 {
 	char *one_cmd;
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int num_cmd;
 	int temp;
 	pid_t pid;
 
 	one_cmd = split_by_pipes[i];
-	one_cmd_trimed = ft_strtrim(one_cmd, " ");
-	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
+	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
+	get_param()->cmd_splited = ft_split(get_param()->cmd_trimed, ' ');
 	pid = fork();
 	if (pid == 0)
-		child_process(one_cmd_splited, fd);
+		child_process(get_param()->cmd_splited, fd);
 	else
 	{
 		waitpid(pid, &g_status, 0);
 		if (split_by_pipes[i+1])
 			parent_process(split_by_pipes, fd, i+1);
 	}
-	free_split(one_cmd_splited);
-	free(one_cmd_trimed);
+	cmd_exit();
 	return (1);
 }
