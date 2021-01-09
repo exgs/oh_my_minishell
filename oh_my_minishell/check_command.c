@@ -57,19 +57,19 @@ static char			*is_command(char command[], char *envp[])
 // 빌트인에 있으면 함수포인터를 리턴함
 static t_builtin	is_builtin(char command[])
 {
-	if (ft_strncmp(command, "echo", 5) == '\0')
+	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
-	else if (ft_strncmp(command, "cd", 3) == '\0')
+	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')
 		return (execute_cd);
-	else if (ft_strncmp(command, "pwd", 4) == '\0')
+	else if (ft_strncmp(string_tolower(command), "pwd", 4) == '\0')
 		return (execute_pwd);
-	else if (ft_strncmp(command, "export", 7) == '\0')
+	else if (ft_strncmp(string_tolower(command), "export", 7) == '\0')
 		return (execute_export);
-	else if (ft_strncmp(command, "unset", 6) == '\0')
+	else if (ft_strncmp(string_tolower(command), "unset", 6) == '\0')
 		return (execute_unset);
-	else if (ft_strncmp(command, "env", 4) == '\0')
+	else if (ft_strncmp(string_tolower(command), "env", 4) == '\0')
 		return (execute_env);
-	else if (ft_strncmp(command, "exit", 5) == '\0')
+	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
 	return (NULL);
 }
@@ -89,9 +89,10 @@ void check_command(char *argv[], char *envp[])
 			// execve(path, argv, envp);
 		else
 		{
-			ft_putstr_fd("bash: ", 1);
+			ft_putstr_fd("minishell: ", 1);
 			ft_putstr_fd(argv[0], 1);
 			ft_putendl_fd(": command not found", 1);
+			g_status = 127 * 256;
 		}
 		free(path);
 	}

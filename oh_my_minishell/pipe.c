@@ -71,36 +71,36 @@ char	*which_command2(int num_cmd)
 		return 0;
 }
 
-int		execve_nopipe(int num_cmd)
-{
-	int pid;
-	int i;
-	char **cmd_splited = get_param()->cmd_splited;
-	char *one_cmd_trimed = get_param()->cmd_trimed;
-
-	check_command(cmd_splited, get_param()->envp);
-	return (1);
-}
-
 int		execute_command_nopipe(char *one_cmd)
 {
-	int num_cmd;
-	int temp;
+	int i = 0;
 
 	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
-	get_param()->cmd_splited = ft_split(get_param()->cmd_trimed, ' ');;
-	if (-1 == (num_cmd = which_command(get_param()->cmd_splited[0])))
+	parsing_redirect(get_param()->cmd_trimed);
+	get_param()->cmd_splited = ft_split(g_buf, ' ');
+	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
+												&get_param()->symbol_array);
+	print_3d_split(get_param()->cmd_redirect);
+	for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
 	{
-		printf("command not found: %s\n", get_param()->cmd_splited[0]);
-		g_status = 127 * 256;
-		return (-1);
+		printf("%d|", get_param()->symbol_array[i]);
 	}
-	temp = execve_nopipe(num_cmd);
-	if (temp == -1)
+	printf("\n");
+	while (get_param()->symbol_array[i] != 0)
 	{
-		printf("fork error\n");
-		g_status = 1 * 256;
-		return (-1);
+		if (get_param()->symbol_array[i] == -1)
+			return (-1);
+		i++;
+	}
+	if (get_param()->symbol_array[0] == 0)
+	{
+		check_command(get_param()->cmd_splited, get_param()->envp);
+		return (1);
+	}
+	else
+	{
+		if (-1 == execute_nopipe_redirect())
+			return (-1);
 	}
 	return (1);
 }
