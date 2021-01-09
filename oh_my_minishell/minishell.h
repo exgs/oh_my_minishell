@@ -61,6 +61,13 @@ enum	e_flag
 	F_END
 };
 
+enum	e_redirect
+{
+	LEFT = 1,
+	RIGHT,
+	D_RIGHT,
+	R_END
+};
 
 int	g_flag[F_END];
 int g_status; // 이걸 256으로 나누면 exit status
@@ -68,6 +75,8 @@ typedef struct	s_data {
 	// unsigned char	exit_status;
 	char **cmd_splited;
 	char *cmd_trimed;
+	char ***cmd_redirect;
+	char *symbol_array;
 	char **envp;
 }				t_data;
 
@@ -80,10 +89,12 @@ void	del(void *content);
 char	*string_tolower(char *str);
 void	get_commands_from_gnl(t_list **cmd, char *line);
 
-//print.c
+//print_free.c
 void	print_cmd_list(t_list *cmd);
 void	free_split(char **argv);
 void	print_split(char **split);
+void	free_3d_split(char ***argv);
+void	print_3d_split(char ***argv);
 
 //execute_commands.c
 int		execute_multi_commands(t_list *cmd);
@@ -137,4 +148,6 @@ int		execute_cd(const char *path, char *const argv[], char *const envp[]);
 void check_command(char *argv[], char *envp[]);
 //is_execve.c
 int is_execve(char *path, char **cmd_split, char *envp[]);
+//redirection.c
+char	***splited_by_redirect(char **one_cmd_splited, char **array);
 #endif

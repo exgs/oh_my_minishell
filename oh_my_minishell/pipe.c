@@ -75,10 +75,9 @@ int		execve_nopipe(int num_cmd)
 {
 	int pid;
 	int i;
-	char **cmd_splited = get_param()->cmd_splited;
-	char *one_cmd_trimed = get_param()->cmd_trimed;
+	
 
-	check_command(cmd_splited, get_param()->envp);
+	check_command(get_param()->cmd_splited, get_param()->envp);
 	return (1);
 }
 
