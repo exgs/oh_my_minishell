@@ -52,12 +52,14 @@ char		*ft_strsep(char **command, const char *delim)
 
 void get_commands_from_gnl(t_list **cmd, char *line)
 {
+	char *refined_line;
 	char *substr;
 	t_list *new;
 
+	refined_line = refine_line(line);
 	while (TRUE)
 	{
-		substr = ft_strsep(&line, ";");
+		substr = ft_strsep(&refined_line, ";");
 		if (substr == NULL)
 			break ;
 		if (ft_strlen(substr) == 0)

@@ -23,7 +23,10 @@ static void	change_dir(char *path, char *envp[])
 
 	tmp = ft_strdup(path);
 	if (chdir(path) == -1)
+	{
 		ft_putendl_fd(strerror(errno), 2);
+		g_status = 1 * 256;
+	}
 	else
 	{
 		oldpwd = ft_strjoin("OLDPWD=", get_path(envp, "PWD"));
@@ -37,6 +40,7 @@ static void	change_dir(char *path, char *envp[])
 		free(tmp);
 		free(pwd);
 		free(oldpwd);
+		g_status = 0;
 	}
 }
 

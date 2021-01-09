@@ -33,6 +33,8 @@
 # define WRONLY 1
 # define RDWR 2
 
+# define BUFF_MAX 1000
+
 enum	e_quotes
 {
 	Q_E = -3,
@@ -61,6 +63,14 @@ enum	e_flag
 
 int	g_flag[F_END];
 int g_status; // 이걸 256으로 나누면 exit status
+
+typedef struct	s_var
+{
+	int	i;
+	int k;
+	int flag_bq; // 큰 따옴표
+}				t_var;
+
 typedef struct	s_data {
 	// unsigned char	exit_status;
 	char **envp;
@@ -93,6 +103,7 @@ void execute_exit(char **argv);
 //utils_jikang.c
 t_data	*get_param();
 int		ft_is_whitespace(char c);
+void	init_array(char *buff);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
@@ -121,4 +132,13 @@ int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
+
+// refine_line_a.c
+char	*refine_line(char *line);
+
+// refine_line_b.c
+int		refining_factory(char *buff, char *line, t_var *v, char **envlist);
+
+// refine_line_c.c
+int		convert_env(char *buff, char *line, t_var *v, char **envlist);
 #endif

@@ -95,16 +95,6 @@ int		execve_nopipe(int num_cmd, char **argv, char *one_cmd_trimed)
 	if (num_cmd == CD) //built-in 함수를 써야함
 	{
 		execute_cd(argv[0], argv, get_param()->envp); // g_status 변수 세팅은 함수 안에서 해줘야할것같음 (?)
-		// // printf("CD command\n");
-		// if (chdir(argv[1]) == -1) /* 실패 시 */
-		// {
-		// 	g_status = 1 * 256;
-		// 	ft_putstr_fd("bash : cd: ", 1);
-		// 	ft_putstr_fd(argv[1], 1);
-		// 	ft_putendl_fd(": No such file or directory", 1);
-		// }
-		// else /* 성공 시 */
-		// 	g_status = 0;
 	}
 	if (num_cmd == PWD)
 	{
@@ -156,7 +146,9 @@ int		execute_command_nopipe(char *one_cmd)
 
 	one_cmd_trimed = ft_strtrim(one_cmd, " ");
 	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
-
+	// ft_putendl_fd("여기가 onecmdtrimed", 1);
+	// ft_putendl_fd(one_cmd_trimed, 1);
+	// ft_putendl_fd("----------------", 1);
 	if (-1 == (num_cmd = which_command(one_cmd_splited[0])))
 	{
 		printf("command not found: %s\n", one_cmd_splited[0]);
