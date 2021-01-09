@@ -2,12 +2,16 @@
 
 static int		is_redirect(char *str)
 {
-	if (!strncmp(str, ">>", 3))
-		return (D_RIGHT);
-	else if (!strncmp(str, ">", 2))
-		return (RIGHT);
-	else if (!strncmp(str, "<", 2))
-		return (LEFT);
+	if (str[0] == '>' || str[0] == '<')
+	{
+		if (!ft_strncmp(str, ">>", 3))
+			return (D_RIGHT);
+		else if (!ft_strncmp(str, ">", 2))
+			return (RIGHT);
+		else if (!ft_strncmp(str, "<", 2))
+			return (LEFT);
+		return (ERROR);
+	}
 	return (FALSE);
 }
 
@@ -50,6 +54,8 @@ char	***splited_by_redirect(char **one_cmd_splited, char **array)
 				symbol_array[z++] = RIGHT;
 			else if (is_redirect(split[i]) == D_RIGHT)
 				symbol_array[z++] = D_RIGHT;
+			else
+				symbol_array[z++] = ERROR;
 			divid[cnt] = malloc(sizeof(char *) * (i - before + 1));
 			int j = 0;
 			while (before < i)
@@ -81,4 +87,37 @@ char	***splited_by_redirect(char **one_cmd_splited, char **array)
 	symbol_array[redir_num] = 0;
 	*array = symbol_array;
 	return (divid);
+}
+
+int parsing_redirect(char *str)
+{
+	int i, k;
+	k = 0;
+	while (k < 1000)
+		g_buf[k++] = 0;
+	i = 0; k = 0;
+	while (str[i] != '\0')
+	{
+		g_buf[k] = str[i];
+		k++;
+		if ((str[i] == '<' || str[i] == '>') && (str[i+1] == '<' || str[i+1] == '>'))
+		{
+			i++;
+			continue;
+		}
+		else if((str[i] == '<' || str[i] == '>') && (str[i+1] != '>' && str[i+1] != '<'))
+		{
+			g_buf[k] = ' ';
+			k++;
+		}
+		else if((str[i] != '<' && str[i] != '>') && (str[i+1] == '>' || str[i+1] == '<'))
+		{
+			g_buf[k] = ' ';
+			k++;
+		}
+		i++;
+	}
+	printf("str  is :%s\n", str);
+	printf("buf is :%s\n", g_buf);
+	return (1);
 }

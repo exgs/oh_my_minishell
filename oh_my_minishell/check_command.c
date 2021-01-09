@@ -92,6 +92,7 @@ void check_command(char *argv[], char *envp[])
 			ft_putstr_fd("minishell: ", 1);
 			ft_putstr_fd(argv[0], 1);
 			ft_putendl_fd(": command not found", 1);
+			g_status = 127 * 256;
 		}
 		free(path);
 	}

@@ -14,6 +14,7 @@
 # include "./gnl/get_next_line.h"
 # define READ 0
 # define WRTIE 1
+# define ERROR -1
 # define FALSE 0
 # define TRUE 1
 
@@ -71,6 +72,7 @@ enum	e_redirect
 
 int	g_flag[F_END];
 int g_status; // 이걸 256으로 나누면 exit status
+char g_buf[1000];
 typedef struct	s_data {
 	// unsigned char	exit_status;
 	char **cmd_splited;
@@ -119,7 +121,6 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
 char	*which_command2(int num_cmd);
-int		execve_nopipe(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
 
@@ -150,4 +151,5 @@ void check_command(char *argv[], char *envp[]);
 int is_execve(char *path, char **cmd_split, char *envp[]);
 //redirection.c
 char	***splited_by_redirect(char **one_cmd_splited, char **array);
+int		parsing_redirect(char *str);
 #endif

@@ -30,6 +30,9 @@ $(LIBRARY)	: $(OBJS_UTILS)
 debug :
 	gcc -g ./gnl/*.c ./libft/*.c \
 		$(SRCS)
+fsan :
+	gcc -g3 -fsanitize=address ./gnl/*.c ./libft/*.c \
+		$(SRCS)	
 all	: $(NAME)
 clean :
 	rm -rf $(OBJS)
