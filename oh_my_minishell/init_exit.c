@@ -4,6 +4,7 @@
 void	minishell_init(int argc, char **argv, char **envp)
 {
 	ft_memset(g_flag, 0, sizeof(int) * F_END);
+	ft_memset(g_buf, 0, sizeof(char) * 1000);
 	g_dup_stdin = dup(STDIN_FILENO);
 	g_dup_stdout = dup(STDOUT_FILENO);
 	get_param()->cmd_trimed = NULL;
@@ -30,9 +31,13 @@ void	minishell_exit(t_list *cmds)
 	if (data->symbol_array != NULL)
 		free(data->symbol_array);
 	data->symbol_array = NULL;
-	if (cmds->split_by_pipes != NULL)
-		free_split(cmds->split_by_pipes);
-	cmds->split_by_pipes = NULL;
+	while (cmds != NULL)
+	{
+		if (cmds->split_by_pipes != NULL)
+			vector_clear(cmds->split_by_pipes);
+		cmds->split_by_pipes = NULL;
+		cmds = cmds->next;
+	}
 	vector_clear(data->envp);
 	close(g_dup_stdout);
 	close(g_dup_stdin);
@@ -54,9 +59,13 @@ void	cmds_exit(t_list *cmds)
 	if (data->symbol_array != NULL)
 		free(data->symbol_array);
 	data->symbol_array = NULL;
-	if (cmds->split_by_pipes != NULL)
-		free_split(cmds->split_by_pipes);
-	cmds->split_by_pipes = NULL;
+	while (cmds != NULL)
+	{
+		if (cmds->split_by_pipes != NULL)
+			vector_clear(cmds->split_by_pipes);
+		cmds->split_by_pipes = NULL;
+		cmds = cmds->next;
+	}
 }
 
 void	cmd_exit()
