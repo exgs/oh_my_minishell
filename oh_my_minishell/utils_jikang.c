@@ -11,3 +11,14 @@ int	ft_is_whitespace(char c)
 	return (c == ' ' || c == '\t' || c == '\v' || c == '\f'
 			|| c == '\n' || c == '\r');
 }
+
+void init_array(char *buff)
+{
+	int n;
+
+	n = 0;
+	while (n < BUFF_MAX)
+	{
+		buff[n++] = 0;
+	}
+}
