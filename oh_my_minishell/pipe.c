@@ -82,12 +82,12 @@ int		execute_command_nopipe(char *one_cmd)
 	get_param()->cmd_splited = ft_split(g_buf, ' ');
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
-	print_3d_split(get_param()->cmd_redirect);
-	for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
-	{
-		printf("%d|", get_param()->symbol_array[i]);
-	}
-	printf("\n");
+	// print_3d_split(get_param()->cmd_redirect);
+	// for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
+	// {
+	// 	printf("%d|", get_param()->symbol_array[i]);
+	// }
+	// printf("\n");
 	while (get_param()->symbol_array[i] != 0)
 	{
 		if (get_param()->symbol_array[i] == -1)
@@ -107,6 +107,27 @@ int		execute_command_nopipe(char *one_cmd)
 	return (1);
 }
 
+int need_redirection()
+{
+	int i;
+
+	i = 0;
+	while (get_param()->symbol_array[i] != 0)
+	{
+		if (get_param()->symbol_array[i] == -1)
+			return (ERROR);
+		i++;
+	}
+	if (get_param()->symbol_array[0] == 0)
+	{
+		return (FALSE);
+	}
+	else
+	{
+		return (TRUE);
+	}
+}
+
 void	child_process(char **one_cmd_splited, int *fd)
 {
 	int	i;
@@ -119,6 +140,13 @@ void	child_process(char **one_cmd_splited, int *fd)
 		close(fd[0]);
 	if (fd[1] != 1)
 		close(fd[1]);
+	if (need_redirection() == ERROR)
+		exit(0);
+	else if (need_redirection() == TRUE)
+	{
+		execute_nopipe_redirect();
+		exit(0);
+	}
 	check_command(one_cmd_splited, get_param()->envp);
 	exit(0);
 }
@@ -140,32 +168,29 @@ void	parent_process(char **split_by_pipes, int *fd, int i)
 int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 {
 	char *one_cmd;
-	char *one_cmd_trimed;
-	char **one_cmd_splited;
 	int num_cmd;
-
-	int temp;
 	pid_t pid;
 
 	one_cmd = split_by_pipes[i];
-	one_cmd_trimed = ft_strtrim(one_cmd, " ");
-	one_cmd_splited = ft_split(one_cmd_trimed, ' ');
-	// get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
-	// get_param()->cmd_splited = ft_split(get_param()->cmd_trimed, ' ');
+	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
+	parsing_redirect(get_param()->cmd_trimed);
+ 	get_param()->cmd_splited = ft_split(g_buf, ' ');
+	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
+											&get_param()->symbol_array);
 	pid = fork();
 	if (pid == 0)
-		// child_process(get_param()->cmd_splited, fd);
-		child_process(one_cmd_splited, fd);
+	{
+		child_process(get_param()->cmd_splited, fd);
+	}
 	else
 	{
 		waitpid(pid, &g_status, 0);
 		if (split_by_pipes[i+1])
+		{
+			cmd_exit();
 			parent_process(split_by_pipes, fd, i+1);
+		}
 	}
-	if (one_cmd_trimed != NULL)
-		free(one_cmd_trimed);
-	if (one_cmd_splited != NULL)
-		free_split(one_cmd_splited);
 	cmd_exit();
 	return (1);
 }
