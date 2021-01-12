@@ -11,6 +11,7 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
 # define READ 0
@@ -19,6 +20,7 @@
 # define FALSE 0
 # define TRUE 1
 
+/* ECHO, GREP, CLEAR 제외 안쓰임 */
 # define ECHO 0
 # define CD 1
 # define PWD 2
@@ -28,7 +30,6 @@
 # define EXIT 6
 # define LS 7
 # define GREP 8
-# define DQMARK 9
 # define CLEAR 10
 
 # define READ 0
@@ -79,6 +80,26 @@ char g_buf[1000];
 int g_dup_stdin;
 int g_dup_stdout;
 
+
+
+// struct stat {
+//     dev_t     st_dev;     /* ID of device containing file */
+//     ino_t     st_ino;     /* inode number */
+//     mode_t    st_mode;    /* protection */
+//     nlink_t   st_nlink;   /* number of hard links */
+//     uid_t     st_uid;     /* user ID of owner */
+//     gid_t     st_gid;     /* group ID of owner */
+//     dev_t     st_rdev;    /* device ID (if special file) */
+//     off_t     st_size;    /* total size, in bytes */
+//     blksize_t st_blksize; /* blocksize for file system I/O */
+//     blkcnt_t  st_blocks;  /* number of 512B blocks allocated */
+//     time_t    st_atime;   /* time of last access */
+//     time_t    st_mtime;   /* time of last modification */
+//     time_t    st_ctime;   /* time of last status change */
+// };
+
+
+
 typedef struct	s_var
 {
 	int	i;
@@ -125,6 +146,9 @@ int execute_pwd(const char *path, char *const argv[], char *const envp[]);
 //execute_exit.c
 int execute_exit(const char *path, char *const argv[], char *const envp[]);
 
+//execute_is_dir_file
+int			execute_is_dir_file(const char *path, char *const argv[], char *const envp[]);
+
 //utils_jikang.c
 t_data	*get_param();
 int		ft_is_whitespace(char c);
@@ -135,7 +159,7 @@ int		execute_command_nopipe(char *one_cmd);
 int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
-char	*which_command2(int num_cmd);
+// char	*which_command2(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
 int		need_redirection();
