@@ -22,7 +22,6 @@ int main(int argc, char *argv[], char **envp)
 			g_flag[CTRL_D] = 1;
 		}
 		get_commands_from_gnl(&cmds, line);
-		// print_cmd_list(cmds); // linked list에 들어가있는 값을 '확인차' 출력해봄
 		execute_multi_commands(cmds);
 		free(line);
 		ft_lstclear(&cmds, NULL);

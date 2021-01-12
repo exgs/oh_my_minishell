@@ -7,9 +7,9 @@ static char			*get_path(char *arr, char command[])
     struct dirent	*file;
 	char			*ret[3];
 
-	if(!(dir_ptr = opendir(arr))) 
+	if(!(dir_ptr = opendir(arr)))
 		return (NULL);
-	while((file = readdir(dir_ptr))) 
+	while((file = readdir(dir_ptr)))
 	{
 		if (ft_strncmp(file->d_name, ".", 2) == '\0' ||
 			ft_strncmp(file->d_name, "..", 3) == '\0')
@@ -17,13 +17,13 @@ static char			*get_path(char *arr, char command[])
 		if (ft_strncmp(file->d_name, command, ft_strlen(command) + 1) == '\0')
 		{
 			ret[0] = ft_strdup(arr);
-			ret[1] = ft_strjoin("/", file->d_name); 
+			ret[1] = ft_strjoin("/", file->d_name);
 			ret[2] = ft_strjoin(ret[0], ret[1]);
 //			printf(" ret[2] : %s\n", ret[2]);
 			free(ret[0]);
 			free(ret[1]);
 			closedir(dir_ptr);
-			return (ret[2]); // close 안된거 
+			return (ret[2]); // close 안된거
 		}
 	}
 	closedir(dir_ptr);
@@ -71,6 +71,8 @@ static t_builtin	is_builtin(char command[])
 		return (execute_env);
 	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
+	else if (ft_strncmp(string_tolower(command), "$?", 3) == '\0')
+		return (execute_dqmark);
 	return (NULL);
 }
 

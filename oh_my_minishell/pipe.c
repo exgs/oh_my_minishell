@@ -41,6 +41,8 @@ int		which_command(char *cmd)
 		return (DQMARK);
 	if (!ft_strncmp(string_tolower(cmd),"clear",10))
 		return (CLEAR);
+	if (!ft_strncmp(string_tolower(cmd),"$?",10))
+		return (DQMARK);
 	else
 		return (-1);
 }
@@ -141,7 +143,7 @@ int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
 	char *one_cmd_trimed;
 	char **one_cmd_splited;
 	int num_cmd;
-	
+
 	int temp;
 	pid_t pid;
 
