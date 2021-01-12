@@ -69,13 +69,13 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	init_array(temp);
 	(v->i)++;
 	j = 0;
-	while (line[v->i] != ' ' && line[v->i] != '\0' && line[v->i] != '"' && line[v->i] != '\'' && line[v->i] != '$')
+	while (line[v->i] != ' ' && line[v->i] != '\0' && line[v->i] != '"' && line[v->i] != '\'' && line[v->i] != '$' && line[v->i] != '/' && line[v->i] != '.')
 	{
 		temp[j] = line[v->i];
 		(v->i)++;
 		j++;
 	}
-	if (line[v->i] == '\'' || line[v->i] == '$')
+	if (line[v->i] == '\'' || line[v->i] == '$' || line[v->i] == '/')
 		(v->i)--;
 	// ft_putendl_fd(temp, 1);
 	/* 이제 temp에 환경 변수와 비교할 문자열이 들어감. */
