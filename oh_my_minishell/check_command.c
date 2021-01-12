@@ -73,10 +73,12 @@ static t_builtin	is_builtin(char command[])
 		return (execute_exit);
 	else if (ft_strncmp(string_tolower(command), "$?", 3) == '\0')
 		return (execute_dqmark);
+	else if (ft_strncmp(string_tolower(command), "/", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
+		return (execute_is_dir_file);
 	return (NULL);
 }
 
-// 커맨드가 빌트인인지 아닌지 확인해줌
+// 커맨드가 빌트인인지 아닌지 확인해줌, argv[]는 cmd_splited
 void check_command(char *argv[], char *envp[])
 {
 	t_builtin	f;

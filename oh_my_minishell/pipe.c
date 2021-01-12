@@ -19,59 +19,55 @@ int		which_command(char *cmd)
 {
 	if (cmd == NULL)
 		return (-1);
-	if (!ft_strncmp(string_tolower(cmd),"echo",10))
-		return (ECHO);
-	if (!ft_strncmp(string_tolower(cmd),"cd",10))
-		return (CD);
-	if (!ft_strncmp(string_tolower(cmd),"pwd",10))
-		return (PWD);
-	if (!ft_strncmp(string_tolower(cmd),"export",10))
-		return (EXPORT);
-	if (!ft_strncmp(string_tolower(cmd),"unset",10))
-		return (UNSET);
-	if (!ft_strncmp(string_tolower(cmd),"env",10))
-		return (ENV);
-	if (!ft_strncmp(string_tolower(cmd),"exit",10))
-		return (EXIT);
+	// if (!ft_strncmp(string_tolower(cmd),"echo",10))
+	// 	return (ECHO);
+	// if (!ft_strncmp(string_tolower(cmd),"cd",10))
+	// 	return (CD);
+	// if (!ft_strncmp(string_tolower(cmd),"pwd",10))
+	// 	return (PWD);
+	// if (!ft_strncmp(string_tolower(cmd),"export",10))
+	// 	return (EXPORT);
+	// if (!ft_strncmp(string_tolower(cmd),"unset",10))
+	// 	return (UNSET);
+	// if (!ft_strncmp(string_tolower(cmd),"env",10))
+	// 	return (ENV);
+	// if (!ft_strncmp(string_tolower(cmd),"exit",10))
+	// 	return (EXIT);
 	if (!ft_strncmp(string_tolower(cmd),"ls",10))
 		return (LS);
 	if (!ft_strncmp(string_tolower(cmd),"grep",10))
 		return (GREP);
-	if (!ft_strncmp(string_tolower(cmd),"$?",10))
-		return (DQMARK);
 	if (!ft_strncmp(string_tolower(cmd),"clear",10))
 		return (CLEAR);
-	if (!ft_strncmp(string_tolower(cmd),"$?",10))
-		return (DQMARK);
 	else
 		return (-1);
 }
 
-char	*which_command2(int num_cmd)
-{
-	if (num_cmd == -1)
-		return ("/bin/ls");
-	if (num_cmd == 0)
-		return ("/bin/echo");
-	if (num_cmd == 1)
-		return ("/bin/cd");
-	if (num_cmd == 2)
-		return ("/bin/pwd");
-	if (num_cmd == 3)
-		return ("/bin/export");
-	if (num_cmd == 4)
-		return ("/bin/unset");
-	if (num_cmd == 5)
-		return ("/bin/env");
-	if (num_cmd == 6)
-		return ("/bin/exit");
-	if (num_cmd == 7)
-		return ("/bin/ls");
-	if (num_cmd == 8)
-		return ("/usr/bin/grep");
-	else
-		return 0;
-}
+// char	*which_command2(int num_cmd)
+// {
+// 	if (num_cmd == -1)
+// 		return ("/bin/ls");
+// 	if (num_cmd == 0)
+// 		return ("/bin/echo");
+// 	if (num_cmd == 1)
+// 		return ("/bin/cd");
+// 	if (num_cmd == 2)
+// 		return ("/bin/pwd");
+// 	if (num_cmd == 3)
+// 		return ("/bin/export");
+// 	if (num_cmd == 4)
+// 		return ("/bin/unset");
+// 	if (num_cmd == 5)
+// 		return ("/bin/env");
+// 	if (num_cmd == 6)
+// 		return ("/bin/exit");
+// 	if (num_cmd == 7)
+// 		return ("/bin/ls");
+// 	if (num_cmd == 8)
+// 		return ("/usr/bin/grep");
+// 	else
+// 		return 0;
+// }
 
 int		execute_command_nopipe(char *one_cmd)
 {
