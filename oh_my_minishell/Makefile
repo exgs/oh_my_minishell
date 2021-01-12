@@ -9,7 +9,7 @@ UTILS		= ./libft/ft_memset.c ./libft/ft_bzero.c  ./libft/ft_memcpy.c  ./libft/ft
 								./gnl/get_next_line.c ./gnl/get_next_line_utils.c
 SRCS		= main.c execute_commands.c get_commands_from_gnl.c print_free.c utils_jikang.c pipe.c signal.c init_exit.c vector.c\
 				 check_command.c execute_echo.c execute_pwd.c execute_exit.c execute_env.c execute_unset.c execute_export.c execute_cd.c\
-				 	is_execve.c redirection.c
+				 	is_execve.c redirection.c refine_line_a.c refine_line_b.c refine_line_c.c
 OBJS		= $(SRCS:.c=.o)
 OBJS_UTILS	= $(UTILS:.c=.o)
 CC			= gcc
@@ -32,7 +32,7 @@ debug :
 		$(SRCS)
 fsan :
 	gcc -g3 -fsanitize=address ./gnl/*.c ./libft/*.c \
-		$(SRCS)	
+		$(SRCS)
 all	: $(NAME)
 clean :
 	rm -rf $(OBJS)

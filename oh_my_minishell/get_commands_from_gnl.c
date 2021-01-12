@@ -53,18 +53,22 @@ char		*ft_strsep(char **command, const char *delim)
 void get_commands_from_gnl(t_list **cmd, char *line)
 {
 	char *substr;
+	char *refined_line;
+	char *temp;
 	t_list *new;
 
+	refined_line = refine_line(line);
+	temp = refined_line;
 	while (TRUE)
 	{
-		substr = ft_strsep(&line, ";");
+		substr = ft_strsep(&refined_line, ";");
 		if (substr == NULL)
 			break ;
 		if (ft_strlen(substr) == 0)
 			continue ;
 		new = ft_lstnew(substr);
 		new->split_by_pipes = ft_split(substr, '|');
-		// print_split(new->split); // 이중포인터인 split에 무엇이 담겼나 확인하는 디버깅
 		ft_lstadd_back(cmd, new);
 	}
+	free(temp);
 }
