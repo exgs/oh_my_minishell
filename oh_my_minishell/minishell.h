@@ -126,6 +126,7 @@ int		which_command(char *cmd);
 char	*which_command2(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
+int		need_redirection();
 
 // signal.c
 void	catch_signals(void);
