@@ -160,6 +160,7 @@ int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
+int		execute_dqmark(const char *path, char *const argv[], char *const envp[]);
 //check_command.c
 void check_command(char *argv[], char *envp[]);
 //is_execve.c
