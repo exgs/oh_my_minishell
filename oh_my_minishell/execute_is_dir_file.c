@@ -48,7 +48,7 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 	struct stat sb;
 
 	/* /user/bin/env 하면 환경변수 리스트 출력된다. */
-	if (ft_strncmp(path, "/usr/bin/env", 12) == '\0')
+	if (ft_strncmp(path, "/usr/bin/env", 13) == '\0')
 	{
 		return(execute_env(path, argv, envp));
 	}
