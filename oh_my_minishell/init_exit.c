@@ -12,6 +12,7 @@ void	minishell_init(int argc, char **argv, char **envp)
 	get_param()->cmd_redirect = NULL;
 	get_param()->symbol_array = NULL;
 	get_param()->envp = vector_dup(envp);
+	init_array_int(get_param()->semi_arr);
 	catch_signals();
 }
 

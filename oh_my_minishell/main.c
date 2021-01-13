@@ -6,7 +6,7 @@ int main(int argc, char *argv[], char **envp)
 	t_list *cmds = NULL;
 	char *line;
 
-	minishell_init(argc, argv, envp);
+	minishell_init(argc, argv, envp); // <-- semi_arr 가 초기화
 	catch_signals();
 	g_status = 0; // $? 의 코드
 	while (TRUE)

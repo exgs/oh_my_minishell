@@ -104,6 +104,7 @@ typedef struct	s_var
 {
 	int	i;
 	int k;
+	int l;
 	int flag_bq; // 큰 따옴표
 }				t_var;
 
@@ -115,6 +116,7 @@ typedef struct	s_data {
 	char ***cmd_redirect;
 	char *symbol_array;
 	char **envp;
+	int semi_arr[BUFF_MAX];
 }				t_data;
 
 //builtin함수의 prototype 다 맞춰야 check_command 조건문 사용가능
@@ -153,6 +155,7 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 t_data	*get_param();
 int		ft_is_whitespace(char c);
 void	init_array(char *buff);
+void	init_array_int(int *buff);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
