@@ -31,6 +31,7 @@
 # define LS 7
 # define GREP 8
 # define CLEAR 10
+# define CAT 11
 
 # define READ 0
 # define WRITE 1

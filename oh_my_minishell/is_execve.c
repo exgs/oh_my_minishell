@@ -33,7 +33,20 @@ int is_execve(char *path, char **cmd_splited, char *envp[])
 			waitpid(pid, &g_status, 0);
 		}
 	}
-	if (num_cmd == CLEAR) // Grep을 단독으로 썼을 떄에 대해서는 따로 구별해야할 듯
+	if (num_cmd == CLEAR)
+	{
+		if (-1 == (pid = fork()))
+			return (-1);
+		if (pid == 0)
+		{
+			execve(path, cmd_splited, get_param()->envp);
+		}
+		else
+		{
+			waitpid(pid, &g_status, 0);
+		}
+	}
+	if (num_cmd == CAT)
 	{
 		if (-1 == (pid = fork()))
 			return (-1);

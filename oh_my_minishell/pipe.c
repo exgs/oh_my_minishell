@@ -45,6 +45,10 @@ int		which_command(char *cmd)
 		return (CLEAR);
 	if (!ft_strncmp(string_tolower(cmd),"/usr/bin/clear",15))
 		return (CLEAR);
+	if (!ft_strncmp(string_tolower(cmd),"cat",10))
+		return (CAT);
+	if (!ft_strncmp(string_tolower(cmd),"/bin/cat",15))
+		return (CAT);
 	else
 		return (-1);
 }
