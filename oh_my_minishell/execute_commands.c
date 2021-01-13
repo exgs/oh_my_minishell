@@ -1,10 +1,26 @@
 #include "minishell.h"
 
+static void error_except()
+{
+	if (g_except[SYNTAX] != 0)
+	{
+		ft_putstr_fd("minishell: parse error near '", 1);
+		ft_putchar_fd(g_except[SYNTAX], 1);
+		ft_putstr_fd("'\n", 1);
+	}
+	g_except[SYNTAX] = 0;
+}
+
 int execute_command(char **split_by_pipes)
 {
 	int fd[2];
 	int i = 0;
 
+	if (split_by_pipes[0] == NULL)
+	{
+		g_except[SYNTAX] = '|';
+		return (-1);
+	}
 	if (split_by_pipes[1] == NULL)
 	{
 		if (-1 == (execute_command_nopipe(split_by_pipes[0])))
@@ -31,6 +47,7 @@ int execute_multi_commands(t_list *cmds)
 		if (-1 == execute_command(cur->split_by_pipes))
 		{
 			printf("execute_command error\n");
+			error_except();
 		}
 		cmd_exit();
 		cur = cur->next;

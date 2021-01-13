@@ -6,6 +6,7 @@ void	minishell_init(int argc, char **argv, char **envp)
 	ft_memset(g_flag, 0, sizeof(int) * F_END);
 	ft_memset(g_buf, 0, sizeof(char) * 1000);
 	ft_memset(get_param()->semi_arr, 0, sizeof(int) * 1000);
+	ft_memset(g_except, 0, sizeof(char) * EX_END);
 	g_dup_stdin = dup(STDIN_FILENO);
 	g_dup_stdout = dup(STDOUT_FILENO);
 	get_param()->cmd_trimed = NULL;
@@ -68,7 +69,9 @@ void	cmds_exit(t_list *cmds)
 		cmds->split_by_pipes = NULL;
 		cmds = cmds->next;
 	}
+
 	ft_memset(get_param()->semi_arr, 0, sizeof(int) * 1000);
+	ft_memset(g_except, 0, sizeof(int) * EX_END);
 }
 
 void	cmd_exit()
