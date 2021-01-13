@@ -56,12 +56,24 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 	char *refined_line;
 	char *temp;
 	t_list *new;
-
+	int i;
 	refined_line = refine_line(line);
 	temp = refined_line;
+	i = 0;
+	// while (i < BUFF_MAX)
+	// {
+	// 	if (get_param()->semi_arr[i] == 0)
+	// 	{
+	// 		printf("이제 없음\n");
+	// 		break ;
+	// 	}
+	// 	printf("semi_arr[%d] : %d\n", i, get_param()->semi_arr[i]);
+	// 	i++;
+	// }
 	while (TRUE)
 	{
-		substr = ft_strsep(&refined_line, ";");
+		// substr = ft_strsep(&refined_line, ";");
+		substr = ft_strsemi(&refined_line, get_param()->semi_arr, i);
 		if (substr == NULL)
 			break ;
 		if (ft_strlen(substr) == 0)
@@ -69,6 +81,7 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 		new = ft_lstnew(substr);
 		new->split_by_pipes = ft_split(substr, '|');
 		ft_lstadd_back(cmd, new);
+		i++;
 	}
 	free(temp);
 }

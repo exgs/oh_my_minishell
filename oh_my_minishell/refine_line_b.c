@@ -28,6 +28,8 @@ int refining_factory(char *buff, char *line, t_var *v, char **envlist)
 		back_slash(buff, line, &v->k, &v->i);
 	else
 	{
+		if (line[v->i] == ';' && v->flag_bq == 0)
+			get_param()->semi_arr[(v->l)++] = v->k; // <-- semi-colon 찾고 숫자 대입
 		buff[v->k] = line[v->i];
 		(v->k)++;
 	}

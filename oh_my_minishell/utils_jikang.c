@@ -22,3 +22,14 @@ void init_array(char *buff)
 		buff[n++] = 0;
 	}
 }
+
+void init_array_int(int *buff)
+{
+	int n;
+
+	n = 0;
+	while (n < BUFF_MAX)
+	{
+		buff[n++] = 0;
+	}
+}

@@ -6,6 +6,7 @@ static void init_value(char *buff, t_var *v)
 	v->flag_bq = 0;
 	v->i = 0;
 	v->k = 0;
+	v->l = 0; /* ; 로 문자열이 나뉠 때 */
 }
 
 int small_quote(char *buff, char *line, t_var *v)
