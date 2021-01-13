@@ -83,22 +83,22 @@ static t_builtin	is_builtin(char command[])
 }
 
 // 커맨드가 빌트인인지 아닌지 확인해줌, argv[]는 cmd_splited
-void check_command(char *argv[], char *envp[])
+void check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
 
-	if ((f = is_builtin(argv[0])))
-		f(argv[0], argv, envp);
+	if ((f = is_builtin(cmd)))
+		f(cmd, argv, envp);
 	else
 	{
-		if ((path = is_command(argv[0], envp)))
+		if ((path = is_command(cmd, envp)))
 			is_execve(path, argv, envp);
 			// execve(path, argv, envp);
 		else
 		{
 			ft_putstr_fd("minishell: ", 1);
-			ft_putstr_fd(argv[0], 1);
+			ft_putstr_fd(cmd, 1);
 			ft_putendl_fd(": command not found", 1);
 			g_status = 127 * 256;
 		}

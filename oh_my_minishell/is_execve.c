@@ -4,6 +4,8 @@ int is_execve(char *path, char **cmd_splited, char *envp[])
 {
 	int num_cmd;
 	pid_t pid;
+	char *temp1 = cmd_splited[1];
+	char *temp2 = cmd_splited[2];
 	num_cmd = which_command(cmd_splited[0]);
 	if (num_cmd == LS)
 	{

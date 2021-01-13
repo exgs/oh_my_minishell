@@ -35,9 +35,15 @@ int		which_command(char *cmd)
 	// 	return (EXIT);
 	if (!ft_strncmp(string_tolower(cmd),"ls",10))
 		return (LS);
+	if (!ft_strncmp(string_tolower(cmd),"/bin/ls",10))
+		return (LS);
 	if (!ft_strncmp(string_tolower(cmd),"grep",10))
 		return (GREP);
+	if (!ft_strncmp(string_tolower(cmd),"/usr/bin/grep",15))
+		return (GREP);
 	if (!ft_strncmp(string_tolower(cmd),"clear",10))
+		return (CLEAR);
+	if (!ft_strncmp(string_tolower(cmd),"/usr/bin/clear",15))
 		return (CLEAR);
 	else
 		return (-1);
@@ -92,7 +98,7 @@ int		execute_command_nopipe(char *one_cmd)
 	}
 	if (get_param()->symbol_array[0] == 0)
 	{
-		check_command(get_param()->cmd_splited, get_param()->envp);
+		check_command(get_param()->cmd_splited[0], get_param()->cmd_splited, get_param()->envp);
 		return (1);
 	}
 	else
@@ -143,7 +149,7 @@ void	child_process(char **one_cmd_splited, int *fd)
 		execute_nopipe_redirect();
 		exit(0);
 	}
-	check_command(one_cmd_splited, get_param()->envp);
+	check_command(one_cmd_splited[0], one_cmd_splited, get_param()->envp);
 	exit(0);
 }
 
