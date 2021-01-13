@@ -206,4 +206,7 @@ int		refining_factory(char *buff, char *line, t_var *v, char **envlist);
 
 // refine_line_c.c
 int		convert_env(char *buff, char *line, t_var *v, char **envlist);
+
+// ft_strsemi.c
+char *ft_strsemi(char **str, int *array, int i);
 #endif
