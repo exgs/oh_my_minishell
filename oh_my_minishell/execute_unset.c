@@ -1,5 +1,16 @@
 #include "minishell.h"
 
+static int	is_valid(char str[])
+{
+	while (*str)
+	{
+		if (!ft_isalnum(*str) && !(*str == '_'))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 int		execute_unset(const char *path, char *const argv[], char *const envp[])
 {
 	int		i;
@@ -7,12 +18,18 @@ int		execute_unset(const char *path, char *const argv[], char *const envp[])
 	int		ret;
 	char	*eq;
 
-	argv++; // ./a.out 다음부터 할라고 넣은거 
-
-	//argv에서 not a valid identifier 검출하는 함수 추가해야함 
+	argv++;
 	i = 0;
 	while (argv[i])
 	{
+		if (!is_valid(argv[i]))
+		{
+			g_status = 1;
+			ft_putstr_fd("bash: export: `", 2);
+			ft_putstr_fd(argv[i++], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
+			continue ;
+		}
 		j = 0;
 		while (envp[j])
 		{
@@ -31,6 +48,8 @@ int		execute_unset(const char *path, char *const argv[], char *const envp[])
 		}
 		i++;
 	}
+	if (g_status != 1)
+		g_status = 0;
 	return (0);
 	(void)path;
 }
