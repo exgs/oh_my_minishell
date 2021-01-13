@@ -37,6 +37,8 @@ static char			*is_command(char command[], char *envp[])
 	char			*ret;
 	int				i;
 
+	if (command == NULL)
+		return (NULL);
 	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=')
 		envp++;
 	arr = ft_split(ft_strchr(*envp, '=') + 1, ':');
@@ -57,6 +59,8 @@ static char			*is_command(char command[], char *envp[])
 // 빌트인에 있으면 함수포인터를 리턴함
 static t_builtin	is_builtin(char command[])
 {
+	if (command == NULL)
+		return NULL;
 	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
 	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')

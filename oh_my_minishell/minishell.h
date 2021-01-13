@@ -75,6 +75,7 @@ enum	e_redirect
 };
 
 int	g_flag[F_END];
+char g_except[EX_END];
 int g_status; // 이걸 256으로 나누면 exit status
 char g_buf[1000];
 int g_dup_stdin;
