@@ -109,7 +109,9 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 			if (!is_valid(argv[i]))
 			{
 				g_status = 1;
-				tmp = argv[i++];
+				ft_putstr_fd("bash: export: `", 2);
+				ft_putstr_fd(argv[i++], 2);
+				ft_putendl_fd("': not a valid identifier", 2);
 				continue ;
 			}
 			if ((j = is_exist((char **)envp, argv[i])))
@@ -122,14 +124,8 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 	else
 		print_envp((char **)envp);
 	get_param()->envp = (char **)envp;
-	if (g_status == 1)
-	{
-		ft_putstr_fd("bash: export: `", 2);
-		ft_putstr_fd(tmp, 2);
-		ft_putendl_fd("': not a valid identifier", 2);
-		return (0);
-	}
-	g_status = 0;
+	if (g_status != 1)
+		g_status = 0;
 	return (0);
 	(void)path;
 }
