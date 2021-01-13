@@ -99,7 +99,7 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 {
 	int		i;
 	int		j;
-	char	*tmp;
+
 	argv++;
 	if (vector_size((char **)argv))
 	{
