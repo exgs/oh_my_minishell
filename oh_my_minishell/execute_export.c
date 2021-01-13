@@ -1,5 +1,25 @@
 #include "minishell.h"
 
+static int	is_valid(char str[])
+{
+	int		i;
+	int		end;
+	char	*eq;
+
+	if ((eq = ft_strchr(str, '=')))
+		end = eq - str;
+	else
+		end = ft_strlen(str);
+	i = 0;
+	while (i < end)
+	{
+		if (!ft_isalnum(str[i]) && !(str[i] == '_'))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void	print_envp(char **envp) // DQ붙여서 해야함
 {
 	char	**tmp;
@@ -80,12 +100,20 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 	int		i;
 	int		j;
 
-	argv++; // 첫번쨰꺼 pass
+	argv++;
 	if (vector_size((char **)argv))
 	{
 		i = 0;
 		while (argv[i])
 		{
+			if (!is_valid(argv[i]))
+			{
+				g_status = 1;
+				ft_putstr_fd("bash: export: `", 2);
+				ft_putstr_fd(argv[i++], 2);
+				ft_putendl_fd("': not a valid identifier", 2);
+				continue ;
+			}
 			if ((j = is_exist((char **)envp, argv[i])))
 				change_value((char **)&envp[j], argv[i]);
 			else
@@ -96,6 +124,8 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 	else
 		print_envp((char **)envp);
 	get_param()->envp = (char **)envp;
+	if (g_status != 1)
+		g_status = 0;
 	return (0);
 	(void)path;
 }
