@@ -14,6 +14,7 @@ char		*find_process_name(char *path)
 		i++;
 	}
 	file_name = path + j + 1;
+	ft_putendl_fd(file_name, 1);
 	return (file_name);
 }
 
@@ -56,10 +57,8 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 	{
 		/* 여기들어오는 게 비정상상태(잘못된 경로)*/
 		ft_putstr_fd("minishell: ", 1);
-		ft_putendl_fd("no such file or directory :", 1);
-		ft_putstr_fd(path, 1);
-		ft_putchar_fd('\n', 1);
-		// ft_putnbr_fd(!stat(path, &sb), 1);
+		ft_putstr_fd(get_param()->cmd_trimed, 1);
+		ft_putendl_fd(": No such file or directory", 1);
 		g_status = 127 * 256;
 		return (0);
 	}
@@ -71,7 +70,7 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 		{
 			pid_t pid;
 			pid = fork();
-			if (pid == 0) 
+			if (pid == 0)
 			{
 				execve(path, argv, envp);
 			}
@@ -81,14 +80,14 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 			}
 			// cmd = find_process_name((char *)path);
 			// check_command(cmd, (char **)argv, (char **)envp);
-			
+
 			g_status = 1 * 256;
 			return (1);
 		}
 		else
 		{
 			ft_putstr_fd("minishell: ", 1);
-			ft_putstr_fd(path, 1);
+			ft_putstr_fd(get_param()->cmd_trimed, 1);
 			if (S_ISDIR(sb.st_mode))
 			{
 				ft_putendl_fd(": is a directory", 1);

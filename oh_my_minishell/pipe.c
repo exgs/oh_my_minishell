@@ -3,7 +3,6 @@
 char *string_tolower(char *str)
 {
 	int i;
-
 	if (str == NULL)
 		return (NULL);
 	i = 0;
