@@ -65,9 +65,15 @@ static t_builtin	is_builtin(char command[])
 		return NULL;
 	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
+	else if (ft_strncmp(string_tolower(command), "/bin/echo", 10) == '\0')
+		return (execute_echo);
 	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')
 		return (execute_cd);
+	else if (ft_strncmp(string_tolower(command), "/usr/bin/cd", 15) == '\0')
+		return (execute_cd);
 	else if (ft_strncmp(string_tolower(command), "pwd", 4) == '\0')
+		return (execute_pwd);
+	else if (ft_strncmp(string_tolower(command), "/bin/pwd", 15) == '\0')
 		return (execute_pwd);
 	else if (ft_strncmp(string_tolower(command), "export", 7) == '\0')
 		return (execute_export);
@@ -75,12 +81,15 @@ static t_builtin	is_builtin(char command[])
 		return (execute_unset);
 	else if (ft_strncmp(string_tolower(command), "env", 4) == '\0')
 		return (execute_env);
+	else if (ft_strncmp(string_tolower(command), "/usr/bin/env", 15) == '\0')
+		return (execute_env);
 	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
 	else if (ft_strncmp(string_tolower(command), "$?", 3) == '\0')
 		return (execute_dqmark);
-	else if (ft_strncmp(string_tolower(command), "/", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
-		return (execute_is_dir_file);
+	// else if (ft_strncmp(string_tolower(command), "/", 1) == 0 ||
+	// 			ft_strncmp(string_tolower(command), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
+	// 	return (execute_is_dir_file);
 	return (NULL);
 }
 
@@ -89,7 +98,13 @@ void check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
-
+	
+	if (ft_strncmp(string_tolower(cmd), "/", 1) == 0 ||
+				ft_strncmp(string_tolower(cmd), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
+	{
+		execute_is_dir_file(cmd, argv, envp);
+		return ;
+	}
 	if ((f = is_builtin(cmd)))
 		f(cmd, argv, envp);
 	else
