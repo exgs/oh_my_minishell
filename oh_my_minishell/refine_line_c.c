@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+static int is_env_ch(char c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
+		return (1);
+	return (0);
+}
+
 int check_env(char *temp, char **envlist)
 {
 	int i;
@@ -69,7 +76,7 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	init_array(temp);
 	(v->i)++;
 	j = 0;
-	while (line[v->i] != ' ' && line[v->i] != '\0' && line[v->i] != '"' && line[v->i] != '\'' && line[v->i] != '$' && line[v->i] != '/' && line[v->i] != '.')
+	while (is_env_ch(line[v->i]))
 	{
 		temp[j] = line[v->i];
 		(v->i)++;

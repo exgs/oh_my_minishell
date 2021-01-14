@@ -1,5 +1,23 @@
 #include "minishell.h"
 
+void skip_n_option(char *str, int *i, int *flag_n)
+{
+	int j;
+
+	j = *i;
+	while (str[j] && str[j + 1] && str[j + 2])
+	{
+		if (str[j] == '-' && str[j + 1] == 'n' && str[j + 2] == ' ')
+		{
+			j = j + 3;
+			*flag_n = 1;
+			*i = j;
+		}
+		else
+			break ;
+	}
+}
+
 int execute_echo(const char *path, char *const argv[], char *const envp[])
 {
 	int i;
@@ -13,16 +31,7 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 		i = 9;
 	while (one_cmd_trimed[i] == ' ')
 		i++;
-	if (one_cmd_trimed[i] == '-')
-	{
-		if (one_cmd_trimed[i + 1] == 'n')
-		{
-			i = i + 2;
-			flag_n = 1;
-			while (one_cmd_trimed[i] == ' ')
-				i++;
-		}
-	}
+	skip_n_option(one_cmd_trimed, &i, &flag_n);
 	while (one_cmd_trimed[i] != '\0')
 	{
 		ft_putchar_fd(one_cmd_trimed[i], 1);

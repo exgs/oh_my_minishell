@@ -3,7 +3,8 @@
 char *string_tolower(char *str)
 {
 	int i;
-
+	ft_putendl_fd("string_tolower에서 처리전 비교", 1);
+	ft_putendl_fd(str, 1);
 	if (str == NULL)
 		return (NULL);
 	i = 0;
@@ -12,6 +13,8 @@ char *string_tolower(char *str)
 		str[i] = ft_tolower(str[i]);
 		i++;
 	}
+	ft_putendl_fd("string_tolower에서 처리후, 비교", 1);
+	ft_putendl_fd(str, 1);
 	return (str);
 }
 
