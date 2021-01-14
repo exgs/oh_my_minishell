@@ -74,7 +74,7 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 	while (TRUE)
 	{
 		substr = ft_strsemi(&refined_line, get_param()->semi_arr, i);
-		ft_putendl_fd(substr, 1);
+		// ft_putendl_fd(substr, 1);
 		if (substr == NULL)
 			break ;
 		if (ft_strlen(substr) == 0)
@@ -86,5 +86,3 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 	}
 	free(temp);
 }
-
-// echo 111; echo 222; echo 333

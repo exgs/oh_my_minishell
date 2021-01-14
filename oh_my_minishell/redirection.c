@@ -167,6 +167,7 @@ static int redirect_right(int i)
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
+	check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
 	return (1);
 }
 
@@ -179,7 +180,7 @@ static int redirect_d_right(int i)
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0755);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	return (1);
+	check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
 	return (1);
 }
 
@@ -187,6 +188,7 @@ int execute_nopipe_redirect()
 {
 	char *symbols = get_param()->symbol_array;
 	int i = 0;
+	int mkfile = 0;
 	while (symbols[i] != 0)
 	{
 		if (symbols[i] == LEFT)
@@ -196,17 +198,20 @@ int execute_nopipe_redirect()
 		}
 		else if (symbols[i] == RIGHT)
 		{
+			mkfile++;
 			if (-1 == redirect_right(i))
 				return (-1);
 		}
 		else if (symbols[i] == D_RIGHT)
 		{
+			mkfile++;
 			if (-1 == redirect_d_right(i))
 				return (-1);
 		}
 		i++;
 	}
-	check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
+	if (mkfile == 0)
+		check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
 	dup_initalize();
 	return (1);
 }
