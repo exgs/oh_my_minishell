@@ -69,8 +69,19 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 		// if (execute_process((char *)path) == -1)
 		if (S_ISDIR(sb.st_mode) == 0 && (sb.st_mode & S_IXUSR))
 		{
-			cmd = find_process_name((char *)path);
-			check_command(cmd, (char **)argv, (char **)envp);
+			pid_t pid;
+			pid = fork();
+			if (pid == 0) 
+			{
+				execve(path, argv, envp);
+			}
+			else
+			{
+				waitpid(pid, NULL, 0);
+			}
+			// cmd = find_process_name((char *)path);
+			// check_command(cmd, (char **)argv, (char **)envp);
+			
 			g_status = 1 * 256;
 			return (1);
 		}
