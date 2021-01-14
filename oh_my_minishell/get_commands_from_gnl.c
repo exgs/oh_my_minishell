@@ -73,8 +73,8 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 	int i = 0;
 	while (TRUE)
 	{
-		// substr = ft_strsep(&refined_line, ";");
 		substr = ft_strsemi(&refined_line, get_param()->semi_arr, i);
+		ft_putendl_fd(substr, 1);
 		if (substr == NULL)
 			break ;
 		if (ft_strlen(substr) == 0)

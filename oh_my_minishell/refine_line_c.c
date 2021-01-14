@@ -74,7 +74,20 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	char temp[BUFF_MAX];
 
 	init_array(temp);
-	(v->i)++;
+	(v->i)++; // $문자 바로 뒤로 인덱스증가
+	if (line[v->i] == '$')
+	{
+		buff[(v->k)++] = '$';
+		buff[(v->k)++] = '$';
+		return (0);
+	}
+	else if (line[v->i] == '?')
+	{
+		buff[(v->k)++] = '$';
+		buff[(v->k)++] = '?';
+		return (0);
+	}
+
 	j = 0;
 	while (is_env_ch(line[v->i]))
 	{
@@ -82,8 +95,6 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 		(v->i)++;
 		j++;
 	}
-	if (line[v->i] == '\'' || line[v->i] == '$' || line[v->i] == '/')
-		(v->i)--;
 	// ft_putendl_fd(temp, 1);
 	/* 이제 temp에 환경 변수와 비교할 문자열이 들어감. */
 	/* 환경변수 리스트 돌려서 똑같은 거 찾은 다음 바꿔치기 해줘야함. */
