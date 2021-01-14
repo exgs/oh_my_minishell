@@ -99,6 +99,8 @@ void check_command(char *cmd, char *argv[], char *envp[])
 	t_builtin	f;
 	char		*path;
 	
+	if (cmd == NULL)
+		return;
 	if (ft_strncmp(string_tolower(cmd), "/", 1) == 0 ||
 				ft_strncmp(string_tolower(cmd), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
 	{
