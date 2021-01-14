@@ -16,6 +16,12 @@ void skip_n_option(char *str, int *i, int *flag_n)
 		else
 			break ;
 	}
+	if (str[j] == '-' && str[j + 1] == 'n' && str[j + 2] == '\0')
+	{
+		j = j + 2;
+		*flag_n = 1;
+		*i = j;
+	}
 }
 
 int execute_echo(const char *path, char *const argv[], char *const envp[])
