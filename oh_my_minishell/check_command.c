@@ -41,6 +41,8 @@ static char			*is_command(char command[], char *envp[])
 		return (NULL);
 	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=')
 		envp++;
+	if (!ft_strchr(*envp, '='))
+		return (NULL);
 	arr = ft_split(ft_strchr(*envp, '=') + 1, ':');
 	i = 0;
 	while (arr[i])
