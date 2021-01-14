@@ -35,6 +35,7 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	flag_n = 0;
 	if (ft_strncmp(one_cmd_trimed, "/bin/echo", 9) == 0)
 		i = 9;
+	/* 여기서 quotes 있으면 멈춰줘야함. */
 	while (one_cmd_trimed[i] == ' ')
 		i++;
 	skip_n_option(one_cmd_trimed, &i, &flag_n);
