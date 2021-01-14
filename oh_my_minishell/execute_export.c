@@ -108,7 +108,7 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 		{
 			if (!is_valid(argv[i]))
 			{
-				g_status = 1;
+				g_status = 1 * 256;
 				ft_putstr_fd("bash: export: `", 2);
 				ft_putstr_fd(argv[i++], 2);
 				ft_putendl_fd("': not a valid identifier", 2);
@@ -124,7 +124,7 @@ int			execute_export(const char *path, char *const argv[], char *const envp[])
 	else
 		print_envp((char **)envp);
 	get_param()->envp = (char **)envp;
-	if (g_status != 1)
+	if (g_status != 256)
 		g_status = 0;
 	return (0);
 	(void)path;
