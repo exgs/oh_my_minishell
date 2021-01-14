@@ -68,9 +68,19 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 		// if (execute_process((char *)path) == -1)
 		if (S_ISDIR(sb.st_mode) == 0 && (sb.st_mode & S_IXUSR))
 		{
-			cmd = find_process_name((char *)path);
-			/* 여기서 check_command 에 없는 ls 가 들어가면 segfault 오류난다. */
-			check_command(cmd, (char **)path, (char **)envp);
+			pid_t pid;
+			pid = fork();
+			if (pid == 0)
+			{
+				execve(path, argv, envp);
+			}
+			else
+			{
+				waitpid(pid, NULL, 0);
+			}
+			// cmd = find_process_name((char *)path);
+			// check_command(cmd, (char **)argv, (char **)envp);
+
 			g_status = 1 * 256;
 			return (1);
 		}
