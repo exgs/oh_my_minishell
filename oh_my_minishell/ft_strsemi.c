@@ -26,9 +26,10 @@ char *ft_strsemi(char **str_pointer, int *array, int i)
 		else
 		{
 			temp = array[i] - array[i -1] - 1;
-			(*str_pointer)[array[temp]] = 0;
+			(*str_pointer)[temp] = 0;
 			(*str_pointer) += (temp + 1);
 			return (ret);
 		}
 	}
 }
+//  echo 222;
