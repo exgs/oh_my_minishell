@@ -7,8 +7,10 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	char *one_cmd_trimed;
 
 	one_cmd_trimed = get_param()->cmd_trimed;
-	flag_n = 0;
 	i = 4;
+	flag_n = 0;
+	if (ft_strncmp(one_cmd_trimed, "/bin/echo", 9) == 0)
+		i = 9;
 	while (one_cmd_trimed[i] == ' ')
 		i++;
 	if (one_cmd_trimed[i] == '-')

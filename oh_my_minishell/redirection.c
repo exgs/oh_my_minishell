@@ -206,7 +206,7 @@ int execute_nopipe_redirect()
 		}
 		i++;
 	}
-	check_command(get_param()->cmd_redirect[0], get_param()->envp);
+	check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
 	dup_initalize();
 	return (1);
 }
