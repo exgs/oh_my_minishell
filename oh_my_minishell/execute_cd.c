@@ -28,7 +28,7 @@ static void	change_dir(const char *path, char *envp[])
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
-		g_status = 1;
+		g_status = 1 * 256;
 		return ;
 	}
 	argv[0] = "export";
@@ -48,7 +48,7 @@ static int	msg_notset(char str[])
 	ft_putstr_fd("bash: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": not set", 2);
-	g_status = 1;
+	g_status = 1 * 256;
 	return (-1);
 }
 
