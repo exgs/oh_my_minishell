@@ -21,6 +21,7 @@ int main(int argc, char *argv[], char **envp)
 				exit(0);
 			g_flag[CTRL_D] = 1;
 		}
+		ft_memset(g_flag, 0, sizeof(int) * F_END);
 		get_commands_from_gnl(&cmds, line);
 		execute_multi_commands(cmds);
 		free(line);
