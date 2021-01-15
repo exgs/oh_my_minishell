@@ -58,17 +58,6 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 	/* 이 함수로 유효한 세미콜론을 확인시켜준다. */
 	check_semicolon(line);
 	int j;	j = 0;
-	while (j < BUFF_MAX)
-	{
-		if (get_param()->semi_arr[j] == 0)
-		{
-			printf("이제 없음\n");
-			break ;
-		}
-		printf("semi_arr[%d] : %d\n", j, get_param()->semi_arr[j]);
-		j++;
-	}
-
 	int i = 0;
 	while (TRUE)
 	{
