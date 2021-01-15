@@ -82,16 +82,21 @@ static void	ft_execve(const char *path, char *const argv[], char *const envp[])
 		return ;
 	if (pid == 0)
 	{
-		if (stat(path, &buf) == 0)
+		if (stat(path, &buf) == -1)
 		{
-			if ((buf.st_mode & S_IFMT) == S_IFDIR)
-			{
-				ft_putstr_fd("bash: ", 2);
-				ft_putstr_fd(path, 2);
-				ft_putstr_fd(": ",2);
-				ft_putendl_fd(strerror(EISDIR), 2);	// is a directory 만 따로 예외처리
-				exit(1); // 수정 요망 exit 어떻게 되는지 모르겠음
-			}
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ",2);
+			ft_putendl_fd(strerror(errno), 2);
+			exit(127);
+		}
+		if ((buf.st_mode & S_IFMT) == S_IFDIR)
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ",2);
+			ft_putendl_fd(strerror(EISDIR), 2);	// is a directory 만 따로 예외처리
+			exit(126);
 		}
 		if ((execve(path, argv, envp)) == -1)
 		{
@@ -99,7 +104,7 @@ static void	ft_execve(const char *path, char *const argv[], char *const envp[])
 			ft_putstr_fd(path, 2);
 			ft_putstr_fd(": ",2);
 			ft_putendl_fd(strerror(errno), 2);
-			exit(1);	// 수정 요망 exit 어떻게 되는지 모르겠음
+			exit(126);
 		}
 	}
 	else
@@ -124,6 +129,7 @@ void		check_command(char *cmd, char *argv[], char *envp[])
 			ft_putstr_fd("bash: ", 2);
 			ft_putstr_fd(cmd, 2);
 			ft_putendl_fd(": command not found", 2);
+			g_status = 127 * 256;
 			return ;
 		}
 //		printf("path : %s\n", path);
