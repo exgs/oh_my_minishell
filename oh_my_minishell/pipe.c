@@ -85,8 +85,8 @@ int		execute_command_nopipe(char *one_cmd)
 	// ft_putendl_fd("trimed 이전", 1);
 	// ft_putendl_fd(one_cmd, 1);
 	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
-	ft_putendl_fd("trimed 이후", 1);
-	ft_putendl_fd(get_param()->cmd_trimed, 1);
+	// ft_putendl_fd("trimed 이후", 1);
+	// ft_putendl_fd(get_param()->cmd_trimed, 1);
 	parsing_redirect(get_param()->cmd_trimed);
 	get_param()->cmd_splited = ft_split(g_buf, ' ');
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
