@@ -85,7 +85,7 @@ static t_builtin	is_builtin(char command[])
 		return (execute_env);
 	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
-	else if (ft_strncmp(string_tolower(command), "$?", 3) == '\0')
+	else if (ft_strncmp(string_tolower(command), "$", 1) == 0)
 		return (execute_dqmark);
 	// else if (ft_strncmp(string_tolower(command), "/", 1) == 0 ||
 	// 			ft_strncmp(string_tolower(command), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
@@ -98,7 +98,7 @@ void check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
-	
+
 	if (cmd == NULL)
 		return;
 	if (ft_strncmp(string_tolower(cmd), "/", 1) == 0 ||

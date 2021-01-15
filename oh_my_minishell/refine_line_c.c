@@ -68,6 +68,28 @@ void take_buff(char *buff, char *temp, int *k)
 	}
 }
 
+void insert_dq_in_str(char *str, t_var *v)
+{
+	int exit_status;
+
+	exit_status = g_status / 256;
+	if (exit_status > 100)
+	{
+		str[(v->k)++] = exit_status / 100 + 48;
+		str[(v->k)++] = (exit_status % 100) / 10 + 48;
+		str[(v->k)++] = exit_status % 10 + 48;
+	}
+	else if (exit_status > 10)
+	{
+		str[(v->k)++] = exit_status / 10 + 48;
+		str[(v->k)++] = exit_status % 10 + 48;
+	}
+	else
+	{
+		str[(v->k)++] = exit_status + 48;
+	}
+}
+
 int convert_env(char *buff, char *line, t_var *v, char **envlist)
 {
 	int j;
@@ -83,11 +105,10 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	}
 	else if (line[v->i] == '?')
 	{
-		buff[(v->k)++] = '$';
-		buff[(v->k)++] = '?';
+		/* 여기서 $? 할 것이 아니라 계산도 해줘야함 */
+		insert_dq_in_str(buff, v);
 		return (0);
 	}
-
 	j = 0;
 	while (is_env_ch(line[v->i]))
 	{
@@ -95,6 +116,7 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 		(v->i)++;
 		j++;
 	}
+	(v->i)--; /* is_env_ch 에서 밀려난 환경변수 띄어쓰기 해준다. */
 	// ft_putendl_fd(temp, 1);
 	/* 이제 temp에 환경 변수와 비교할 문자열이 들어감. */
 	/* 환경변수 리스트 돌려서 똑같은 거 찾은 다음 바꿔치기 해줘야함. */

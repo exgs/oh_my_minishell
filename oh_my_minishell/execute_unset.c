@@ -38,7 +38,7 @@ int		execute_unset(const char *path, char *const argv[], char *const envp[])
 			{
 				if (ret == '=')
 					vector_erase((char **)envp, j);
-			} 
+			}
 			else								// 값이 할당되지 않은 것도 unset 테스트 필요함
 			{
 				if (ret == '\0')

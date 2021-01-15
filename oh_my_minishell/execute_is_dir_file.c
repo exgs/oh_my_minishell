@@ -53,6 +53,10 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 	{
 		return(execute_env(path, argv, envp));
 	}
+	else if (ft_strncmp(path, "/bin/echo", 10) == '\0')
+	{
+		return(execute_echo(path, argv, envp));
+	}
 	else if (-1 == stat(path, &sb))
 	{
 		/* 여기들어오는 게 비정상상태(잘못된 경로)*/

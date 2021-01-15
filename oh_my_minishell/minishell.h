@@ -158,6 +158,8 @@ t_data	*get_param();
 int		ft_is_whitespace(char c);
 void	init_array(char *buff);
 void	init_array_int(int *buff);
+void	check_semicolon(char *str);
+void	change_flag(int *flag);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
@@ -191,14 +193,20 @@ int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
 int		execute_dqmark(const char *path, char *const argv[], char *const envp[]);
+
 //check_command.c
 void check_command(char *cmd, char *argv[], char *envp[]);
+
 //is_execve.c
 int is_execve(char *path, char **cmd_split, char *envp[]);
+
 //redirection.c
 char	***splited_by_redirect(char **one_cmd_splited, char **array);
 int		parsing_redirect(char *str);
 int		execute_nopipe_redirect();
+
+// ft_strsemi.c
+char *ft_strsemi(char **str, int *array, int i);
 
 // refine_line_a.c
 char	*refine_line(char *line);
@@ -209,6 +217,4 @@ int		refining_factory(char *buff, char *line, t_var *v, char **envlist);
 // refine_line_c.c
 int		convert_env(char *buff, char *line, t_var *v, char **envlist);
 
-// ft_strsemi.c
-char *ft_strsemi(char **str, int *array, int i);
 #endif
