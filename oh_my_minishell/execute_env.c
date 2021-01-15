@@ -1,19 +1,42 @@
 #include "minishell.h"
 
-//		export 에서 value를 할당하지 않은 변수들은 출력하지 않음
-//		출력되는 순서는 어떤 규칙인지 아직 발견하지 못함
+static void	export_env_path(const char *path, char *const argv[], char *const envp[])
+{
+	char	*tmp[3];
+
+	tmp[0] = "export";
+	if (ft_strncmp(path, "env", 4) == '\0')
+		tmp[1] = ft_strjoin("_=", "/usr/bin/env");
+	else
+		tmp[1] = ft_strjoin("_=", path);
+	tmp[2] = NULL;
+	execute_export(path, tmp, envp);
+	free(tmp[1]);
+}
+
 int		execute_env(const char *path, char *const argv[], char *const envp[])
 {
-	int	i;
-	
+	int		i;
+	int		j;
+	char	**tmp;
+
+	export_env_path(path, argv, get_param()->envp);
 	i = 0;
 	while (envp[i])
 	{
 		if (ft_strchr(envp[i], '='))
+		{
+			if (ft_strncmp(envp[i], "_=", 2) == '\0')
+			{
+				j = i++;
+				continue;
+			}
 			ft_putendl_fd(envp[i], 1);
+		}
 		i++;
 	}
+	ft_putendl_fd(envp[j], 1);
+	g_status = 0;
 	return (0);
-	(void)path;
 	(void)argv;
 }
