@@ -1,61 +1,52 @@
 #include "minishell.h"
 
-// 폴더 목록중에 경로를 만들 수 있으면 경로만들고 아니면 NULL
-static char			*get_path(char *arr, char command[])
+static int	is_same_file(char *path1, char *path2)
 {
-    DIR				*dir_ptr;
-    struct dirent	*file;
-	char			*ret[3];
+	struct stat	file1;
+	struct stat	file2;
 
-	if(!(dir_ptr = opendir(arr)))
-		return (NULL);
-	while((file = readdir(dir_ptr)))
-	{
-		if (ft_strncmp(file->d_name, ".", 2) == '\0' ||
-			ft_strncmp(file->d_name, "..", 3) == '\0')
-			continue ;
-		if (ft_strncmp(file->d_name, command, ft_strlen(command) + 1) == '\0')
-		{
-			ret[0] = ft_strdup(arr);
-			ret[1] = ft_strjoin("/", file->d_name);
-			ret[2] = ft_strjoin(ret[0], ret[1]);
-//			printf(" ret[2] : %s\n", ret[2]);
-			free(ret[0]);
-			free(ret[1]);
-			closedir(dir_ptr);
-			return (ret[2]); // close 안된거
-		}
-	}
-	closedir(dir_ptr);
-	return (NULL);
+	if (stat(path1, &file1) == -1 || stat(path2, &file2) == -1)
+		return (0);
+	if (file1.st_dev != file2.st_dev || file1.st_ino != file2.st_ino ||
+		file1.st_mode != file2.st_mode || file1.st_mode != file2.st_mode ||
+		file1.st_nlink != file2.st_nlink || file1.st_uid != file2.st_uid ||
+		file1.st_gid != file2.st_gid || file1.st_rdev != file2.st_rdev ||
+		file1.st_size != file2.st_size ||
+		file1.st_blksize != file2.st_blksize ||
+		file1.st_blocks != file2.st_blocks ||
+		file1.st_atime != file2.st_atime ||
+		file1.st_mtime != file2.st_mtime || file1.st_ctime != file2.st_ctime)
+		return (0);
+	return (1);
 }
 
-// 커맨드인지 확인하고 path를 할당해서 리턴함
-static char			*is_command(char command[], char *envp[])
+static char			*get_path(char *cmd, char *argv[], char *envp[])
 {
-	char			**arr;
-	char			*ret;
-	int				i;
+	struct stat	buf;
+	char		**arr;
+	char		*path;
+	char		*tmp;
+	int			i;
 
-	if (command == NULL)
-		return (NULL);
-	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=')
+	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=') // unset PATH 생각해보기
 		envp++;
-	if (!ft_strchr(*envp, '='))
-		return (NULL);
-	arr = ft_split(ft_strchr(*envp, '=') + 1, ':');
+	if (ft_strchr(cmd, '/') || !*envp || !ft_strchr(*envp, '='))
+		return (ft_strdup(cmd));
+	arr = ft_split(ft_strchr(*envp, '=') + 1, ':'); // unset PATH 일때 터짐 나중에 수정해야함
 	i = 0;
 	while (arr[i])
 	{
-		if ((ret = get_path(arr[i], command)))
+		tmp = ft_strjoin("/", cmd);
+		path = ft_strjoin(arr[i], tmp);
+		free(tmp);
+		if (stat(path, &buf) == 0)
 			break ;
+		free(path);
+		path = NULL;
 		i++;
 	}
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
-	return (ret);
+	vector_clear(arr);
+	return (path);
 }
 
 // 빌트인에 있으면 함수포인터를 리턴함
@@ -65,15 +56,9 @@ static t_builtin	is_builtin(char command[])
 		return NULL;
 	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
-	else if (ft_strncmp(string_tolower(command), "/bin/echo", 10) == '\0')
-		return (execute_echo);
 	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')
 		return (execute_cd);
-	else if (ft_strncmp(string_tolower(command), "/usr/bin/cd", 15) == '\0')
-		return (execute_cd);
 	else if (ft_strncmp(string_tolower(command), "pwd", 4) == '\0')
-		return (execute_pwd);
-	else if (ft_strncmp(string_tolower(command), "/bin/pwd", 15) == '\0')
 		return (execute_pwd);
 	else if (ft_strncmp(string_tolower(command), "export", 7) == '\0')
 		return (execute_export);
@@ -81,46 +66,77 @@ static t_builtin	is_builtin(char command[])
 		return (execute_unset);
 	else if (ft_strncmp(string_tolower(command), "env", 4) == '\0')
 		return (execute_env);
-	else if (ft_strncmp(string_tolower(command), "/usr/bin/env", 15) == '\0')
-		return (execute_env);
 	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
 	else if (ft_strncmp(string_tolower(command), "$", 1) == 0)
 		return (execute_dqmark);
-	// else if (ft_strncmp(string_tolower(command), "/", 1) == 0 ||
-	// 			ft_strncmp(string_tolower(command), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
-	// 	return (execute_is_dir_file);
 	return (NULL);
 }
 
-// 커맨드가 빌트인인지 아닌지 확인해줌, argv[]는 cmd_splited
-void check_command(char *cmd, char *argv[], char *envp[])
+static void	ft_execve(const char *path, char *const argv[], char *const envp[])
+{
+	pid_t		pid;
+	struct stat	buf;
+
+	if (-1 == (pid = fork()))
+		return ;
+	if (pid == 0)
+	{
+		if (stat(path, &buf) == -1)
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ",2);
+			ft_putendl_fd(strerror(errno), 2);
+			exit(127);
+		}
+		if ((buf.st_mode & S_IFMT) == S_IFDIR)
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ",2);
+			ft_putendl_fd(strerror(EISDIR), 2);	// is a directory 만 따로 예외처리
+			exit(126);
+		}
+		if ((execve(path, argv, envp)) == -1)
+		{
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(path, 2);
+			ft_putstr_fd(": ",2);
+			ft_putendl_fd(strerror(errno), 2);
+			exit(126);
+		}
+	}
+	else
+		waitpid(pid, &g_status, 0);	
+}
+
+void		check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
+	char		*slash;
+	int			i;
 
 	if (cmd == NULL)
-		return;
-	if (ft_strncmp(string_tolower(cmd), "/", 1) == 0 ||
-				ft_strncmp(string_tolower(cmd), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
-	{
-		execute_is_dir_file(cmd, argv, envp);
 		return ;
-	}
 	if ((f = is_builtin(cmd)))
 		f(cmd, argv, envp);
 	else
 	{
-		if ((path = is_command(cmd, envp)))
-			is_execve(path, argv, envp);
-			// execve(path, argv, envp);
-		else
+		if (!(path = get_path(cmd, argv, envp)))
 		{
-			ft_putstr_fd("minishell: ", 1);
-			ft_putstr_fd(cmd, 1);
-			ft_putendl_fd(": command not found", 1);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(cmd, 2);
+			ft_putendl_fd(": command not found", 2);
 			g_status = 127 * 256;
+			return ;
 		}
+//		printf("path : %s\n", path);
+		if (is_same_file(path, "/usr/bin/env"))
+			execute_env(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
+		else
+			ft_execve(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
 		free(path);
 	}
 }
