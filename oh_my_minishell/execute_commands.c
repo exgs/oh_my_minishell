@@ -4,8 +4,11 @@ static void error_except()
 {
 	if (g_except[SYNTAX] != 0)
 	{
-		ft_putstr_fd("minishell: parse error near '", 1);
-		ft_putchar_fd(g_except[SYNTAX], 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
+		if (g_except[SYNTAX] == 10)
+			ft_putstr_fd("newline", 1);
+		else
+			ft_putchar_fd(g_except[SYNTAX], 1);
 		ft_putstr_fd("'\n", 1);
 	}
 	g_except[SYNTAX] = 0;
@@ -21,6 +24,21 @@ int execute_command(char **split_by_pipes)
 		g_except[SYNTAX] = '|';
 		return (-1);
 	}
+	if (ft_strncmp(split_by_pipes[0], ";", 1) == 0)
+	{
+		g_except[SYNTAX] = ';';
+		return (-1);
+	}
+	if (ft_strncmp(split_by_pipes[0], "<", 1) == 0)
+	{
+		g_except[SYNTAX] = 10;
+		return (-1);
+	}
+	if (ft_strncmp(split_by_pipes[0], ">", 1) == 0)
+	{
+		g_except[SYNTAX] = 10;
+		return (-1);
+	}	
 	if (split_by_pipes[1] == NULL)
 	{
 		if (-1 == (execute_command_nopipe(split_by_pipes[0])))
@@ -46,7 +64,7 @@ int execute_multi_commands(t_list *cmds)
 	{
 		if (-1 == execute_command(cur->split_by_pipes))
 		{
-			printf("execute_command error\n");
+			// printf("execute_command error\n");
 			error_except();
 		}
 		cmd_exit();
