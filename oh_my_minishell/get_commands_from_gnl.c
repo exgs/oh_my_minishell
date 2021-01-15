@@ -53,13 +53,11 @@ char		*ft_strsep(char **command, const char *delim)
 void get_commands_from_gnl(t_list **cmd, char *line)
 {
 	char *substr;
-	char *refined_line;
-	char *temp;
 	t_list *new;
-	int j;
-	refined_line = refine_line(line);
-	temp = refined_line;
-	j = 0;
+
+	/* 이 함수로 유효한 세미콜론을 확인시켜준다. */
+	check_semicolon(line);
+	int j;	j = 0;
 	while (j < BUFF_MAX)
 	{
 		if (get_param()->semi_arr[j] == 0)
@@ -70,10 +68,11 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 		printf("semi_arr[%d] : %d\n", j, get_param()->semi_arr[j]);
 		j++;
 	}
+
 	int i = 0;
 	while (TRUE)
 	{
-		substr = ft_strsemi(&refined_line, get_param()->semi_arr, i);
+		substr = ft_strsemi(&line, get_param()->semi_arr, i);
 		ft_putendl_fd(substr, 1);
 		if (substr == NULL)
 			break ;
@@ -84,7 +83,6 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 		ft_lstadd_back(cmd, new);
 		i++;
 	}
-	free(temp);
 }
 
 // echo 111; echo 222; echo 333

@@ -29,6 +29,7 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	int i;
 	int flag_n;
 	char *one_cmd_trimed;
+	char *echo_line;
 
 	one_cmd_trimed = get_param()->cmd_trimed;
 	i = 4;
@@ -39,14 +40,17 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	while (one_cmd_trimed[i] == ' ')
 		i++;
 	skip_n_option(one_cmd_trimed, &i, &flag_n);
-	while (one_cmd_trimed[i] != '\0')
+	/* 여기서 큰 따옴표, 작은 따옴표 처리 */
+	echo_line = refine_line(one_cmd_trimed);
+	while (echo_line[i] != '\0')
 	{
-		ft_putchar_fd(one_cmd_trimed[i], 1);
+		ft_putchar_fd(echo_line[i], 1);
 		i++;
 	}
 	/* -n 옵션 들어갈 시 무시 */
 	if (flag_n != 1)
 		ft_putchar_fd('\n', 1);
+	free(echo_line);
 	g_status = 0;
 	return (0);
 }
