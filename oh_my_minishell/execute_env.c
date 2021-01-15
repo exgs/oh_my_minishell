@@ -6,6 +6,14 @@ int		execute_env(const char *path, char *const argv[], char *const envp[])
 {
 	int	i;
 	
+	if (argv[1] != NULL)
+	{
+		g_status = 256 * 127;
+		ft_putstr_fd("env: ", 1);
+		ft_putstr_fd(argv[1], 1);
+		ft_putendl_fd(": No such file or directory", 1);
+		return (-1);
+	}
 	i = 0;
 	while (envp[i])
 	{
