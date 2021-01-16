@@ -87,9 +87,6 @@ static t_builtin	is_builtin(char command[])
 		return (execute_exit);
 	else if (ft_strncmp(string_tolower(command), "$", 1) == 0)
 		return (execute_dqmark);
-	// else if (ft_strncmp(string_tolower(command), "/", 1) == 0 ||
-	// 			ft_strncmp(string_tolower(command), ".", 1) == 0) //<-- 어짜피 NUL 문자인데, 여기서는 딱 문자하나 비교해서 0
-	// 	return (execute_is_dir_file);
 	return (NULL);
 }
 
@@ -113,7 +110,6 @@ void check_command(char *cmd, char *argv[], char *envp[])
 	{
 		if ((path = is_command(cmd, envp)))
 			is_execve(path, argv, envp);
-			// execve(path, argv, envp);
 		else
 		{
 			ft_putstr_fd("minishell: ", 1);
