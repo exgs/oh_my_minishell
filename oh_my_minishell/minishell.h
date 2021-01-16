@@ -218,4 +218,8 @@ int		refining_factory(char *buff, char *line, t_var *v, char **envlist);
 // refine_line_c.c
 int		convert_env(char *buff, char *line, t_var *v, char **envlist);
 
+
+
+//	msg_error.c
+int		msg_error(char *program, char *cmd, char *arg, int exit_status);
 #endif
