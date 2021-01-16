@@ -8,6 +8,7 @@ typedef struct s_index
 	int before;
 	int cnt;
 	int redir_num;
+	unsigned char f_quote; // 1bit은 small quote 2bit는 big quote
 }t_index;
 
 void s_index_bzero(t_index *index)
@@ -18,10 +19,25 @@ void s_index_bzero(t_index *index)
 	index->j = 0;
 	index->redir_num = 0;
 	index->z = 0;
+	index->f_quote = 0;
 }
 
-static int		is_redirect(char *str)
+static int		is_redirect(char *str, t_index *index)
 {
+	int i = 0;
+	if (str == NULL)
+		return (-1);
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			index->f_quote ^= 1;
+		if (str[i] == '\"')
+			index->f_quote ^= 2;
+		i++;
+	}
+	int temp = index->f_quote;
+	if (index->f_quote & 1 || index->f_quote & 2)
+		return (FALSE);
 	if (str[0] == '>' || str[0] == '<')
 	{
 		if (!ft_strncmp(str, ">>", 3))
@@ -35,13 +51,31 @@ static int		is_redirect(char *str)
 	return (FALSE);
 }
 
-static int		redirect_num(char **one_cmd_splited)
+static int flag_quote(char *str, t_index *index)
+{
+	int i = 0;
+	if (str == NULL)
+		return (-1);
+	while (str[i])
+	{
+		if (str[i] == '\'')
+			index->f_quote ^= 1;
+		if (str[i] == '\"')
+			index->f_quote ^= 2;
+		i++;
+	}
+	return (1);
+	
+}
+
+static int	redirect_num(char **one_cmd_splited, t_index *index)
 {
 	int i = 0;
 	int cnt = 0;
 	while (one_cmd_splited[i])
 	{
-		if (is_redirect(one_cmd_splited[i]) != 0)
+		// flag_quote(one_cmd_splited[i], index);
+		if (is_redirect(one_cmd_splited[i], index) != 0)
 			cnt++;
 		i++;
 	}
@@ -50,11 +84,11 @@ static int		redirect_num(char **one_cmd_splited)
 
 void input_symbol(char **split, char *symbol_array, t_index *index)
 {
-	if (is_redirect(split[index->i]) == LEFT)
+	if (is_redirect(split[index->i], index) == LEFT)
 			symbol_array[index->z++] = LEFT;
-		else if (is_redirect(split[index->i]) == RIGHT)
+		else if (is_redirect(split[index->i], index) == RIGHT)
 			symbol_array[index->z++] = RIGHT;
-		else if (is_redirect(split[index->i]) == D_RIGHT)
+		else if (is_redirect(split[index->i], index) == D_RIGHT)
 			symbol_array[index->z++] = D_RIGHT;
 		else
 			symbol_array[index->z++] = ERROR;
@@ -69,7 +103,7 @@ void		splited_by_redirect_norm(char ***divid, char **split, char *symbol_array, 
 	while (split[index->i])
 	{
 		str = split[index->i];
-		if (is_redirect(split[index->i]) != 0)
+		if (is_redirect(split[index->i], index) != 0)
 		{
 			input_symbol(split, symbol_array, index);
 			divid[index->cnt] = malloc(sizeof(char *) * (index->i - index->before + 1));
@@ -98,7 +132,7 @@ char	***splited_by_redirect(char **one_cmd_splited, char **array)
 	t_index index;
 	
 	s_index_bzero(&index);
-	index.redir_num = redirect_num(one_cmd_splited);
+	index.redir_num = redirect_num(one_cmd_splited, &index);
 	divid = malloc(sizeof(char **) * (index.redir_num + 1 + 1));
 	symbol_array = malloc(sizeof(char) * (index.redir_num + 1));
 	splited_by_redirect_norm(divid, split, symbol_array, &index);
