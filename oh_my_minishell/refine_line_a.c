@@ -44,12 +44,12 @@ char *refine_line(char *line)
 		if (line[v.i] == '\'' && v.flag_bq == 0)
 		{
 			if (small_quote(buff, line, &v) == 1)
-				return (ft_strdup("\0"));
+				return (NULL);
 		}
 		else // 스페이스 같은 경우는 나중에 else의 else에서 그냥 받아들이는 형태로 하면 될 듯
 		{
 			if (refining_factory(buff, line, &v, envlist) == 1)
-				return (ft_strdup("\0"));
+				return (NULL);
 		}
 		(v.i)++;
 	}

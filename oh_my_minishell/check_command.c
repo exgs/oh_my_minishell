@@ -54,6 +54,7 @@ static t_builtin	is_builtin(char command[])
 {
 	if (command == NULL)
 		return NULL;
+	/* 만약 quotes 있으면 띄어쓰기전까지 읽어서 */
 	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
 	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')

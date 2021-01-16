@@ -49,6 +49,62 @@ char		*ft_strsep(char **command, const char *delim)
 	return (init_str);
 }
 
+int check_firstquotes(char **splited, char *buff, t_var *v)
+{
+	if (splited[v->i][v->l] == '\'')
+	{
+		(v->l)++;
+		while (splited[v->i][v->l] != '\0')
+		{
+			if (splited[v->i][v->l] == '\'' && (v->l)++)
+				break ;
+			buff[(v->k)++] = splited[v->i][v->l];
+			(v->l)++;
+		}
+	}
+	else if (splited[v->i][v->l] == '"')
+	{
+		(v->l)++;
+		while (splited[v->i][v->l] != '\0')
+		{
+			if (splited[v->i][v->l] == '"' && (v->l)++)
+				break ;
+			buff[(v->k)++] = splited[v->i][v->l];
+			(v->l)++;
+		}
+	}
+	else
+		return (1);
+	return (0);
+}
+
+void unseal_firstquotes(char **splited)
+{
+	t_var v;
+	char buff[BUFF_MAX];
+
+	v.i = 0;
+	while (splited[v.i] != NULL)
+	{
+		v.l = 0;	v.k = 0;	init_array(buff);
+		/* 맨 처음 앞에 빈 공간 skip */;
+		while (ft_is_whitespace(splited[v.i][v.l]))
+			(v.l)++;
+		if (check_firstquotes(splited, buff, &v) == 1)
+		{
+			(v.i)++;
+			continue ;
+		}
+		while (splited[v.i][v.l] != '\0')
+		{
+			buff[(v.k)++] = splited[v.i][v.l];
+			(v.l)++;
+		}
+		free(splited[v.i]);
+		splited[v.i] = ft_strdup(buff);
+		(v.i)++;
+	}
+}
 
 void get_commands_from_gnl(t_list **cmd, char *line)
 {
@@ -68,6 +124,9 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 			continue ;
 		new = ft_lstnew(substr);
 		new->split_by_pipes = ft_split(substr, '|');
+		/* 여기서 new->split_by_pipes 가 따옴표로 시작하면 한꺼풀 걷어주자 */
+		unseal_firstquotes(new->split_by_pipes);
+		print_split(new->split_by_pipes);
 		ft_lstadd_back(cmd, new);
 		i++;
 	}
