@@ -57,7 +57,6 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 	char	*tmp;
 
 	tmp = 0;
-
 	path = refine_line(argv[1]);
 	if ((argv[1] && ft_strncmp(argv[1], "~", 2) == '\0') ||
 		(argv[1] && ft_strncmp(argv[1], "~", 2) == '/'))
@@ -75,9 +74,13 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 	else if (argv[1] && ft_strncmp(argv[1], "~+", 3) == 0)
 		tmp = "PWD";
 	if (tmp && !(path = get_path((char **)envp, tmp)))
+	{
+		free((char *)path);
 		return (msg_notset(tmp));
+	}
 	change_dir(path, (char **)envp);
 	if (argv[1] && ft_strncmp(argv[1], "-", 2) == 0)
 		ft_putendl_fd(get_path((char **)envp, "PWD"), 1);
+	free((char *)path);
 	return (0);
 }
