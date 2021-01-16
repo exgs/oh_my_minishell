@@ -51,6 +51,8 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	/* -n 옵션 들어갈 시 무시 */
 	if (flag_n != 1)
 		ft_putchar_fd('\n', 1);
+	if (echo_line == NULL)
+		return (0);
 	free(echo_line);
 	g_status = 0;
 	return (0);

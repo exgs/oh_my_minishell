@@ -160,6 +160,7 @@ void	init_array(char *buff);
 void	init_array_int(int *buff);
 void	check_semicolon(char *str);
 void	change_flag(int *flag);
+void	onoff_flag(int *flag);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
