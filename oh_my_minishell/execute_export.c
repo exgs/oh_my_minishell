@@ -31,6 +31,11 @@ static void	print_envp(char **envp) // DQ붙여서 해야함
 	i = 0;
 	while (tmp[i])
 	{
+		if (ft_strncmp(tmp[i], "_=", 2) == '\0')
+		{
+			i++;
+			continue ;
+		}
 		ft_putstr_fd("declare -x ", 1);
 		if ((eq = ft_strchr(tmp[i], '=')))
 		{

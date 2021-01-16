@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/09 03:30:43 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/16 00:33:08 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int execute_exit(const char *path, char *const argv[], char *const envp[])
 	if (i == 1)
 	{
 		// printf("i: %i\n", i);
+		ft_putendl_fd("exit", 1);
 		exit(g_status);
 	}
 	/* i = 2 일 경우, 명령어 제대로 들어옴 */
@@ -95,6 +96,7 @@ int execute_exit(const char *path, char *const argv[], char *const envp[])
 	{
 		// printf("i: %i\n", i);
 		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
+		ft_putendl_fd("exit", 1);
 		one_argv(cmd_splited[1]);
 	}
 	else
@@ -102,6 +104,7 @@ int execute_exit(const char *path, char *const argv[], char *const envp[])
 		// printf("i: %i\n", i);
 		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
 		// printf("cmd_splited[2]: %s\n", cmd_splited[2]);
+		ft_putendl_fd("exit", 1);
 		more_than_one_argv(cmd_splited[1]);
 	}
 	return (1);

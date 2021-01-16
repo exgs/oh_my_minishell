@@ -18,7 +18,10 @@ int main(int argc, char *argv[], char **envp)
 		while (!(get_next_line(0, &line)))
 		{
 			if (!g_flag[CTRL_D] && !line[0])
+			{
+				ft_putendl_fd("exit", 1);
 				exit(0);
+			}
 			g_flag[CTRL_D] = 1;
 		}
 		ft_memset(g_flag, 0, sizeof(int) * F_END);
