@@ -60,9 +60,9 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 	else if (-1 == stat(path, &sb))
 	{
 		/* 여기들어오는 게 비정상상태(잘못된 경로)*/
-		ft_putstr_fd("minishell: ", 1);
-		ft_putstr_fd(get_param()->cmd_trimed, 1);
-		ft_putendl_fd(": No such file or directory", 1);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(get_param()->cmd_trimed, 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		g_status = 127 * 256;
 		return (0);
 	}
@@ -99,7 +99,7 @@ int			execute_is_dir_file(const char *path, char *const argv[], char *const envp
 			}
 			else if (!(sb.st_mode & S_IXUSR)) /* user가 실행권한이 없으면 */
 			{
-				ft_putendl_fd(": Permission denied", 1);
+				ft_putendl_fd(": Permission denied", 2);
 				g_status = 126 * 256;
 			}
 		}

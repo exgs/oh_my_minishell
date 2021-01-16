@@ -23,9 +23,9 @@ int		execute_env(const char *path, char *const argv[], char *const envp[])
 	if (argv[1] != NULL)
 	{
 		g_status = 256 * 127;
-		ft_putstr_fd("env: ", 1);
-		ft_putstr_fd(argv[1], 1);
-		ft_putendl_fd(": No such file or directory", 1);
+		ft_putstr_fd("env: ", 2);
+		ft_putstr_fd(argv[1], 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		return (-1);
 	}
 
