@@ -22,7 +22,7 @@ int small_quote(char *buff, char *line, t_var *v)
 	/* 작은 따옴표가 없을 때 */
 	if (line[v->i] == '\0')
 	{
-		ft_putendl_fd("작은 따옴표 닫아주세요", 1);
+		ft_putendl_fd("작은 따옴표 닫아주세요", 2);
 		g_status = 1 * 256;
 		return (1);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/16 00:33:08 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/16 21:02:37 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ static void one_argv(char *argv)
 	/* 숫자만 있냐 아니냐? 판단하기 */
 	if (is_numeric(argv))
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", 2);
 		exit((unsigned char)ft_atoi(argv));
 	}
 	else
 	{
-		ft_putendl_fd("exit", 1);
-		ft_putstr_fd("bash: exit: ", 1);
-		ft_putstr_fd(argv, 1);
-		ft_putendl_fd(": numeric argument required", 1);
+		ft_putendl_fd("exit", 2);
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}
 }
@@ -59,17 +59,17 @@ static void more_than_one_argv(char *argv)
 	/* 숫자만 있냐 아니냐? 판단하기 */
 	if (is_numeric(argv))
 	{
-		ft_putendl_fd("exit", 1);
-		ft_putendl_fd("bash: exit: too many arguments", 1);
+		ft_putendl_fd("exit", 2);
+		ft_putendl_fd("bash: exit: too many arguments", 2);
 		// exit(1); // <== 이 경우에는 종료 안됨 하지만 exitcode가 1이 되는 건 맞음.
 		g_status = 1 * 256;
 	}
 	else
 	{
-		ft_putendl_fd("exit", 1);
-		ft_putstr_fd("bash: exit: ", 1);
-		ft_putstr_fd(argv, 1);
-		ft_putendl_fd(": numeric argument required", 1);
+		ft_putendl_fd("exit", 2);
+		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd(argv, 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
 	}
 }

@@ -108,7 +108,7 @@ static void	ft_execve(const char *path, char *const argv[], char *const envp[])
 		}
 	}
 	else
-		waitpid(pid, &g_status, 0);	
+		waitpid(pid, &g_status, 0);
 }
 
 void		check_command(char *cmd, char *argv[], char *envp[])

@@ -13,10 +13,10 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 	i = 0;
 	if (path[1] == '?')
 	{
-		ft_putendl_fd(str, 1);
-		ft_putstr_fd("bash: ", 1);
-		ft_putnbr_fd(g_status / 256, 1);
-		ft_putendl_fd(": command not found", 1);
+		ft_putendl_fd(str, 2);
+		ft_putstr_fd("bash: ", 2);
+		ft_putnbr_fd(g_status / 256, 2);
+		ft_putendl_fd(": command not found", 2);
 		g_status = 127 * 256;
 		return (0);
 	}

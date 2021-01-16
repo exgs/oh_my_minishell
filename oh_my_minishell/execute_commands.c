@@ -4,7 +4,7 @@ static void error_except()
 {
 	if (g_except[SYNTAX] != 0)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token '", 1);
+		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 		if (g_except[SYNTAX] == 10)
 			ft_putstr_fd("newline", 1);
 		else
@@ -38,7 +38,7 @@ int execute_command(char **split_by_pipes)
 	{
 		g_except[SYNTAX] = 10;
 		return (-1);
-	}	
+	}
 	if (split_by_pipes[1] == NULL)
 	{
 		if (-1 == (execute_command_nopipe(split_by_pipes[0])))

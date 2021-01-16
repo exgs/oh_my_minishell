@@ -122,7 +122,7 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	/* 환경변수 리스트 돌려서 똑같은 거 찾은 다음 바꿔치기 해줘야함. */
 	if (replace_env(temp, envlist) == 1)
 	{
-		ft_putendl_fd("환경변수 에러", 1);
+		ft_putendl_fd("환경변수 에러", 2);
 		g_status = 1 * 256;
 		return (1);
 	}
