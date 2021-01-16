@@ -36,7 +36,7 @@ static void	change_dir(const char *path, char *envp[])
 	argv[1] = ft_strjoin("OLDPWD=", pwd);
 	execute_export(argv[0], argv, get_param()->envp);
 	free(argv[1]);
-	getcwd(pwd, PATH_MAX + 1);	
+	getcwd(pwd, PATH_MAX + 1);
 	argv[1] = ft_strjoin("PWD=", pwd);
 	execute_export(argv[0], argv, get_param()->envp);
 	free(argv[1]);

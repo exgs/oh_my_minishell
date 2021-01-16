@@ -32,6 +32,7 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	char *echo_line;
 
 	one_cmd_trimed = get_param()->cmd_trimed;
+	// ft_putendl_fd(one_cmd_trimed, 1);
 	i = 4;
 	flag_n = 0;
 	if (ft_strncmp(one_cmd_trimed, "/bin/echo", 9) == 0)
