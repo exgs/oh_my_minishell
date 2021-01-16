@@ -136,6 +136,8 @@ void		check_command(char *cmd, char *argv[], char *envp[])
 //		printf("path : %s\n", path);
 		if (is_same_file(path, "/usr/bin/env"))
 			execute_env(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
+		else if (is_same_file(path, "/bin/echo"))
+			execute_echo(path, argv, envp);
 		else
 			ft_execve(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
 		free(path);
