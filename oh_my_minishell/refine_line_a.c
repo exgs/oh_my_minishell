@@ -35,6 +35,8 @@ char *refine_line(char *line)
 	t_var v;
 	char **envlist;
 
+	if (!line)
+		return (NULL);
 	envlist = get_param()->envp;
 	init_value(buff, &v);
 	while (line[v.i] != '\0')

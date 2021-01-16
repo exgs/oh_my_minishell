@@ -57,8 +57,8 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 	char	*tmp;
 
 	tmp = 0;
-	path = argv[1];
-	// path = refine_line(argv[1]);
+
+	path = refine_line(argv[1]);
 	if ((argv[1] && ft_strncmp(argv[1], "~", 2) == '\0') ||
 		(argv[1] && ft_strncmp(argv[1], "~", 2) == '/'))
 	{
