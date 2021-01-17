@@ -74,3 +74,24 @@ void check_semicolon(char *str)
 		i++;
 	}
 }
+
+char *ft_strdup_by_index(char *str, int start, int end)
+{
+	char *new;
+	int i;
+	int j;
+
+	if (str == NULL || start < 0 || start > end || ft_strlen(str) < end)
+		return (0);
+	if (start == end)
+		ft_strdup(" ");
+	new = malloc(sizeof(char) * (end - start + 2));
+	i = start;	j = 0;
+	while (i <= end)
+	{
+		new[j] = str[i];
+		i++;	j++;
+	}
+	new[j] = '\0';
+	return (new);
+}

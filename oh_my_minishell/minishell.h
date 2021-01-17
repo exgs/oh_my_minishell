@@ -108,6 +108,7 @@ typedef struct	s_var
 	int k;
 	int l;
 	int flag_bq; // 큰 따옴표
+	int flag_sq; // 작은 따옴표
 }				t_var;
 
 
@@ -160,7 +161,7 @@ void	init_array(char *buff);
 void	init_array_int(int *buff);
 void	check_semicolon(char *str);
 void	change_flag(int *flag);
-void	onoff_flag(int *flag);
+char *ft_strdup_by_index(char *str, int start, int end);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
