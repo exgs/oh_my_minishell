@@ -2,6 +2,8 @@
 
 static int	is_valid(char str[])
 {
+	if (ft_isdigit(str[0]))
+		return (0);
 	while (*str)
 	{
 		if (!ft_isalnum(*str) && !(*str == '_'))

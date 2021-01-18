@@ -6,6 +6,8 @@ static int	is_valid(char str[])
 	int		end;
 	char	*eq;
 
+	if (ft_isdigit(str[0]))
+		return (0);
 	if ((eq = ft_strchr(str, '=')))
 		end = eq - str;
 	else
