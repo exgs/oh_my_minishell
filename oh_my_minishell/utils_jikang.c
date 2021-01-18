@@ -95,3 +95,9 @@ char *ft_strdup_by_index(char *str, int start, int end)
 	new[j] = '\0';
 	return (new);
 }
+
+void	free_init(char **data, char *init)
+{
+	free(*data);
+	*data = init;
+}

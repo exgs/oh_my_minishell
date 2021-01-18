@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/16 21:02:37 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/18 19:22:01 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,21 @@ static void more_than_one_argv(char *argv)
 	}
 }
 
+static void change_split(char **argv)
+{
+	char *str;
+
+	str = refine_line(argv[1]);
+	free_init(&argv[1], str);
+}
+
 int execute_exit(const char *path, char *const argv[], char *const envp[])
 {
 	char **cmd_splited = get_param()->cmd_splited;
 	int i;
 
 	i = 0;
+	change_split(cmd_splited);
 	// printf("cmd_splited[0]: %s\n", cmd_splited[0]);
 	while (cmd_splited[i] != NULL)
 		i++;

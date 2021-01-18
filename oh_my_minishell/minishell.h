@@ -162,6 +162,7 @@ void	init_array_int(int *buff);
 void	check_semicolon(char *str);
 void	change_flag(int *flag);
 char *ft_strdup_by_index(char *str, int start, int end);
+void	free_init(char **data, char *init);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);

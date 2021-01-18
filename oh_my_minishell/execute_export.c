@@ -53,10 +53,10 @@ static void	print_envp(char **envp) // DQ붙여서 해야함
 }
 
 
-//argv 있으면 
+//argv 있으면
 	//찾아보고 있으면 값 바꾸기
 	//찾아보고 없으면 뒤에 추가
-//argv 없으면 
+//argv 없으면
 	//출력
 
 static void	change_value(char **envp, char argv[])
@@ -78,7 +78,7 @@ static void	change_value(char **envp, char argv[])
 // a=4
 // aa=4
 
-// "a" "a=c" "a" "a=d" 
+// "a" "a=c" "a" "a=d"
 static int	is_exist(char *envp[], char argv[])
 {
 	int		i;
@@ -100,11 +100,19 @@ static int	is_exist(char *envp[], char argv[])
 	return (0);
 }
 
+static void change_split(char **argv)
+{
+	char *str;
+	str = refine_line(argv[1]);
+	free_init(&argv[1], str);
+}
+
 int			execute_export(const char *path, char *const argv[], char *const envp[])
 {
 	int		i;
 	int		j;
 
+	change_split((char **)argv);
 	argv++;
 	if (vector_size((char **)argv))
 	{
