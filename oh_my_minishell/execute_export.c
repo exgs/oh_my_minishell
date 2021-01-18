@@ -84,18 +84,22 @@ static void	change_value(char **envp, char argv[])
 static int	is_exist(char *envp[], char argv[])
 {
 	int		i;
-	char	*eq;
+	int		envp_len;
+	int		argv_len;
 	int		ret;
 
 	i = 0;
 	while (envp[i])
 	{
-		if ((eq = ft_strchr(argv, '=')))
-			ret = ft_strncmp(envp[i], argv, eq - argv + 1); // =
-		else
-			ret = ft_strncmp(envp[i], argv, ft_strlen(argv) + 1); // =
+		argv_len = ft_strchr(argv, '=') - argv;
+		envp_len = ft_strchr(envp[i], '=') - envp[i];
+		if (argv_len < 0)
+			argv_len = ft_strlen(argv);
+		if (envp_len < 0)
+			envp_len = ft_strlen(envp[i]);
+		ret = ft_strncmp(envp[i], argv, argv_len + 1);
 //		printf("envp : %s\nargv : %s\ndiff : %d\n\n", envp[i], argv, ret);
-		if (ret == '=' || ret == -'=' || ret == '\0')
+		if ((argv_len == envp_len) && (ret == '=' || ret == -'=' || ret == '\0'))
 			return (i);
 		i++;
 	}
