@@ -19,6 +19,7 @@ int check_env(char *temp, char **envlist)
 		/* 우리가 찾는 환경 변수와 일치하다면 buff 에 알맞은 그 값을 넣어 준다. */
 		if (ft_strncmp(envlist[i], temp, ft_strlen(temp) + 1) == '=')
 		{
+			ft_bzero(temp, ft_strlen(temp));
 			var = ft_strchr(envlist[i], '=');
 			var++; /* '=' 이후가 진짜이니 +1 해준다. */
 			j = 0;
