@@ -108,9 +108,19 @@ static int	is_exist(char *envp[], char argv[])
 
 static void change_split(char **argv)
 {
-	char *str;
-	str = refine_line(argv[1]);
-	free_init(&argv[1], str);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (argv[i])
+	{
+		if ((tmp = refine_line(argv[i])))
+		{
+			free(argv[i]);
+			argv[i] = tmp;
+		}
+		i++;
+	}
 }
 
 int			execute_export(const char *path, char *const argv[], char *const envp[])
