@@ -13,25 +13,21 @@ static int	is_valid(char str[])
 	return (1);
 }
 
-char *erase_dollar(char *str)
-{
-	char *new;
-
-	if (str[0] == '$')
-	{
-		new = ft_strdup_by_index(str, 1 , ft_strlen(str));
-		return (new);
-	}
-	return (NULL);
-}
-
 static void change_split(char **argv)
 {
-	char *str;
-	/* $를 없애는 */
-	str = erase_dollar(argv[1]);
-	if (str != NULL)
-		free_init(&argv[1], str);
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (argv[i])
+	{
+		if ((tmp = refine_line(argv[i])))
+		{
+			free(argv[i]);
+			argv[i] = tmp;
+		}
+		i++;
+	}
 }
 
 int		execute_unset(const char *path, char *const argv[], char *const envp[])
@@ -41,9 +37,8 @@ int		execute_unset(const char *path, char *const argv[], char *const envp[])
 	int		ret;
 	char	*eq;
 
-	print_split((char **)argv);
-	change_split((char **)argv);
 	argv++;
+	change_split((char **)argv);
 	i = 0;
 	while (argv[i])
 	{
