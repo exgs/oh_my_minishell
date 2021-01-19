@@ -15,19 +15,31 @@ int main(int argc, char *argv[], char **envp)
 			g_flag[CTRL_BS] = 0;
 		else
 			ft_putstr_fd("minishell$ ",1);
+		// while (read(0, &c, 1) !=0 && c != '\n' )
+		// {
+		// 	// printf("value:%c\n", c);
+		// 	ft_addchr(&line, c);
+		// 	if (!g_flag[CTRL_D] && !line[0])
+		// 	{
+		// 		ft_putendl_fd("exit", 1);
+		// 		exit(0);
+		// 	}
+		// 	g_flag[CTRL_D] = 1;
+		// }
 		while (!(get_next_line(0, &line)))
 		{
-			if (!g_flag[CTRL_D] && !line[0])
+			if (!line[0])
 			{
 				ft_putendl_fd("exit", 1);
 				exit(0);
 			}
-			g_flag[CTRL_D] = 1;
+			// g_flag[CTRL_D] = 1;
 		}
 		ft_memset(g_flag, 0, sizeof(int) * F_END);
 		get_commands_from_gnl(&cmds, line);
 		execute_multi_commands(cmds);
 		free(line);
+		line = NULL;
 		ft_lstclear(&cmds, NULL);
 	}
 	minishell_exit(cmds);
