@@ -197,7 +197,7 @@ void get_commands_from_gnl(t_list **cmd, char *line)
 		new->split_by_pipes = split_pipe(substr);
 		/* 여기서 new->split_by_pipes 가 따옴표로 시작하면 한꺼풀 걷어주자 */
 		unseal_firstquotes(new->split_by_pipes);
-		print_split(new->split_by_pipes);
+		// print_split(new->split_by_pipes);
 		ft_lstadd_back(cmd, new);
 		i++;
 	}

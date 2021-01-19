@@ -87,12 +87,12 @@ int		execute_command_nopipe(char *one_cmd)
 	get_param()->cmd_splited = ft_split(g_buf, ' ');
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
-	print_3d_split(get_param()->cmd_redirect);
-	for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
-	{
-		printf("%d|", get_param()->symbol_array[i]);
-	}
-	printf("\n");
+	// print_3d_split(get_param()->cmd_redirect);
+	// for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
+	// {
+	// 	printf("%d|", get_param()->symbol_array[i]);
+	// }
+	// printf("\n");
 	while (get_param()->symbol_array[i] != 0)
 	{
 		if (get_param()->symbol_array[i] == -1)
