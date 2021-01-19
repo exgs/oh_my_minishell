@@ -12,6 +12,9 @@ void	catch_sigquit(int pid)
 	pid = waitpid(-1, &g_status, WNOHANG);
 	if (!pid)
 		ft_putstr_fd("Quit: 3\n", 1);
+	g_flag[CTRL_Q] = 1;
+	// else
+	// 	ft_putstr_fd("\nQuit: 3", 1);
 }
 
 void	catch_signals(void)

@@ -64,6 +64,7 @@ enum	e_flag
 {
 	CTRL_D,
 	CTRL_BS,
+	CTRL_Q,
 	F_END
 };
 
