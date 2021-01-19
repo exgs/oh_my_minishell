@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/18 19:22:01 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/19 22:15:42 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int execute_exit(const char *path, char *const argv[], char *const envp[])
 	{
 		// printf("i: %i\n", i);
 		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
-		ft_putendl_fd("exit", 1);
 		one_argv(cmd_splited[1]);
 	}
 	else
@@ -113,7 +112,6 @@ int execute_exit(const char *path, char *const argv[], char *const envp[])
 		// printf("i: %i\n", i);
 		// printf("cmd_splited[1]: %s\n", cmd_splited[1]);
 		// printf("cmd_splited[2]: %s\n", cmd_splited[2]);
-		ft_putendl_fd("exit", 1);
 		more_than_one_argv(cmd_splited[1]);
 	}
 	return (1);
