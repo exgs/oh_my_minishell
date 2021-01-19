@@ -33,16 +33,14 @@ int main(int argc, char *argv[], char **envp)
 			g_flag[CTRL_BS] = 0;
 		else
 			ft_putstr_fd("minishell$ ",1);
-		while (read(0, &c, 1))
+		while (read(0, &c, 1) && c != '\n')
 		{
-			if (c == '\n')
-				break;
-			else if (c == '\0')
-			{
-				ft_putendl_fd("exit", 1);
-				minishell_exit(cmds); exit(0);
-			}
 			ft_addchr(&line, c);
+		}
+		if (c == '\0')
+		{
+			ft_putendl_fd("exit", 1);
+			minishell_exit(cmds); exit(0);
 		}
 		ft_memset(g_flag, 0, sizeof(int) * F_END);
 		get_commands_from_gnl(&cmds, line);
