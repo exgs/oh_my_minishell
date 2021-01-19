@@ -13,7 +13,8 @@ static void ft_addchr(char **s, char c)
 	ret = ft_calloc(count, sizeof(char));
 	if (*s)
 		ft_strlcpy(ret, *s, count);
-	ret[count - 2] = c;
+	if (c != '\n')
+		ret[count - 2] = c;
 	if (*s != NULL)
 		free(*s);
 	*s = ret;
@@ -38,9 +39,9 @@ int main(int argc, char *argv[], char **envp)
 		while (1 == (g_flag[CTRL_D] = 1) && read(0, &c, 1))
 		{
 			g_flag[CTRL_D] = 0;
+			ft_addchr(&line, c);
 			if (c == '\n')
 				break;
-			ft_addchr(&line, c);
 		}
 	
 		if (g_flag[CTRL_D] == 1)
