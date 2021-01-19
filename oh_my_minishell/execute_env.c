@@ -5,7 +5,7 @@ static void	export_env_path(const char *path,
 {
 	char	*tmp[3];
 
-	tmp[0] = "export";
+	tmp[0] = ft_strdup("export");
 	if (ft_strncmp(path, "env", 4) == '\0')
 		tmp[1] = ft_strjoin("_=", "/usr/bin/env");
 	else
