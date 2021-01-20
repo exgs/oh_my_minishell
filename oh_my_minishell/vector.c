@@ -1,22 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 05:17:36 by ykoh              #+#    #+#             */
+/*   Updated: 2021/01/21 05:17:37 by ykoh             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-void	vector_erase(char *arr[], int target)
-{
-	free(arr[target]); //원래 지워야되는데 지금은 테스트를 위해 envp를 복사하지 않았으니 주석
-
-	while (arr[target])
-	{
-		arr[target] = arr[target + 1];
-		target++;
-	}
-}
 
 void	vector_sort(char *arr[])
 {
-	int i;
-	int	j;
-	int	size;
-	char *tmp;
+	int		i;
+	int		j;
+	int		size;
+	char	*tmp;
 
 	size = vector_size(arr);
 	i = 0;
@@ -25,8 +26,7 @@ void	vector_sort(char *arr[])
 		j = i + 1;
 		while (j < size)
 		{
-//			if (strcmp(arr[i], arr[j]) > 0) //strcmp 만들어야함
-			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i]) + 1) > 0) //strcmp 만들어야함
+			if (ft_strncmp(arr[i], arr[j], ft_strlen(arr[i]) + 1) > 0)
 			{
 				tmp = arr[i];
 				arr[i] = arr[j];
