@@ -1,64 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   refine_line_c.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 01:47:13 by jikang            #+#    #+#             */
+/*   Updated: 2021/01/21 01:47:55 by jikang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int is_env_ch(char c)
+void		take_buff(char *buff, char *temp, int *k)
 {
-	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-int check_env(char *temp, char **envlist)
-{
-	int i;
-	int j;
-	char *var;
-
-	i = 0;
-	while (envlist[i] != NULL)
-	{
-		/* 우리가 찾는 환경 변수와 일치하다면 buff 에 알맞은 그 값을 넣어 준다. */
-		if (ft_strncmp(envlist[i], temp, ft_strlen(temp) + 1) == '=')
-		{
-			ft_bzero(temp, ft_strlen(temp));
-			var = ft_strchr(envlist[i], '=');
-			var++; /* '=' 이후가 진짜이니 +1 해준다. */
-			j = 0;
-			while (*var != '\0')
-			{
-				temp[j] = *var;
-				var++;	j++;
-			}
-			return (0); // 0 이 정상적으로 찾음
-		}
-		i++;
-	}
-	return (1); // 1이 환경변수 찾지 못함.
-}
-
-int replace_env(char *temp, char **envlist)
-{
-	int i;
-	int j;
-
-	if (temp[0] == 0)
-	{
-		temp[0] = '$';
-		return(0);
-	}
-	if (ft_strncmp("?", temp, ft_strlen(temp) + 1) == 0)
-	{
-		temp[0] = '$';
-		temp[1] = '?';
-		return (0);
-	}
-	if (check_env(temp, envlist) == 0)
-		return (0);
-	return (1);
-}
-
-void take_buff(char *buff, char *temp, int *k)
-{
-	int j;
+	int		j;
 
 	j = 0;
 	while (temp[j] != '\0')
@@ -76,9 +32,9 @@ void take_buff(char *buff, char *temp, int *k)
 ** @inside big quote, ex) bash$ "\"", bash$ "\n"
 */
 
-void insert_dq_in_str(char *str, t_var *v)
+void		insert_dq_in_str(char *str, t_var *v)
 {
-	int exit_status;
+	int		exit_status;
 
 	exit_status = g_status / 256;
 	if (exit_status > 100)
@@ -98,7 +54,14 @@ void insert_dq_in_str(char *str, t_var *v)
 	}
 }
 
-int dollor_qmark(char *buff, char *line, t_var *v)
+static int	is_env_ch(char c)
+{
+	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
+		return (1);
+	return (0);
+}
+
+int			dollor_qmark(char *buff, char *line, t_var *v)
 {
 	if (line[v->i] == '$')
 	{
@@ -111,6 +74,7 @@ int dollor_qmark(char *buff, char *line, t_var *v)
 		insert_dq_in_str(buff, v);
 		return (0);
 	}
+	return (1);
 }
 
 /*
@@ -121,10 +85,10 @@ int dollor_qmark(char *buff, char *line, t_var *v)
 ** ex) $$, $?, $PWD, $unknown
 */
 
-int convert_env(char *buff, char *line, t_var *v, char **envlist)
+int			convert_env(char *buff, char *line, t_var *v, char **envlist)
 {
-	int j;
-	char temp[BUFF_MAX];
+	int		j;
+	char	temp[BUFF_MAX];
 
 	init_array(temp);
 	(v->i)++;

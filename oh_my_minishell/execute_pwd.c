@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:00:50 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/09 03:30:46 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/20 23:30:14 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 ** getcwd 는 buf 가 NULL 이면, 동적할당을 해준다. 그래서 free 필요.
 */
 
-int execute_pwd(const char *path, char *const argv[], char *const envp[])
+int			execute_pwd(const char *path, char *const argv[],
+							char *const envp[])
 {
-	char *pwd;
+	char	*pwd;
 
 	if (!(pwd = getcwd(NULL, PATH_MAX)))
 	{

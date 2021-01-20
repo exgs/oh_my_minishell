@@ -1,20 +1,16 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   refine_line_a.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 01:39:47 by jikang            #+#    #+#             */
+/*   Updated: 2021/01/21 01:40:26 by jikang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-/*
-** name : init_value
-** aim : initialize variables
-** @i is for line index
-** @k is for buff index(buff is for return string)
-** @l is for valid pipe index which is for divide string
-*/
-static void init_value(char *buff, t_var *v)
-{
-	init_array(buff);
-	v->flag_bq = 0;
-	v->i = 0;
-	v->k = 0;
-	v->l = 0;
-}
+#include "minishell.h"
 
 /*
 ** name : small_quote
@@ -22,7 +18,8 @@ static void init_value(char *buff, t_var *v)
 ** @while : all charectors regards as literal.
 ** @if : when small quote is not closed, error returned.
 */
-int small_quote(char *buff, char *line, t_var *v)
+
+int			small_quote(char *buff, char *line, t_var *v)
 {
 	(v->i)++;
 	while (line[v->i] != '\'' && line[v->i] != '\0')
@@ -47,11 +44,11 @@ int small_quote(char *buff, char *line, t_var *v)
 ** without small quote is go to "refining factory"
 */
 
-char *refine_line(char *line)
+char		*refine_line(char *line)
 {
-	char buff[BUFF_MAX];
-	t_var v;
-	char **envlist;
+	char	buff[BUFF_MAX];
+	t_var	v;
+	char	**envlist;
 
 	if (!line)
 		return (NULL);
