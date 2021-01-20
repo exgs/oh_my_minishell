@@ -179,12 +179,13 @@ int		need_redirection();
 
 // signal.c
 void	catch_signals(void);
-// init_exit.c
+// init.c
 void	minishell_init(int argc, char *argv[], char **envp);
+void	dup_initalize();
+// exit.c
 void	minishell_exit(t_list *cmds);
 void	cmds_exit(t_list *cmd);
 void	cmd_exit();
-void	dup_initalize();
 
 // vector.c
 void	vector_erase(char *arr[], int target);

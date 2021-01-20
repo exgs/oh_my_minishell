@@ -1,26 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 02:18:08 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 02:25:45 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-
-void	minishell_init(int argc, char **argv, char **envp)
-{
-	ft_memset(g_flag, 0, sizeof(int) * F_END);
-	ft_memset(g_buf, 0, sizeof(char) * 1000);
-	ft_memset(get_param()->semi_arr, 0, sizeof(int) * 1000);
-	ft_memset(g_except, 0, sizeof(char) * EX_END);
-	g_dup_stdin = dup(STDIN_FILENO);
-	g_dup_stdout = dup(STDOUT_FILENO);
-	get_param()->cmd_trimed = NULL;
-	get_param()->cmd_splited = NULL;
-	get_param()->cmd_redirect = NULL;
-	get_param()->symbol_array = NULL;
-	get_param()->envp = vector_dup(envp);
-	init_array_int(get_param()->semi_arr);
-	catch_signals();
-}
 
 void	minishell_exit(t_list *cmds)
 {
 	t_data *data;
+
 	data = get_param();
 	if (data->cmd_trimed != NULL)
 		free(data->cmd_trimed);
@@ -49,6 +44,7 @@ void	minishell_exit(t_list *cmds)
 void	cmds_exit(t_list *cmds)
 {
 	t_data *data;
+
 	data = get_param();
 	if (data->cmd_trimed != NULL)
 		free(data->cmd_trimed);
@@ -69,14 +65,14 @@ void	cmds_exit(t_list *cmds)
 		cmds->split_by_pipes = NULL;
 		cmds = cmds->next;
 	}
-
 	ft_memset(get_param()->semi_arr, 0, sizeof(int) * 1000);
 	ft_memset(g_except, 0, sizeof(int) * EX_END);
 }
 
-void	cmd_exit()
+void	cmd_exit(void)
 {
 	t_data *data;
+
 	data = get_param();
 	if (data->cmd_trimed != NULL)
 		free(data->cmd_trimed);
@@ -90,10 +86,4 @@ void	cmd_exit()
 	if (data->symbol_array != NULL)
 		free(data->symbol_array);
 	data->symbol_array = NULL;
-}
-
-void	dup_initalize()
-{
-	dup2(g_dup_stdin, STDIN_FILENO);
-	dup2(g_dup_stdout, STDOUT_FILENO);
 }
