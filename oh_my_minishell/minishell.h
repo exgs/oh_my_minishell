@@ -195,11 +195,17 @@ void	vector_push_back(char **arr[], char str[]);
 
 int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
-int		execute_cd(const char *path, char *const argv[], char *const envp[]);
-int		execute_dqmark(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 void	print_envp(char **envp);
+int		execute_cd(const char *path, char *const argv[], char *const envp[]);
+int		execute_path(const char *path, char *const argv[], char *const envp[]);
 
+//execute_cd_utils.c
+int		is_home_cd(const char *str);
+//execute_path_utils.c
+int command_not_found_g_status(char *str);
+void copy_pathname(char *str, char *buff);
+int is_macro_in_envp(const char *env_line, char *buff);
 //check_command.c
 void check_command(char *cmd, char *argv[], char *envp[]);
 
