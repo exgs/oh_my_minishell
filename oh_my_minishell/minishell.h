@@ -201,6 +201,10 @@ int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
 int		execute_path(const char *path, char *const argv[], char *const envp[]);
 
+//execute_path_utils.c
+int command_not_found_g_status(char *str);
+void copy_pathname(char *str, char *buff);
+int is_macro_in_envp(const char *env_line, char *buff);
 //check_command.c
 void check_command(char *cmd, char *argv[], char *envp[]);
 // check_command_utils.c
