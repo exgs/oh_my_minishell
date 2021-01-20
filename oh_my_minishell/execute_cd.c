@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/20 23:35:05 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 03:33:31 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char *get_path(char *envp[], char str[])
+static char	*get_path_cd(char *envp[], char str[])
 {
 	int	i;
 
@@ -52,7 +64,7 @@ static int	msg_notset(char str[])
 	return (-1);
 }
 
-static void change_split(char **argv)
+static void	change_split(char **argv)
 {
 	int		i;
 	char	*tmp;
@@ -76,10 +88,9 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 	tmp = 0;
 	change_split((char **)argv + 1);
 	path = argv[1];
-	if ((argv[1] && ft_strncmp(argv[1], "~", 2) == '\0') ||
-		(argv[1] && ft_strncmp(argv[1], "~", 2) == '/'))
+	if (is_home_cd(path) == TRUE)
 	{
-		path = ft_strjoin(get_path((char **)envp, "HOME"), argv[1] + 1);
+		path = ft_strjoin(get_path_cd((char **)envp, "HOME"), argv[1] + 1);
 		change_dir(path, (char **)envp);
 		free((char *)path);
 		return (0);
@@ -91,10 +102,10 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 		tmp = "OLDPWD";
 	else if (argv[1] && ft_strncmp(argv[1], "~+", 3) == 0)
 		tmp = "PWD";
-	if (tmp && !(path = get_path((char **)envp, tmp)))
+	if (tmp && !(path = get_path_cd((char **)envp, tmp)))
 		return (msg_notset(tmp));
 	change_dir(path, (char **)envp);
 	if (argv[1] && ft_strncmp(argv[1], "-", 2) == 0)
-		ft_putendl_fd(get_path((char **)envp, "PWD"), 1);
+		ft_putendl_fd(get_path_cd((char **)envp, "PWD"), 1);
 	return (0);
 }

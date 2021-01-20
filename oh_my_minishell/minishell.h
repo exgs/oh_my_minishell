@@ -125,6 +125,17 @@ typedef struct	s_data {
 	int semi_arr[BUFF_MAX];
 }				t_data;
 
+typedef struct s_index
+{
+	int				i;
+	int				j;
+	int				z;
+	int				before;
+	int				cnt;
+	int				redir_num;
+	unsigned char	f_quote;
+}t_index;
+
 //builtin함수의 prototype 다 맞춰야 check_command 조건문 사용가능
 typedef int	(*t_builtin)(const char *, char *const[], char *const[]);
 
@@ -170,8 +181,10 @@ void init_value(char *buff, t_var *v);
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
 int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
+//pipe_utils.c
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
+int		need_redirection(void);
 // char	*which_command2(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
@@ -179,12 +192,13 @@ int		need_redirection();
 
 // signal.c
 void	catch_signals(void);
-// init_exit.c
+// init.c
 void	minishell_init(int argc, char *argv[], char **envp);
+void	dup_initalize();
+// exit.c
 void	minishell_exit(t_list *cmds);
 void	cmds_exit(t_list *cmd);
 void	cmd_exit();
-void	dup_initalize();
 
 // vector.c
 void	vector_sort(char *arr[]);
@@ -208,14 +222,21 @@ void copy_pathname(char *str, char *buff);
 int is_macro_in_envp(const char *env_line, char *buff);
 //check_command.c
 void check_command(char *cmd, char *argv[], char *envp[]);
-
+// check_command_utils.c
+char	*get_path(char *cmd, char *argv[], char *envp[]);
+void	ft_execve(const char *path, char *const argv[], char *const envp[]);
 //is_execve.c
 int is_execve(char *path, char **cmd_split, char *envp[]);
 
 //redirection.c
 char	***splited_by_redirect(char **one_cmd_splited, char **array);
 int		parsing_redirect(char *str);
+//redirection_execute_part.c
 int		execute_nopipe_redirect();
+//redirection_utils.c
+void	input_symbol(char **split, char *symbol_array, t_index *index);
+int		parsing_redirect(char *str);
+void	s_index_bzero(t_index *index);
 
 // ft_strsemi.c
 char *ft_strsemi(char **str, int *array, int i);

@@ -1,98 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 01:13:08 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char *string_tolower(char *str)
+static void	set_get_param(char *one_cmd)
 {
-	int i;
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (str[i])
-	{
-		str[i] = ft_tolower(str[i]);
-		i++;
-	}
-	return (str);
-}
-
-int		which_command(char *cmd)
-{
-	if (cmd == NULL)
-		return (-1);
-	// if (!ft_strncmp(string_tolower(cmd),"echo",10))
-	// 	return (ECHO);
-	// if (!ft_strncmp(string_tolower(cmd),"cd",10))
-	// 	return (CD);
-	// if (!ft_strncmp(string_tolower(cmd),"pwd",10))
-	// 	return (PWD);
-	// if (!ft_strncmp(string_tolower(cmd),"export",10))
-	// 	return (EXPORT);
-	// if (!ft_strncmp(string_tolower(cmd),"unset",10))
-	// 	return (UNSET);
-	// if (!ft_strncmp(string_tolower(cmd),"env",10))
-	// 	return (ENV);
-	// if (!ft_strncmp(string_tolower(cmd),"exit",10))
-	// 	return (EXIT);
-	if (!ft_strncmp(string_tolower(cmd),"ls",10))
-		return (LS);
-	if (!ft_strncmp(string_tolower(cmd),"/bin/ls",10))
-		return (LS);
-	if (!ft_strncmp(string_tolower(cmd),"grep",10))
-		return (GREP);
-	if (!ft_strncmp(string_tolower(cmd),"/usr/bin/grep",15))
-		return (GREP);
-	if (!ft_strncmp(string_tolower(cmd),"clear",10))
-		return (CLEAR);
-	if (!ft_strncmp(string_tolower(cmd),"/usr/bin/clear",15))
-		return (CLEAR);
-	if (!ft_strncmp(string_tolower(cmd),"cat",10))
-		return (CAT);
-	if (!ft_strncmp(string_tolower(cmd),"/bin/cat",15))
-		return (CAT);
-	else
-		return (-1);
-}
-
-// char	*which_command2(int num_cmd)
-// {
-// 	if (num_cmd == -1)
-// 		return ("/bin/ls");
-// 	if (num_cmd == 0)
-// 		return ("/bin/echo");
-// 	if (num_cmd == 1)
-// 		return ("/bin/cd");
-// 	if (num_cmd == 2)
-// 		return ("/bin/pwd");
-// 	if (num_cmd == 3)
-// 		return ("/bin/export");
-// 	if (num_cmd == 4)
-// 		return ("/bin/unset");
-// 	if (num_cmd == 5)
-// 		return ("/bin/env");
-// 	if (num_cmd == 6)
-// 		return ("/bin/exit");
-// 	if (num_cmd == 7)
-// 		return ("/bin/ls");
-// 	if (num_cmd == 8)
-// 		return ("/usr/bin/grep");
-// 	else
-// 		return 0;
-// }
-
-int		execute_command_nopipe(char *one_cmd)
-{
-	int i = 0;
-
 	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
 	parsing_redirect(get_param()->cmd_trimed);
 	get_param()->cmd_splited = ft_split(g_buf, ' ');
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
-	// print_3d_split(get_param()->cmd_redirect);
-	// for (size_t i = 0; get_param()->symbol_array[i] != 0; i++)
-	// {
-	// 	printf("%d|", get_param()->symbol_array[i]);
-	// }
-	// printf("\n");
+}
+
+int			execute_command_nopipe(char *one_cmd)
+{
+	int i;
+
+	i = 0;
+	set_get_param(one_cmd);
 	while (get_param()->symbol_array[i] != 0)
 	{
 		if (get_param()->symbol_array[i] == -1)
@@ -101,7 +35,8 @@ int		execute_command_nopipe(char *one_cmd)
 	}
 	if (get_param()->symbol_array[0] == 0)
 	{
-		check_command(get_param()->cmd_splited[0], get_param()->cmd_splited, get_param()->envp);
+		check_command(get_param()->cmd_splited[0], get_param()->cmd_splited,
+															get_param()->envp);
 		return (1);
 	}
 	else
@@ -112,33 +47,12 @@ int		execute_command_nopipe(char *one_cmd)
 	return (1);
 }
 
-int need_redirection()
+void		child_process(char **one_cmd_splited, int *fd)
 {
-	int i;
-
-	i = 0;
-	while (get_param()->symbol_array[i] != 0)
-	{
-		if (get_param()->symbol_array[i] == -1)
-			return (ERROR);
-		i++;
-	}
-	if (get_param()->symbol_array[0] == 0)
-	{
-		return (FALSE);
-	}
-	else
-	{
-		return (TRUE);
-	}
-}
-
-void	child_process(char **one_cmd_splited, int *fd)
-{
-	int	i;
-	int num_cmd;
-	int temp;
-	char *path;
+	int		i;
+	int		num_cmd;
+	int		temp;
+	char	*path;
 
 	dup2(fd[1], 1);
 	if (fd[0] != 0)
@@ -156,11 +70,11 @@ void	child_process(char **one_cmd_splited, int *fd)
 	exit(0);
 }
 
-void	parent_process(char **split_by_pipes, int *fd, int i)
+void		parent_process(char **split_by_pipes, int *fd, int i)
 {
-	int		fd2[2];
+	int	fd2[2];
 
-	dup2(fd[0], 0); //표준입력으로 child process에서 써줬던 것을 읽겠다.
+	dup2(fd[0], 0);
 	close(fd[0]);
 	close(fd[1]);
 	fd2[0] = 0;
@@ -170,30 +84,24 @@ void	parent_process(char **split_by_pipes, int *fd, int i)
 	execute_command_pipe(split_by_pipes, fd2, i);
 }
 
-int		execute_command_pipe(char **split_by_pipes, int *fd, int i)
+int			execute_command_pipe(char **split_by_pipes, int *fd, int i)
 {
-	char *one_cmd;
-	int num_cmd;
-	pid_t pid;
+	char	*one_cmd;
+	int		num_cmd;
+	pid_t	pid;
 
 	one_cmd = split_by_pipes[i];
-	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
-	parsing_redirect(get_param()->cmd_trimed);
- 	get_param()->cmd_splited = ft_split(g_buf, ' ');
-	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
-											&get_param()->symbol_array);
+	set_get_param(one_cmd);
 	pid = fork();
 	if (pid == 0)
-	{
 		child_process(get_param()->cmd_splited, fd);
-	}
 	else
 	{
 		waitpid(pid, &g_status, 0);
-		if (split_by_pipes[i+1])
+		if (split_by_pipes[i + 1])
 		{
 			cmd_exit();
-			parent_process(split_by_pipes, fd, i+1);
+			parent_process(split_by_pipes, fd, i + 1);
 		}
 	}
 	cmd_exit();

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   check_command.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/20 23:05:41 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 00:06:40 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int	is_same_file(char *path1, char *path2)
+static int			is_same_file(char *path1, char *path2)
 {
 	struct stat	file1;
 	struct stat	file2;
@@ -20,41 +32,10 @@ static int	is_same_file(char *path1, char *path2)
 	return (1);
 }
 
-static char			*get_path(char *cmd, char *argv[], char *envp[])
-{
-	struct stat	buf;
-	char		**arr;
-	char		*path;
-	char		*tmp;
-	int			i;
-
-	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=') // unset PATH 생각해보기
-		envp++;
-	if (ft_strchr(cmd, '/') || !*envp || !ft_strchr(*envp, '='))
-		return (ft_strdup(cmd));
-	arr = ft_split(ft_strchr(*envp, '=') + 1, ':'); // unset PATH 일때 터짐 나중에 수정해야함
-	i = 0;
-	while (arr[i])
-	{
-		tmp = ft_strjoin("/", cmd);
-		path = ft_strjoin(arr[i], tmp);
-		free(tmp);
-		if (stat(path, &buf) == 0)
-			break ;
-		free(path);
-		path = NULL;
-		i++;
-	}
-	vector_clear(arr);
-	return (path);
-}
-
-// 빌트인에 있으면 함수포인터를 리턴함
 static t_builtin	is_builtin(char command[])
 {
 	if (command == NULL)
-		return NULL;
-	/* 만약 quotes 있으면 띄어쓰기전까지 읽어서 */
+		return (NULL);
 	if (ft_strncmp(string_tolower(command), "echo", 5) == '\0')
 		return (execute_echo);
 	else if (ft_strncmp(string_tolower(command), "cd", 3) == '\0')
@@ -70,63 +51,19 @@ static t_builtin	is_builtin(char command[])
 	else if (ft_strncmp(string_tolower(command), "exit", 5) == '\0')
 		return (execute_exit);
 	else if (ft_strncmp(string_tolower(command), "$", 1) == 0)
-		return (execute_dqmark);
+		return (execute_path);
 	return (NULL);
 }
 
-static void	ft_execve(const char *path, char *const argv[], char *const envp[])
+static void			command_not_found(char *cmd)
 {
-	pid_t		pid;
-	struct stat	buf;
-
-	if (-1 == (pid = fork()))
-		return ;
-	if (pid == 0)
-	{
-		if (stat(path, &buf) == -1)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": ",2);
-			ft_putendl_fd(strerror(errno), 2);
-			exit(127);
-		}
-		if ((buf.st_mode & S_IFMT) == S_IFDIR)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": ",2);
-			ft_putendl_fd(strerror(EISDIR), 2);	// is a directory 만 따로 예외처리
-			exit(126);
-		}
-		if ((execve(path, argv, envp)) == -1)
-		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(path, 2);
-			ft_putstr_fd(": ",2);
-			ft_putendl_fd(strerror(errno), 2);
-			exit(126);
-		}
-	}
-	else
-	{
-		waitpid(pid, &g_status, 0);
-		if (g_flag[CTRL_D] != 0)
-		{
-			g_status = g_flag[CTRL_D] * 256;
-		}
-		else if (g_flag[CTRL_BS] != 0)
-		{
-			g_status = g_flag[CTRL_BS] * 256;
-		}
-		else if (g_flag[CTRL_Q] != 0)
-		{
-			g_status = g_flag[CTRL_Q] * 256;
-		}
-	}
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putendl_fd(": command not found", 2);
+	g_status = 127 * 256;
 }
 
-void		check_command(char *cmd, char *argv[], char *envp[])
+void				check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
@@ -141,19 +78,15 @@ void		check_command(char *cmd, char *argv[], char *envp[])
 	{
 		if (!(path = get_path(cmd, argv, envp)))
 		{
-			ft_putstr_fd("bash: ", 2);
-			ft_putstr_fd(cmd, 2);
-			ft_putendl_fd(": command not found", 2);
-			g_status = 127 * 256;
+			command_not_found(cmd);
 			return ;
 		}
-//		printf("path : %s\n", path);
 		if (is_same_file(path, "/usr/bin/env"))
-			execute_env(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
+			execute_env(path, argv, envp);
 		else if (is_same_file(path, "/bin/echo"))
 			execute_echo(path, argv, envp);
 		else
-			ft_execve(path, argv, envp); // env 뒤에 출력하는거 한번봐야함
+			ft_execve(path, argv, envp);
 		free(path);
 	}
 }
