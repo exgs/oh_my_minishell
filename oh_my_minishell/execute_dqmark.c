@@ -51,6 +51,7 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 	}
 	else
 	{
+		ft_putstr_fd("minishell: ", 2);
 		init_array(buff);
 		i = 1;
 		while (str[i] != '\0' && str[i] != ' ')
@@ -67,7 +68,7 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 			{
 				char *temp;
 				char *new_trimed;
-				ft_strlcpy(g_buf, ft_strchr(envlist[i], '=') + 1, BUFF_MAX); 
+				ft_strlcpy(g_buf, ft_strchr(envlist[i], '=') + 1, BUFF_MAX);
 				temp = ft_strchr(get_param()->cmd_trimed, ' ');
 				ft_putendl_fd(temp, 1);
 				new_trimed = ft_strjoin(g_buf, temp);
