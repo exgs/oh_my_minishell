@@ -2,7 +2,10 @@
 
 void back_slash(char *buff, char *line, t_var *v)
 {
+	/* 큰 따옴표 바깥에 있으면 무시 백슬래쉬를 무시하고 그 뒤에 문자를 넣는다 */
 	if (v->flag_bq == 0)
+		(v->i)++;
+	else if (v->flag_bq == 1 && line[(v->i) + 1] == '"')
 		(v->i)++;
 	buff[v->k] = line[v->i];
 	(v->k)++;

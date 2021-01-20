@@ -43,6 +43,8 @@ int execute_echo(const char *path, char *const argv[], char *const envp[])
 	skip_n_option(one_cmd_trimed, &i, &flag_n);
 	/* 여기서 큰 따옴표, 작은 따옴표 처리 */
 	echo_line = refine_line(one_cmd_trimed);
+	if (echo_line == NULL)
+		return (0);
 	while (echo_line[i] != '\0')
 	{
 		ft_putchar_fd(echo_line[i], 1);
