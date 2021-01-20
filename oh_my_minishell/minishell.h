@@ -168,8 +168,10 @@ void	free_init(char **data, char *init);
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
 int		execute_command_pipe(char **split_by_pipes, int *fd, int i);
+//pipe_utils.c
 char	*string_tolower(char *str);
 int		which_command(char *cmd);
+int		need_redirection(void);
 // char	*which_command2(int num_cmd);
 void	parent_process(char **split_by_pipes, int *fd, int i);
 void	child_process(char **one_cmd_splited, int *fd);
@@ -196,17 +198,20 @@ int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
-int		execute_dqmark(const char *path, char *const argv[], char *const envp[]);
+int		execute_path(const char *path, char *const argv[], char *const envp[]);
 
 //check_command.c
 void check_command(char *cmd, char *argv[], char *envp[]);
-
+// check_command_utils.c
+char	*get_path(char *cmd, char *argv[], char *envp[]);
+void	ft_execve(const char *path, char *const argv[], char *const envp[]);
 //is_execve.c
 int is_execve(char *path, char **cmd_split, char *envp[]);
 
 //redirection.c
 char	***splited_by_redirect(char **one_cmd_splited, char **array);
 int		parsing_redirect(char *str);
+//redirection_execute_part.c
 int		execute_nopipe_redirect();
 
 // ft_strsemi.c

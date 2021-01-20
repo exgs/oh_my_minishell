@@ -1,17 +1,29 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 01:29:52 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 typedef struct s_index
 {
-	int i;
-	int j;
-	int z;
-	int before;
-	int cnt;
-	int redir_num;
-	unsigned char f_quote; // 1bit은 small quote 2bit는 big quote
+	int				i;
+	int				j;
+	int				z;
+	int				before;
+	int				cnt;
+	int				redir_num;
+	unsigned char	f_quote;
 }t_index;
 
-void s_index_bzero(t_index *index)
+void	s_index_bzero(t_index *index)
 {
 	index->before = 0;
 	index->cnt = 0;
@@ -177,69 +189,5 @@ int parsing_redirect(char *str)
 		}
 		i++;
 	}
-	return (1);
-}
-
-static int redirect_left(int i)
-{
-	int fd;
-	char *path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
-	fd = open(path, O_RDONLY);
-	dup2(fd, STDIN_FILENO);
-	close(fd);
-	return (1);
-}
-
-static int redirect_right(int i)
-{
-	int fd;
-	char *path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
-	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0755);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (1);
-}
-
-static int redirect_d_right(int i)
-{
-	int fd;
-	char *path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
-	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0755);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
-	return (1);
-}
-
-int execute_nopipe_redirect()
-{
-	char *symbols = get_param()->symbol_array;
-	int i = 0;
-	while (symbols[i] != 0)
-	{
-		if (symbols[i] == LEFT)
-		{
-			if (-1 == redirect_left(i))
-				return (-1);
-		}
-		else if (symbols[i] == RIGHT)
-		{
-			if (-1 == redirect_right(i))
-				return (-1);
-		}
-		else if (symbols[i] == D_RIGHT)
-		{
-			if (-1 == redirect_d_right(i))
-				return (-1);
-		}
-		i++;
-	}
-	check_command(get_param()->cmd_redirect[0][0], get_param()->cmd_redirect[0], get_param()->envp);
-	dup_initalize();
 	return (1);
 }
