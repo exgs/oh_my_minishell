@@ -14,7 +14,7 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 	if (path[1] == '?')
 	{
 		ft_putendl_fd(str, 2);
-		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd("minishell: ", 2);
 		ft_putnbr_fd(g_status / 256, 2);
 		ft_putendl_fd(": command not found", 2);
 		g_status = 127 * 256;
@@ -22,6 +22,7 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 	}
 	else
 	{
+		ft_putstr_fd("minishell: ", 2);
 		init_array(buff);
 		i = 1;
 		while (str[i] != '\0')
@@ -41,11 +42,16 @@ int execute_dqmark(const char *path, char *const argv[], char *const envp[])
 					ft_putchar_fd(envlist[i][j], 1);
 					j++;
 				}
+				if (envlist[i][ft_strlen(buff) + 1] == '/')
+					ft_putendl_fd(": is a directory", 2);
+				else
+					ft_putendl_fd(": command not found", 2);
 				break ;
 			}
 			i++;
 		}
-		ft_putchar_fd('\n', 1);
+
+		// ft_putchar_fd('\n', 1);
 	}
 	return (0);
 }
