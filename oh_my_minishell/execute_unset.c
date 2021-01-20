@@ -74,8 +74,6 @@ int			execute_unset(const char *path, char *const argv[],
 {
 	int		i;
 	int		j;
-	int		ret;
-	char	*eq;
 
 	change_argv((char **)++argv);
 	i = 0;

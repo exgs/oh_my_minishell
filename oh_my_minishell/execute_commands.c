@@ -17,7 +17,6 @@ static void error_except()
 int execute_command(char **split_by_pipes)
 {
 	int fd[2];
-	int i = 0;
 
 	if (split_by_pipes[0] == NULL)
 	{
@@ -57,8 +56,6 @@ int execute_command(char **split_by_pipes)
 
 int execute_multi_commands(t_list *cmds)
 {
-	int split_index = 0;
-	char **argv = NULL;
 	t_list *cur = cmds;
 	while (cur != NULL)
 	{

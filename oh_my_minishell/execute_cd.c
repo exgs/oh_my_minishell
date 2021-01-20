@@ -53,6 +53,7 @@ static void	change_dir(const char *path, char *envp[])
 	execute_export(argv[0], argv, get_param()->envp);
 	free(argv[1]);
 	g_status = 0;
+	(void)envp;
 }
 
 static int	msg_notset(char str[])

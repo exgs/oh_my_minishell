@@ -70,4 +70,7 @@ int				execute_echo(const char *path, char *const argv[],
 	free(echo_line);
 	g_status = 0;
 	return (0);
+	(void)path;
+	(void)argv;
+	(void)envp;
 }

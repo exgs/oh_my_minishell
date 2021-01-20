@@ -25,6 +25,7 @@ static void	export_env_path(const char *path,
 	tmp[2] = NULL;
 	execute_export(path, tmp, envp);
 	free(tmp[1]);
+	(void)argv;
 }
 
 int			execute_env(const char *path,
@@ -32,7 +33,6 @@ int			execute_env(const char *path,
 {
 	int		i;
 	int		j;
-	char	**tmp;
 
 	if (argv[1])
 		return (msg_error("bash", "env", argv[1], 2));

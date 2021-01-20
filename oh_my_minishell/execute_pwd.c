@@ -35,4 +35,7 @@ int			execute_pwd(const char *path, char *const argv[],
 	}
 	free(pwd);
 	return (1);
+	(void)path;
+	(void)argv;
+	(void)envp;
 }

@@ -50,9 +50,6 @@ int			check_env(char *temp, char **envlist)
 
 int			replace_env(char *temp, char **envlist)
 {
-	int		i;
-	int		j;
-
 	if (temp[0] == 0)
 	{
 		temp[0] = '$';

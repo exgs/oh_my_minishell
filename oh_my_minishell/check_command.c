@@ -67,8 +67,6 @@ void				check_command(char *cmd, char *argv[], char *envp[])
 {
 	t_builtin	f;
 	char		*path;
-	char		*slash;
-	int			i;
 
 	if (cmd == NULL)
 		return ;

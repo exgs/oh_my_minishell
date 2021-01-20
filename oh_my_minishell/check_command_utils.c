@@ -39,6 +39,7 @@ char		*get_path(char *cmd, char *argv[], char *envp[])
 	}
 	vector_clear(arr);
 	return (path);
+	(void)argv;
 }
 
 static void	change_g_status(void)
@@ -92,6 +93,7 @@ void		ft_execve(const char *path, char *const argv[], char *const envp[])
 	pid_t		pid;
 	struct stat	buf;
 
+	ft_bzero(&buf, sizeof(struct stat));
 	if (-1 == (pid = fork()))
 		return ;
 	if (pid == 0)

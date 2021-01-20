@@ -53,6 +53,7 @@ int		is_redirect(char *buff, char *line, t_var *v)
 		return (1);
 	}
 	return (0);
+	(void)buff;
 }
 
 /*

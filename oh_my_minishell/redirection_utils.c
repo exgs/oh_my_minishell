@@ -25,7 +25,6 @@ static int	is_redirect(char *str, t_index *index)
 			index->f_quote ^= 2;
 		i++;
 	}
-	int temp = index->f_quote;
 	if (index->f_quote & 1 || index->f_quote & 2)
 		return (FALSE);
 	if (str[0] == '>' || str[0] == '<')

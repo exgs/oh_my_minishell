@@ -25,7 +25,6 @@ static int	is_redirect(char *str, t_index *index)
 			index->f_quote ^= 2;
 		i++;
 	}
-	int temp = index->f_quote;
 	if (index->f_quote & 1 || index->f_quote & 2)
 		return (FALSE);
 	if (str[0] == '>' || str[0] == '<')
@@ -39,23 +38,6 @@ static int	is_redirect(char *str, t_index *index)
 		return (ERROR);
 	}
 	return (FALSE);
-}
-
-static int flag_quote(char *str, t_index *index)
-{
-	int i = 0;
-	if (str == NULL)
-		return (-1);
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			index->f_quote ^= 1;
-		if (str[i] == '\"')
-			index->f_quote ^= 2;
-		i++;
-	}
-	return (1);
-	
 }
 
 static int	redirect_num(char **one_cmd_splited, t_index *index)

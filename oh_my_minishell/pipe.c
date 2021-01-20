@@ -49,11 +49,6 @@ int			execute_command_nopipe(char *one_cmd)
 
 void		child_process(char **one_cmd_splited, int *fd)
 {
-	int		i;
-	int		num_cmd;
-	int		temp;
-	char	*path;
-
 	dup2(fd[1], 1);
 	if (fd[0] != 0)
 		close(fd[0]);
@@ -87,7 +82,6 @@ void		parent_process(char **split_by_pipes, int *fd, int i)
 int			execute_command_pipe(char **split_by_pipes, int *fd, int i)
 {
 	char	*one_cmd;
-	int		num_cmd;
 	pid_t	pid;
 
 	one_cmd = split_by_pipes[i];

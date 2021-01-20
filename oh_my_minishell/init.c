@@ -33,4 +33,6 @@ void	minishell_init(int argc, char **argv, char **envp)
 	get_param()->envp = vector_dup(envp);
 	init_array_int(get_param()->semi_arr);
 	catch_signals();
+	(void)argc;
+	(void)argv;
 }

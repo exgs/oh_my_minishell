@@ -129,4 +129,7 @@ int						execute_exit(const char *path,
 	else
 		more_than_one_argv(cmd_splited[1]);
 	return (1);
+	(void)path;
+	(void)argv;
+	(void)envp;
 }

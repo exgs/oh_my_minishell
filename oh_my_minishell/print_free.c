@@ -83,7 +83,6 @@ void	print_3d_split(char ***argv)
 {
 	int		i;
 	int		j;
-	char	*temp;
 
 	i = 0;
 	if (argv == NULL)

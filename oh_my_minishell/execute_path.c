@@ -39,6 +39,7 @@ static void reset_getparam_by_macro(char **envlist, char *buff, int i)
 	reset_getparam_by_newtrimed();
 	check_command(get_param()->cmd_splited[0], get_param()->cmd_splited,
 					get_param()->envp);
+	(void)buff;
 }
 
 
@@ -69,4 +70,6 @@ int		execute_path(const char *path, char *const argv[], char *const envp[])
 		ft_memset(g_buf, 0, BUFF_MAX);
 	}
 	return (0);
+	(void)argv;
+	(void)envp;
 }

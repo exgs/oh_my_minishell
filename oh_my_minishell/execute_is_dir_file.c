@@ -42,12 +42,10 @@ int		execute_process(char *path)
 	return (-1);
 }
 
-
-/* */
 int			execute_is_dir_file(const char *path, char *const argv[], char *const envp[])
 {
 	struct stat sb;
-	char *cmd;
+
 	/* /user/bin/env 하면 환경변수 리스트 출력된다. */
 	if (ft_strncmp(path, "/usr/bin/env", 13) == '\0')
 	{
