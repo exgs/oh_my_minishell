@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:35:05 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/20 23:40:22 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 03:33:31 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,7 @@ int			execute_cd(const char *path, char *const argv[], char *const envp[])
 	tmp = 0;
 	change_split((char **)argv + 1);
 	path = argv[1];
-	if ((argv[1] && ft_strncmp(argv[1], "~", 2) == '\0') ||
-		(argv[1] && ft_strncmp(argv[1], "~", 2) == '/'))
+	if (is_home_cd(path) == TRUE)
 	{
 		path = ft_strjoin(get_path_cd((char **)envp, "HOME"), argv[1] + 1);
 		change_dir(path, (char **)envp);
