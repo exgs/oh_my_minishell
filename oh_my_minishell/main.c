@@ -35,7 +35,6 @@ int main(int argc, char *argv[], char **envp)
 			g_flag[CTRL_BS] = 0;
 		else
 			ft_putstr_fd("minishell$ ",1);
-		// ft_putstr_fd("------", 1);
 		while (1 == (g_flag[CTRL_D] = 1) && read(0, &c, 1))
 		{
 			g_flag[CTRL_D] = 0;
@@ -43,7 +42,6 @@ int main(int argc, char *argv[], char **envp)
 			if (c == '\n')
 				break;
 		}
-	
 		if (g_flag[CTRL_D] == 1)
 		{
 			if (line == NULL)
@@ -59,7 +57,6 @@ int main(int argc, char *argv[], char **envp)
 			g_flag[CTRL_Q] = 0;
 			continue ;
 		}
-		// printf("====\n");
 		ft_memset(g_flag, 0, sizeof(int) * F_END);
 		get_commands_from_gnl(&cmds, line);
 		execute_multi_commands(cmds);
