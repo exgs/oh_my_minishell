@@ -20,10 +20,10 @@ void	catch_sigquit(int pid)
 	if (!pid)
 	{
 		ft_putstr_fd("Quit: 3\n", 1);
-		g_status = 130 * 256;
+		g_status = 131 * 256;
 	}
 	else
-		g_status = 1 * 256;
+		g_status = 0 * 256;
 	g_flag[CTRL_Q] = 1;
 	// else
 	// 	ft_putstr_fd("\nQuit: 3", 1);
