@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:52:22 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 02:09:51 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/21 02:12:09 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 t_data				*get_param(void)
 {
 	static t_data	param;
+
 	return (&param);
 }
 
