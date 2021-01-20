@@ -1,64 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   refine_line_c.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 01:47:13 by jikang            #+#    #+#             */
+/*   Updated: 2021/01/21 01:47:55 by jikang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int is_env_ch(char c)
+void		take_buff(char *buff, char *temp, int *k)
 {
-	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
-		return (1);
-	return (0);
-}
-
-int check_env(char *temp, char **envlist)
-{
-	int i;
-	int j;
-	char *var;
-
-	i = 0;
-	while (envlist[i] != NULL)
-	{
-		/* 우리가 찾는 환경 변수와 일치하다면 buff 에 알맞은 그 값을 넣어 준다. */
-		if (ft_strncmp(envlist[i], temp, ft_strlen(temp) + 1) == '=')
-		{
-			ft_bzero(temp, ft_strlen(temp));
-			var = ft_strchr(envlist[i], '=');
-			var++; /* '=' 이후가 진짜이니 +1 해준다. */
-			j = 0;
-			while (*var != '\0')
-			{
-				temp[j] = *var;
-				var++;	j++;
-			}
-			return (0); // 0 이 정상적으로 찾음
-		}
-		i++;
-	}
-	return (1); // 1이 환경변수 찾지 못함.
-}
-
-int replace_env(char *temp, char **envlist)
-{
-	int i;
-	int j;
-
-	if (temp[0] == 0)
-	{
-		temp[0] = '$';
-		return(0);
-	}
-	if (ft_strncmp("?", temp, ft_strlen(temp) + 1) == 0)
-	{
-		temp[0] = '$';
-		temp[1] = '?';
-		return (0);
-	}
-	if (check_env(temp, envlist) == 0)
-		return (0);
-	return (1);
-}
-
-void take_buff(char *buff, char *temp, int *k)
-{
-	int j;
+	int		j;
 
 	j = 0;
 	while (temp[j] != '\0')
@@ -69,9 +25,16 @@ void take_buff(char *buff, char *temp, int *k)
 	}
 }
 
-void insert_dq_in_str(char *str, t_var *v)
+/*
+** name : back_slash
+** aim : process back_slash with big quote option.
+** @outside big quote, back slash is neglected. ex) bash$ \
+** @inside big quote, ex) bash$ "\"", bash$ "\n"
+*/
+
+void		insert_dq_in_str(char *str, t_var *v)
 {
-	int exit_status;
+	int		exit_status;
 
 	exit_status = g_status / 256;
 	if (exit_status > 100)
@@ -91,13 +54,15 @@ void insert_dq_in_str(char *str, t_var *v)
 	}
 }
 
-int convert_env(char *buff, char *line, t_var *v, char **envlist)
+static int	is_env_ch(char c)
 {
-	int j;
-	char temp[BUFF_MAX];
+	if (ft_isalpha(c) || ft_isdigit(c) || c == '_')
+		return (1);
+	return (0);
+}
 
-	init_array(temp);
-	(v->i)++; // $문자 바로 뒤로 인덱스증가
+int			dollor_qmark(char *buff, char *line, t_var *v)
+{
 	if (line[v->i] == '$')
 	{
 		buff[(v->k)++] = '$';
@@ -106,10 +71,29 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 	}
 	else if (line[v->i] == '?')
 	{
-		/* 여기서 $? 할 것이 아니라 계산도 해줘야함 */
 		insert_dq_in_str(buff, v);
 		return (0);
 	}
+	return (1);
+}
+
+/*
+** name : convert_env
+** aim : when dollar exists, it converts to appropriate string.
+** 1. insert $string in temp, 2. convert temp into env variable,
+** 3. take converted temp into buff.
+** ex) $$, $?, $PWD, $unknown
+*/
+
+int			convert_env(char *buff, char *line, t_var *v, char **envlist)
+{
+	int		j;
+	char	temp[BUFF_MAX];
+
+	init_array(temp);
+	(v->i)++;
+	if (dollor_qmark(buff, line, v) == 0)
+		return (0);
 	j = 0;
 	while (is_env_ch(line[v->i]))
 	{
@@ -117,17 +101,13 @@ int convert_env(char *buff, char *line, t_var *v, char **envlist)
 		(v->i)++;
 		j++;
 	}
-	(v->i)--; /* is_env_ch 에서 밀려난 환경변수 띄어쓰기 해준다. */
-	// ft_putendl_fd(temp, 1);
-	/* 이제 temp에 환경 변수와 비교할 문자열이 들어감. */
-	/* 환경변수 리스트 돌려서 똑같은 거 찾은 다음 바꿔치기 해줘야함. */
+	(v->i)--;
 	if (replace_env(temp, envlist) == 1)
 	{
-		ft_putendl_fd("환경변수 에러", 2);
+		ft_putendl_fd("Environment variable error", 2);
 		g_status = 1 * 256;
 		return (1);
 	}
-	/* 이제 temp에 바뀐 변수 받아왔으니 buff 에 넣어주자 */
 	take_buff(buff, temp, &v->k);
 	return (0);
 }

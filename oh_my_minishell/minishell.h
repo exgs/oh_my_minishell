@@ -110,6 +110,8 @@ typedef struct	s_var
 	int l;
 	int flag_bq; // 큰 따옴표
 	int flag_sq; // 작은 따옴표
+	int flag_backslash;
+	int flag_pipe;
 }				t_var;
 
 
@@ -163,18 +165,18 @@ int execute_pwd(const char *path, char *const argv[], char *const envp[]);
 //execute_exit.c
 int execute_exit(const char *path, char *const argv[], char *const envp[]);
 
-//execute_is_dir_file
-int			execute_is_dir_file(const char *path, char *const argv[], char *const envp[]);
-
-//utils_jikang.c
+//utils_a.c
 t_data	*get_param();
 int		ft_is_whitespace(char c);
 void	init_array(char *buff);
 void	init_array_int(int *buff);
-void	check_semicolon(char *str);
 void	change_flag(int *flag);
+
+//utils_b.c
+void	check_semicolon(char *str);
 char *ft_strdup_by_index(char *str, int start, int end);
 void	free_init(char **data, char *init);
+void init_value(char *buff, t_var *v);
 
 //pipe.c
 int		execute_command_nopipe(char *one_cmd);
@@ -248,8 +250,16 @@ int		refining_factory(char *buff, char *line, t_var *v, char **envlist);
 // refine_line_c.c
 int		convert_env(char *buff, char *line, t_var *v, char **envlist);
 
+// refine_line_d.c
+int replace_env(char *temp, char **envlist);
 
-
+// split_pipe.c
+char **split_pipe(char *substr);
+void unseal_firstquotes(char **splited);
 //	msg_error.c
 int		msg_error(char *program, char *cmd, char *arg, int exit_status);
+
+// unseal_firstquotes.c
+void unseal_firstquotes(char **splited);
+
 #endif
