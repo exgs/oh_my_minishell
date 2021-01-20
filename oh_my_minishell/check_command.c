@@ -109,7 +109,21 @@ static void	ft_execve(const char *path, char *const argv[], char *const envp[])
 		}
 	}
 	else
-		waitpid(pid, NULL, 0);
+	{
+		waitpid(pid, &g_status, 0);
+		if (g_flag[CTRL_D] != 0)
+		{
+			g_status = g_flag[CTRL_D] * 256;
+		}
+		else if (g_flag[CTRL_BS] != 0)
+		{
+			g_status = g_flag[CTRL_BS] * 256;
+		}
+		else if (g_flag[CTRL_Q] != 0)
+		{
+			g_status = g_flag[CTRL_Q] * 256;
+		}
+	}
 }
 
 void		check_command(char *cmd, char *argv[], char *envp[])

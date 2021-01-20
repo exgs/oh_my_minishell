@@ -6,12 +6,15 @@ void	catch_sigint(int pid)
 	pid = waitpid(-1, &g_status, WNOHANG);
 	if (!pid)
 	{
+		g_flag[CTRL_BS] = 130;
 		g_status = 130 * 256;
 	}
 	else
+	{
+		g_flag[CTRL_BS] = 1;
 		g_status = 1 * 256;
+	}
 	ft_putstr_fd("\nminishell$ ", 1);
-	g_flag[CTRL_BS] = 1;
 }
 
 void	catch_sigquit(int pid)
@@ -20,11 +23,14 @@ void	catch_sigquit(int pid)
 	if (!pid)
 	{
 		ft_putstr_fd("Quit: 3\n", 1);
-		g_status = 131 * 256;
+		g_flag[CTRL_Q] = 130;
+		g_status = 130 * 256;
 	}
 	else
-		g_status = 0 * 256;
-	g_flag[CTRL_Q] = 1;
+	{
+		g_flag[CTRL_Q] = 1;
+		g_status = 1 * 256;
+	}
 	// else
 	// 	ft_putstr_fd("\nQuit: 3", 1);
 }
