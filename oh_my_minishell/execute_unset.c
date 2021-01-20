@@ -1,19 +1,58 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute_unset.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 05:17:20 by ykoh              #+#    #+#             */
+/*   Updated: 2021/01/21 05:17:21 by ykoh             ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+static void	erase_env(char *argv[], char *envp[], int i, int j)
+{
+	char	*eq;
+	int		ret;
+
+	ret = ft_strncmp(envp[j], argv[i], ft_strlen(argv[i]) + 1);
+	eq = ft_strchr(envp[j], '=');
+	if ((eq && ret == '=') || (!eq && ret == '\0'))
+	{
+		free(envp[j]);
+		while (envp[j])
+		{
+			envp[j] = envp[j + 1];
+			j++;
+		}
+	}
+}
 
 static int	is_valid(char str[])
 {
+	char	*p;
+
+	p = str;
 	if (ft_isdigit(str[0]))
+	{
+		msg_invalid("minishell", "export", p, 1);
 		return (0);
+	}
 	while (*str)
 	{
 		if (!ft_isalnum(*str) && !(*str == '_'))
+		{
+			msg_invalid("minishell", "export", p, 1);
 			return (0);
+		}
 		str++;
 	}
 	return (1);
 }
 
-static void change_split(char **argv)
+static void	change_argv(char **argv)
 {
 	int		i;
 	char	*tmp;
@@ -30,41 +69,26 @@ static void change_split(char **argv)
 	}
 }
 
-int		execute_unset(const char *path, char *const argv[], char *const envp[])
+int			execute_unset(const char *path, char *const argv[],
+											char *const envp[])
 {
 	int		i;
 	int		j;
 	int		ret;
 	char	*eq;
 
-	argv++;
-	change_split((char **)argv);
+	change_argv((char **)++argv);
 	i = 0;
 	while (argv[i])
 	{
-		if (!is_valid(argv[i]))
+		if (is_valid(argv[i]))
 		{
-			g_status = 1 * 256;
-			ft_putstr_fd("bash: export: `", 2);
-			ft_putstr_fd(argv[i++], 2);
-			ft_putendl_fd("': not a valid identifier", 2);
-			continue ;
-		}
-		j = 0;
-		while (envp[j])
-		{
-			ret = ft_strncmp(envp[j], argv[i], ft_strlen(argv[i]) + 1);
-			if ((eq = ft_strchr(envp[j], '='))) // 값이 할당되어 있는 것도 unset
+			j = 0;
+			while (envp[j])
 			{
-				if (ret == '=')
-					vector_erase((char **)envp, j);
+				erase_env((char **)argv, (char **)envp, i, j);
+				j++;
 			}
-			else								// 값이 할당되지 않은 것도 unset 테스트 필요함
-			{
-				if (ret == '\0')
-					vector_erase((char **)envp, j);
-			}
-			j++;
 		}
 		i++;
 	}

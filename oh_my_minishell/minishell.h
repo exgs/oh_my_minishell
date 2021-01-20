@@ -201,7 +201,6 @@ void	cmds_exit(t_list *cmd);
 void	cmd_exit();
 
 // vector.c
-void	vector_erase(char *arr[], int target);
 void	vector_sort(char *arr[]);
 int		vector_size(char *arr[]);
 void	vector_clear(char *arr[]);
@@ -211,6 +210,7 @@ void	vector_push_back(char **arr[], char str[]);
 int		execute_env(const char *path, char *const argv[], char *const envp[]);
 int		execute_unset(const char *path, char *const argv[], char *const envp[]);
 int		execute_export(const char *path, char *const argv[], char *const envp[]);
+void	print_envp(char **envp);
 int		execute_cd(const char *path, char *const argv[], char *const envp[]);
 int		execute_path(const char *path, char *const argv[], char *const envp[]);
 
@@ -258,7 +258,7 @@ char **split_pipe(char *substr);
 void unseal_firstquotes(char **splited);
 //	msg_error.c
 int		msg_error(char *program, char *cmd, char *arg, int exit_status);
-
+int		msg_invalid(char *program, char *cmd, char *arg, int exit_status);
 // unseal_firstquotes.c
 void unseal_firstquotes(char **splited);
 
