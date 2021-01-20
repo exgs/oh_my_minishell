@@ -123,6 +123,17 @@ typedef struct	s_data {
 	int semi_arr[BUFF_MAX];
 }				t_data;
 
+typedef struct s_index
+{
+	int				i;
+	int				j;
+	int				z;
+	int				before;
+	int				cnt;
+	int				redir_num;
+	unsigned char	f_quote;
+}t_index;
+
 //builtin함수의 prototype 다 맞춰야 check_command 조건문 사용가능
 typedef int	(*t_builtin)(const char *, char *const[], char *const[]);
 
@@ -220,6 +231,10 @@ char	***splited_by_redirect(char **one_cmd_splited, char **array);
 int		parsing_redirect(char *str);
 //redirection_execute_part.c
 int		execute_nopipe_redirect();
+//redirection_utils.c
+void	input_symbol(char **split, char *symbol_array, t_index *index);
+int		parsing_redirect(char *str);
+void	s_index_bzero(t_index *index);
 
 // ft_strsemi.c
 char *ft_strsemi(char **str, int *array, int i);

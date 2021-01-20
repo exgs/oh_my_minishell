@@ -6,35 +6,13 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 01:29:52 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 03:48:35 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-typedef struct s_index
-{
-	int				i;
-	int				j;
-	int				z;
-	int				before;
-	int				cnt;
-	int				redir_num;
-	unsigned char	f_quote;
-}t_index;
-
-void	s_index_bzero(t_index *index)
-{
-	index->before = 0;
-	index->cnt = 0;
-	index->i = 0;
-	index->j = 0;
-	index->redir_num = 0;
-	index->z = 0;
-	index->f_quote = 0;
-}
-
-static int		is_redirect(char *str, t_index *index)
+static int	is_redirect(char *str, t_index *index)
 {
 	int i = 0;
 	if (str == NULL)
@@ -94,18 +72,6 @@ static int	redirect_num(char **one_cmd_splited, t_index *index)
 	return (cnt);
 }
 
-void input_symbol(char **split, char *symbol_array, t_index *index)
-{
-	if (is_redirect(split[index->i], index) == LEFT)
-			symbol_array[index->z++] = LEFT;
-		else if (is_redirect(split[index->i], index) == RIGHT)
-			symbol_array[index->z++] = RIGHT;
-		else if (is_redirect(split[index->i], index) == D_RIGHT)
-			symbol_array[index->z++] = D_RIGHT;
-		else
-			symbol_array[index->z++] = ERROR;
-}
-
 void		splited_by_redirect_norm(char ***divid, char **split, char *symbol_array, t_index *index)
 {
 	char *str;
@@ -161,33 +127,4 @@ char	***splited_by_redirect(char **one_cmd_splited, char **array)
 	symbol_array[index.redir_num] = 0;
 	*array = symbol_array;
 	return (divid);
-}
-
-int parsing_redirect(char *str)
-{
-	int i;
-	int k;
-	
-	ft_memset(g_buf, 0, 1000);
-	i = 0;
-	k = 0;
-	while (str[i] != '\0')
-	{
-		g_buf[k++] = str[i];
-		if ((str[i] == '<' || str[i] == '>') && (str[i+1] == '<' || str[i+1] == '>'))
-		{
-			i++;
-			continue;
-		}
-		else if((str[i] == '<' || str[i] == '>') && (str[i+1] != '>' && str[i+1] != '<'))
-		{
-			g_buf[k++] = ' ';
-		}
-		else if((str[i] != '<' && str[i] != '>') && (str[i+1] == '>' || str[i+1] == '<'))
-		{
-			g_buf[k++] = ' ';
-		}
-		i++;
-	}
-	return (1);
 }
