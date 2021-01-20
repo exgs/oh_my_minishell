@@ -26,7 +26,7 @@ $(LIBRARY)	: $(OBJS_UTILS)
 	ranlib $(LIBRARY)
 
 debug :
-	gcc -g ./gnl/*.c ./libft/*.c \
+	gcc -Wall -Wextra -Werror -g ./gnl/*.c ./libft/*.c \
 		$(SRCS)
 fsan :
 	gcc -g3 -fsanitize=address ./gnl/*.c ./libft/*.c \
