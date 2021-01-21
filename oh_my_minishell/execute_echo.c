@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:06:26 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/20 23:28:39 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/21 15:03:27 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,26 +47,22 @@ int				execute_echo(const char *path, char *const argv[],
 {
 	int			i;
 	int			flag_n;
-	char		*one_cmd_trimed;
 	char		*echo_line;
 
-	one_cmd_trimed = get_param()->cmd_trimed;
 	i = 4;
 	flag_n = 0;
-	if (ft_strncmp(one_cmd_trimed, "/bin/echo", 9) == 0)
+	if (ft_strncmp(get_param()->cmd_trimed, "/bin/echo", 9) == 0)
 		i = 9;
-	while (one_cmd_trimed[i] == ' ')
+	while (get_param()->cmd_trimed[i] == ' ')
 		i++;
-	skip_n_option(one_cmd_trimed, &i, &flag_n);
-	echo_line = refine_line(one_cmd_trimed);
+	skip_n_option(get_param()->cmd_trimed, &i, &flag_n);
+	echo_line = refine_line(get_param()->cmd_trimed);
 	if (echo_line == NULL)
 		return (0);
 	while (echo_line[i] != '\0')
 		ft_putchar_fd(echo_line[i++], 1);
 	if (flag_n != 1)
 		ft_putchar_fd('\n', 1);
-	if (echo_line == NULL)
-		return (0);
 	free(echo_line);
 	g_status = 0;
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:35:05 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 03:33:31 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 15:03:55 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	change_dir(const char *path, char *envp[])
 	getcwd(pwd, PATH_MAX + 1);
 	if (chdir(path) == -1)
 	{
-		ft_putstr_fd("bash: cd: ", 2);
+		ft_putstr_fd("minishell: cd: ", 2);
 		ft_putstr_fd(path, 2);
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
@@ -58,7 +58,7 @@ static void	change_dir(const char *path, char *envp[])
 
 static int	msg_notset(char str[])
 {
-	ft_putstr_fd("bash: cd: ", 2);
+	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putendl_fd(": not set", 2);
 	g_status = 1 * 256;
