@@ -27,10 +27,10 @@ static size_t	ft_strlen2(const char *s)
 
 char			*ft_strjoin(char const *head, char const *tail)
 {
-	char *join;
-	int total_len;
-	int head_len;
-	int i;
+	char	*join;
+	int		total_len;
+	int		head_len;
+	int		i;
 
 	if (head == NULL && tail == NULL)
 		return (NULL);

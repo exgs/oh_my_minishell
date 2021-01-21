@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
+/*   Updated: 2021/01/21 03:48:35 by yunslee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-int ft_strlen2(char *str)
+int		ft_strlen2(char *str)
 {
 	int i;
-	
+
 	i = 0;
 	if (str == NULL)
 		return (-1);
@@ -12,12 +24,12 @@ int ft_strlen2(char *str)
 	return (i);
 }
 
-char *ft_strdup2(char *str) //str==NULL이여도, 빈문자열 반환
+char	*ft_strdup2(char *str)
 {
 	char	*dup;
 	int		len;
 	int		i;
-	
+
 	i = 0;
 	if (str == NULL)
 	{
@@ -36,13 +48,13 @@ char *ft_strdup2(char *str) //str==NULL이여도, 빈문자열 반환
 	return (dup);
 }
 
-void ft_memset2(char *memory, int c, int size)
+void	ft_memset2(char *memory, int c, int size)
 {
 	int i;
 
 	i = 0;
 	if (memory == NULL)
-		return;
+		return ;
 	while (i < size)
 	{
 		memory[i] = c;
@@ -51,10 +63,10 @@ void ft_memset2(char *memory, int c, int size)
 	return ;
 }
 
-char *ft_strchr2(char *str, char c)
+char	*ft_strchr2(char *str, char c)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	if (str == NULL)
 		return (NULL);
@@ -70,12 +82,12 @@ char *ft_strchr2(char *str, char c)
 		return (NULL);
 }
 
-char *ft_strjoin2(char *head, char *tail)
+char	*ft_strjoin2(char *head, char *tail)
 {
-	char *join;
-	int total_len;
-	int head_len;
-	int i;
+	char	*join;
+	int		total_len;
+	int		head_len;
+	int		i;
 
 	if (head == NULL && tail == NULL)
 		return (NULL);

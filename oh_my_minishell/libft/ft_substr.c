@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 
-static unsigned int		ft_strlen(const char *s)
+static unsigned int	ft_strlen(const char *s)
 {
 	unsigned int i;
 
@@ -24,7 +24,7 @@ static unsigned int		ft_strlen(const char *s)
 	return (i);
 }
 
-char			*ft_substr(char *s, unsigned int start, size_t len)
+char				*ft_substr(char *s, unsigned int start, size_t len)
 {
 	unsigned int	i;
 	char			*substring;
