@@ -25,6 +25,6 @@ char	*ft_strchr(const char *s, int c)
 		i++;
 	}
 	if (c == 0)
-		return (str + i); //Above "while" is better
+		return (str + i);
 	return (0);
 }

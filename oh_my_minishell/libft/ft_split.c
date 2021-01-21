@@ -95,10 +95,6 @@ char				**ft_split(char const *s, char c)
 			return (NULL);
 		}
 		i = input_parts(split[row], s, c, i);
-		/*
-		**함수내에서 split된 문자를 집어넣으면서 증가시킨 i 값을 return함
-		**static int 을 이용할 수도 있을 거 같다는 생각이 듦...
-		*/
 		row++;
 	}
 	split[array_size] = NULL;

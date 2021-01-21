@@ -95,7 +95,6 @@ char			*ft_strtrim(char const *s1, char const *set)
 		str_trim = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	else if (ft_strlen(s1) == front_count(s1, set))
 		str_trim = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
-	//else가 일반적인 strtrim의 경우
 	else
 		str_trim = (char *)malloc(sizeof(char)
 		* (ft_strlen(s1) - front_count(s1, set) - back_count(s1, set) + 1));

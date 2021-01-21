@@ -38,8 +38,6 @@ SRCS		=	gnl/get_next_line.c\
 				init.c\
 				exit.c
 				
-OBJS		=	$(SRCS:.c=.o)
-
 NAME		=	minishell
 LIBFT		=	libft
 RM			=	rm -f
@@ -54,7 +52,6 @@ all		:	$(NAME)
 
 clean	:
 			$(MAKE) clean -C $(LIBFT)/
-			$(RM) $(OBJS)
 
 fclean	:	clean
 			$(RM) $(LIBFT)/$(LIBFT).a

@@ -23,9 +23,7 @@ static int	atoi_while(const char *str, int i, int sign)
 		sum += str[i] - 48;
 		i++;
 	}
-	/*엄청 긴 숫자 text에 대해서 Overflow가 날 수 있어서 처리한 것이지만,
-	LLONG_MIN에 대해서는 처리할 수 가 없다.*/
-	if (sum > LLONG_MAX  && sign == -1) 
+	if (sum > LLONG_MAX && sign == -1)
 		return (0);
 	if (sum > LLONG_MAX && sign == 1)
 		return (-1);
@@ -39,7 +37,7 @@ int			ft_atoi(const char *str)
 
 	sign = 1;
 	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13)) //space and whitespace 건너뛰기
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-')
 	{
