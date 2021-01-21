@@ -1,7 +1,18 @@
-#include "minishell.h"
-#include <stdio.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 16:03:39 by jikang            #+#    #+#             */
+/*   Updated: 2021/01/21 16:04:14 by jikang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static void ft_addchr(char **s, char c)
+#include "minishell.h"
+
+static void	ft_addchr(char **s, char c)
 {
 	char	*ret;
 	int		count;
@@ -20,43 +31,59 @@ static void ft_addchr(char **s, char c)
 	*s = ret;
 }
 
-int main(int argc, char *argv[], char **envp)
+static int	process_g_flag_b(t_list *cmds, char *line)
 {
-	t_list *cmds = NULL;
-	char *line = NULL;
-	char c;
+	if (g_flag[CTRL_D] == 1)
+	{
+		if (line == NULL)
+		{
+			ft_putendl_fd("exit", 1);
+			minishell_exit(cmds);
+			exit(0);
+		}
+		else
+			ft_putstr_fd("\n", 1);
+	}
+	else if (g_flag[CTRL_Q] == 1 && line == NULL)
+	{
+		g_flag[CTRL_Q] = 0;
+		return (1);
+	}
+	return (0);
+}
 
-	minishell_init(argc, argv, envp); // <-- semi_arr 가 초기화
+static int	process_g_flag_a(char **line, char *c)
+{
+	if (g_flag[CTRL_BS])
+		g_flag[CTRL_BS] = 0;
+	else
+		ft_putstr_fd("minishell$ ", 1);
+	while (1 == (g_flag[CTRL_D] = 1) && read(0, c, 1))
+	{
+		g_flag[CTRL_D] = 0;
+		ft_addchr(line, *c);
+		if (*c == '\n')
+			break ;
+	}
+	return (0);
+}
+
+int			main(int argc, char *argv[], char **envp)
+{
+	t_list	*cmds;
+	char	*line;
+	char	c;
+
+	cmds = NULL;
+	line = NULL;
+	minishell_init(argc, argv, envp);
 	catch_signals();
-	g_status = 0; // $? 의 코드
+	g_status = 0;
 	while (TRUE)
 	{
-		if (g_flag[CTRL_BS])
-			g_flag[CTRL_BS] = 0;
-		else
-			ft_putstr_fd("minishell$ ",1);
-		while (1 == (g_flag[CTRL_D] = 1) && read(0, &c, 1))
-		{
-			g_flag[CTRL_D] = 0;
-			ft_addchr(&line, c);
-			if (c == '\n')
-				break;
-		}
-		if (g_flag[CTRL_D] == 1)
-		{
-			if (line == NULL)
-			{
-				ft_putendl_fd("exit", 1);
-				minishell_exit(cmds); exit(0);
-			}
-			else
-				ft_putstr_fd("\n", 1);
-		}
-		else if (g_flag[CTRL_Q] == 1 && line == NULL)
-		{
-			g_flag[CTRL_Q] = 0;
+		process_g_flag_a(&line, &c);
+		if (1 == process_g_flag_b(cmds, line))
 			continue ;
-		}
 		ft_memset(g_flag, 0, sizeof(int) * F_END);
 		get_commands_from_gnl(&cmds, line);
 		execute_multi_commands(cmds);
