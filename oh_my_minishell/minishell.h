@@ -146,11 +146,8 @@ char	*string_tolower(char *str);
 void	get_commands_from_gnl(t_list **cmd, char *line);
 
 //print_free.c
-void	print_cmd_list(t_list *cmd);
 void	free_split(char **argv);
-void	print_split(char **split);
 void	free_3d_split(char ***argv);
-void	print_3d_split(char ***argv);
 
 //execute_commands.c
 int		execute_multi_commands(t_list *cmd);
