@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 19:19:03 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/03 08:21:21 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/22 01:51:56 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <stdio.h>
 # include <stdlib.h>
 
 typedef struct	s_list
@@ -21,7 +20,6 @@ typedef struct	s_list
 	char			*content;
 	struct s_list	*next;
 	char			**split_by_pipes;
-	int				shell_errno;
 }				t_list;
 
 void			ft_bzero(void *b, size_t n);
