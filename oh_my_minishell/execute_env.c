@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 05:17:12 by ykoh              #+#    #+#             */
-/*   Updated: 2021/01/21 05:17:14 by ykoh             ###   ########.fr       */
+/*   Updated: 2021/01/21 15:04:09 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int			execute_env(const char *path,
 	int		j;
 
 	if (argv[1])
-		return (msg_error("bash", "env", argv[1], 2));
+		return (msg_error("minishell", "env", argv[1], 2));
 	export_env_path(path, argv, get_param()->envp);
 	i = 0;
 	while (envp[i])

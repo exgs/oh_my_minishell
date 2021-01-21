@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/20 23:08:37 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/21 15:04:37 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void				one_argv(char *argv)
 	else
 	{
 		ft_putendl_fd("exit", 2);
-		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
@@ -74,13 +74,13 @@ static void				more_than_one_argv(char *argv)
 	if (is_numeric(argv))
 	{
 		ft_putendl_fd("exit", 2);
-		ft_putendl_fd("bash: exit: too many arguments", 2);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		g_status = 1 * 256;
 	}
 	else
 	{
 		ft_putendl_fd("exit", 2);
-		ft_putstr_fd("bash: exit: ", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(argv, 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		exit(255);
