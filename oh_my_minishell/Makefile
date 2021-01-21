@@ -37,12 +37,12 @@ SRCS		=	gnl/get_next_line.c\
 				redirection_utils.c\
 				init.c\
 				exit.c
-				
+
 NAME		=	minishell
 LIBFT		=	libft
 RM			=	rm -f
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror
 
 $(NAME) :	$(SRCS)
 			$(MAKE) bonus -C $(LIBFT)/
@@ -57,7 +57,7 @@ fclean	:	clean
 			$(RM) $(LIBFT)/$(LIBFT).a
 			$(RM) $(NAME)
 
-debug	:	
+debug	:
 			$(CC) $(CFLAGS) libft/*.c gnl/*.c *.c -o minishell
 
 re		:	fclean all
