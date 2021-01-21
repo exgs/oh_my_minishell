@@ -6,13 +6,13 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 03:25:46 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 03:25:47 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 16:56:34 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void reset_getparam_by_newtrimed(void)
+static void	reset_getparam_by_newtrimed(void)
 {
 	if (get_param()->cmd_splited != NULL)
 		free_split(get_param()->cmd_splited);
@@ -25,12 +25,12 @@ static void reset_getparam_by_newtrimed(void)
 								&get_param()->symbol_array);
 }
 
-static void reset_getparam_by_macro(char **envlist, char *buff, int i)
+static void	reset_getparam_by_macro(char **envlist, char *buff, int i)
 {
-	char *temp;
-	char *new_trimed;
+	char	*temp;
+	char	*new_trimed;
 
-	ft_strlcpy(g_buf, ft_strchr(envlist[i], '=') + 1, BUFF_MAX); 
+	ft_strlcpy(g_buf, ft_strchr(envlist[i], '=') + 1, BUFF_MAX);
 	temp = ft_strchr(get_param()->cmd_trimed, ' ');
 	new_trimed = ft_strjoin(g_buf, temp);
 	free(get_param()->cmd_trimed);
@@ -42,14 +42,31 @@ static void reset_getparam_by_macro(char **envlist, char *buff, int i)
 	(void)buff;
 }
 
+static void	find_macro_in_envp(char **envlist, char *buff)
+{
+	int i;
 
-int		execute_path(const char *path, char *const argv[], char *const envp[])
+	i = 0;
+	while (envlist[i] != NULL)
+	{
+		if (is_macro_in_envp(envlist[i], buff) == TRUE)
+		{
+			reset_getparam_by_macro(envlist, buff, i);
+			break ;
+		}
+		i++;
+	}
+	ft_memset(g_buf, 0, BUFF_MAX);
+}
+
+int			execute_path(const char *path, char *const argv[],
+							char *const envp[])
 {
 	char	buff[BUFF_MAX];
 	char	*str;
 	int		i;
 	char	**envlist;
-	
+
 	i = 0;
 	str = get_param()->cmd_trimed;
 	envlist = get_param()->envp;
@@ -58,16 +75,7 @@ int		execute_path(const char *path, char *const argv[], char *const envp[])
 	else
 	{
 		copy_pathname(str, buff);
-		while (envlist[i] != NULL)
-		{
-			if (is_macro_in_envp(envlist[i], buff) == TRUE)
-			{
-				reset_getparam_by_macro(envlist, buff, i);
-				break ;
-			}
-			i++;
-		}
-		ft_memset(g_buf, 0, BUFF_MAX);
+		find_macro_in_envp(envlist, buff);
 	}
 	return (0);
 	(void)argv;
