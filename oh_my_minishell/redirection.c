@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 03:48:35 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 17:14:07 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 static int	is_redirect(char *str, t_index *index)
 {
-	int i = 0;
+	int i;
+
+	i = 0;
 	if (str == NULL)
 		return (-1);
 	while (str[i])
 	{
 		if (str[i] == '\'')
 			index->f_quote ^= 1;
-		if (str[i] == '\"')
+		if (str[i++] == '\"')
 			index->f_quote ^= 2;
-		i++;
 	}
 	if (index->f_quote & 1 || index->f_quote & 2)
 		return (FALSE);
@@ -42,11 +43,13 @@ static int	is_redirect(char *str, t_index *index)
 
 static int	redirect_num(char **one_cmd_splited, t_index *index)
 {
-	int i = 0;
-	int cnt = 0;
+	int i;
+	int cnt;
+
+	i = 0;
+	cnt = 0;
 	while (one_cmd_splited[i])
 	{
-		// flag_quote(one_cmd_splited[i], index);
 		if (is_redirect(one_cmd_splited[i], index) != 0)
 			cnt++;
 		i++;
@@ -54,11 +57,12 @@ static int	redirect_num(char **one_cmd_splited, t_index *index)
 	return (cnt);
 }
 
-void		splited_by_redirect_norm(char ***divid, char **split, char *symbol_array, t_index *index)
+void		splited_by_redirect_norm(char ***divid, char **split,
+										char *symbol_array, t_index *index)
 {
-	char *str;
-	int j;
-	
+	char	*str;
+	int		j;
+
 	j = 0;
 	while (split[index->i])
 	{
@@ -66,10 +70,11 @@ void		splited_by_redirect_norm(char ***divid, char **split, char *symbol_array, 
 		if (is_redirect(split[index->i], index) != 0)
 		{
 			input_symbol(split, symbol_array, index);
-			divid[index->cnt] = malloc(sizeof(char *) * (index->i - index->before + 1));
+			divid[index->cnt] = malloc(sizeof(char *) *
+									(index->i - index->before + 1));
 			index->j = 0;
 			while (index->before < index->i)
-			{	
+			{
 				divid[index->cnt][index->j] = strdup(split[index->before]);
 				index->before++;
 				index->j++;
@@ -82,26 +87,25 @@ void		splited_by_redirect_norm(char ***divid, char **split, char *symbol_array, 
 	}
 }
 
-char	***splited_by_redirect(char **one_cmd_splited, char **array)
+char		***splited_by_redirect(char **one_cmd_splited, char **array)
 {
-	char ***divid;
-	char **split = one_cmd_splited;
-	char *symbol_array;
-	char *temp;
-	int p;
-	t_index index;
-	
+	char	***divid;
+	char	*symbol_array;
+	char	*temp;
+	int		p;
+	t_index	index;
+
 	s_index_bzero(&index);
 	index.redir_num = redirect_num(one_cmd_splited, &index);
 	divid = malloc(sizeof(char **) * (index.redir_num + 1 + 1));
 	symbol_array = malloc(sizeof(char) * (index.redir_num + 1));
-	splited_by_redirect_norm(divid, split, symbol_array, &index);
-	p= 0;
+	splited_by_redirect_norm(divid, one_cmd_splited, symbol_array, &index);
+	p = 0;
 	divid[index.cnt] = malloc(sizeof(char *) * (index.i - index.before + 1));
 	while (index.before < index.i)
-	{	
-		temp = split[index.before];
-		divid[index.cnt][p++] = strdup(split[index.before]);
+	{
+		temp = one_cmd_splited[index.before];
+		divid[index.cnt][p++] = strdup(one_cmd_splited[index.before]);
 		index.before++;
 	}
 	divid[index.cnt][p] = NULL;
