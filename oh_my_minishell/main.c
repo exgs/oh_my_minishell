@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:03:39 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 16:04:14 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/22 01:33:00 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ static int	process_g_flag_b(t_list *cmds, char *line)
 		else
 			ft_putstr_fd("\n", 1);
 	}
-	else if (g_flag[CTRL_Q] == 1 && line == NULL)
+	else if (g_flag[CTRL_BS] == 1 && line == NULL)
 	{
-		g_flag[CTRL_Q] = 0;
+		g_flag[CTRL_BS] = 0;
 		return (1);
 	}
 	return (0);
@@ -54,8 +54,8 @@ static int	process_g_flag_b(t_list *cmds, char *line)
 
 static int	process_g_flag_a(char **line, char *c)
 {
-	if (g_flag[CTRL_BS])
-		g_flag[CTRL_BS] = 0;
+	if (g_flag[CTRL_C])
+		g_flag[CTRL_C] = 0;
 	else
 		ft_putstr_fd("minishell$ ", 1);
 	while (1 == (g_flag[CTRL_D] = 1) && read(0, c, 1))

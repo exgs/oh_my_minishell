@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 17:47:42 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/22 01:41:27 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,14 @@
 # include <unistd.h>
 # include <limits.h>
 # include <errno.h>
-# include <string.h>
 # include <sys/wait.h>
 # include <string.h>
 # include <dirent.h>
-# include <sys/types.h>
 # include <fcntl.h>
 # include <sys/stat.h>
 # include "./libft/libft.h"
 # include "./gnl/get_next_line.h"
 
-# define READ		0
-# define WRTIE		1
 # define ERROR		-1
 # define FALSE		0
 # define TRUE		1
@@ -49,26 +45,11 @@
 # define READ		0
 # define WRITE		1
 
-# define RDONLY		0
-# define WRONLY		1
-# define RDWR		2
-
 /*
 ** BUFF
 */
 
 # define BUFF_MAX	1000
-
-enum				e_quotes
-{
-	Q_E = -3,
-	Q_B,
-	Q_S,
-	OUT,
-	DQ_S,
-	DQ_B,
-	DQ_E
-};
 
 enum				e_except
 {
@@ -80,8 +61,8 @@ enum				e_except
 enum				e_flag
 {
 	CTRL_D,
+	CTRL_C,
 	CTRL_BS,
-	CTRL_Q,
 	F_END
 };
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 01:13:08 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/22 02:10:34 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int			execute_command_nopipe(char *one_cmd)
 	while (get_param()->symbol_array[i] != 0)
 	{
 		if (get_param()->symbol_array[i] == -1)
+		{
+			g_status = 258 * 256;
 			return (-1);
+		}
 		i++;
 	}
 	if (get_param()->symbol_array[0] == 0)
@@ -55,7 +58,7 @@ void		child_process(char **one_cmd_splited, int *fd)
 	if (fd[1] != 1)
 		close(fd[1]);
 	if (need_redirection() == ERROR)
-		exit(0);
+		exit(1);
 	else if (need_redirection() == TRUE)
 	{
 		execute_nopipe_redirect();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_command_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:15:10 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 16:40:45 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/22 01:33:00 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ static void		change_g_status(void)
 	{
 		g_status = g_flag[CTRL_D] * 256;
 	}
+	else if (g_flag[CTRL_C] != 0)
+	{
+		g_status = g_flag[CTRL_C] * 256;
+	}
 	else if (g_flag[CTRL_BS] != 0)
 	{
 		g_status = g_flag[CTRL_BS] * 256;
-	}
-	else if (g_flag[CTRL_Q] != 0)
-	{
-		g_status = g_flag[CTRL_Q] * 256;
 	}
 	return ;
 }
