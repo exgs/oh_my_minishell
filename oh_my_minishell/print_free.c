@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:25:06 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 00:25:52 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 17:20:56 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,56 +48,4 @@ void	free_3d_split(char ***argv)
 		i++;
 	}
 	free(argv);
-}
-
-void	print_split(char **split)
-{
-	int i;
-
-	i = 0;
-	if (split == NULL)
-		return ;
-	while (split[i])
-	{
-		printf("split|%d번째:%s\n", i, split[i]);
-		i++;
-	}
-}
-
-void	print_cmd_list(t_list *cmd)
-{
-	int i;
-	int lst_length;
-
-	i = 0;
-	lst_length = ft_lstsize(cmd);
-	while (i < lst_length)
-	{
-		printf("linked|%d번째:%s\n", i, cmd->content);
-		cmd = cmd->next;
-		i++;
-	}
-}
-
-void	print_3d_split(char ***argv)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	if (argv == NULL)
-		return ;
-	printf("=======================\n");
-	while (argv[i] != NULL)
-	{
-		j = 0;
-		while (argv[i][j])
-		{
-			printf("%s\n", argv[i][j]);
-			j++;
-		}
-		printf("-----------------\n");
-		i++;
-	}
-	printf("=======================\n");
 }

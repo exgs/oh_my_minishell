@@ -6,25 +6,19 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:15:10 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/20 23:34:13 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/21 16:40:45 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char		*get_path(char *cmd, char *argv[], char *envp[])
+static char		*get_path_strjoin(char *cmd, char **arr)
 {
+	int			i;
 	struct stat	buf;
-	char		**arr;
 	char		*path;
 	char		*tmp;
-	int			i;
 
-	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=')
-		envp++;
-	if (ft_strchr(cmd, '/') || !*envp || !ft_strchr(*envp, '='))
-		return (ft_strdup(cmd));
-	arr = ft_split(ft_strchr(*envp, '=') + 1, ':');
 	i = 0;
 	while (arr[i])
 	{
@@ -37,12 +31,26 @@ char		*get_path(char *cmd, char *argv[], char *envp[])
 		path = NULL;
 		i++;
 	}
+	return (path);
+}
+
+char			*get_path(char *cmd, char *argv[], char *envp[])
+{
+	char		**arr;
+	char		*path;
+
+	while (*envp && ft_strncmp(*envp, "PATH", 5) != '=')
+		envp++;
+	if (ft_strchr(cmd, '/') || !*envp || !ft_strchr(*envp, '='))
+		return (ft_strdup(cmd));
+	arr = ft_split(ft_strchr(*envp, '=') + 1, ':');
+	path = get_path_strjoin(cmd, arr);
 	vector_clear(arr);
 	return (path);
 	(void)argv;
 }
 
-static void	change_g_status(void)
+static void		change_g_status(void)
 {
 	if (g_flag[CTRL_D] != 0)
 	{
@@ -59,7 +67,7 @@ static void	change_g_status(void)
 	return ;
 }
 
-static void	error_execve(const char *path, char *const argv[],
+static void		error_execve(const char *path, char *const argv[],
 				char *const envp[], struct stat buf)
 {
 	if (stat(path, &buf) == -1)
@@ -88,7 +96,8 @@ static void	error_execve(const char *path, char *const argv[],
 	}
 }
 
-void		ft_execve(const char *path, char *const argv[], char *const envp[])
+void			ft_execve(const char *path, char *const argv[],
+							char *const envp[])
 {
 	pid_t		pid;
 	struct stat	buf;

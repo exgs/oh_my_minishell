@@ -1,6 +1,8 @@
 *.o
 .vscode
 .DS_Store
+minishell
 a.out
 *.a
+minishell.dSYM
 a.out.dSYM
