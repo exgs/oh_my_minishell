@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/01/21 16:08:01 by jikang            #+#    #+#             */
+/*   Updated: 2021/01/21 16:08:02 by jikang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	catch_sigint(int pid)
@@ -31,8 +43,6 @@ void	catch_sigquit(int pid)
 		g_flag[CTRL_Q] = 1;
 		g_status = 1 * 256;
 	}
-	// else
-	// 	ft_putstr_fd("\nQuit: 3", 1);
 }
 
 void	catch_signals(void)
