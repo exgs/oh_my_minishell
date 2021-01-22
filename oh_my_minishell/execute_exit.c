@@ -121,7 +121,7 @@ int						execute_exit(const char *path,
 		i++;
 	if (i == 1)
 	{
-		ft_putendl_fd("exit", 1);
+		ft_putendl_fd("exit", 2);
 		exit(g_status * 256);
 	}
 	if (i == 2)

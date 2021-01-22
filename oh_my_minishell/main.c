@@ -37,12 +37,12 @@ static int	process_g_flag_b(t_list *cmds, char *line)
 	{
 		if (line == NULL)
 		{
-			ft_putendl_fd("exit", 1);
+			ft_putendl_fd("exit", 2);
 			minishell_exit(cmds);
 			exit(0);
 		}
 		else
-			ft_putstr_fd("\n", 1);
+			ft_putstr_fd("\n", 2);
 	}
 	else if (g_flag[CTRL_BS] == 1 && line == NULL)
 	{
@@ -57,7 +57,7 @@ static int	process_g_flag_a(char **line, char *c)
 	if (g_flag[CTRL_C])
 		g_flag[CTRL_C] = 0;
 	else
-		ft_putstr_fd("minishell$ ", 1);
+		ft_putstr_fd("minishell$ ", 2);
 	while (1 == (g_flag[CTRL_D] = 1) && read(0, c, 1))
 	{
 		g_flag[CTRL_D] = 0;
