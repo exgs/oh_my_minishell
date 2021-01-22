@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 01:41:53 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/23 01:46:21 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** @inside big quote, ex) bash$ "\"", bash$ "\n"
 */
 
-void	back_slash(char *buff, char *line, t_var *v)
+static void	back_slash(char *buff, char *line, t_var *v)
 {
 	if (v->flag_bq == 0)
 		(v->i)++;
@@ -36,7 +36,7 @@ void	back_slash(char *buff, char *line, t_var *v)
 ** when meets "<", ">", push charector until meets null
 */
 
-int		is_redirect(char *buff, char *line, t_var *v)
+static int	is_redirect(char *buff, char *line, t_var *v)
 {
 	if (line[v->i] == '>' && v->flag_bq == 0)
 	{
@@ -57,6 +57,27 @@ int		is_redirect(char *buff, char *line, t_var *v)
 }
 
 /*
+** name : check_double_space
+** aim : clear double_space without quotes
+*/
+
+static int	check_double_space(char *buff, char *line, t_var *v)
+{
+	buff[v->k] = line[v->i];
+	(v->k)++;
+	while (TRUE)
+	{
+		if (line[v->i] != ' ')
+		{
+			(v->i)--;
+			return (0);
+		}
+		(v->i)++;
+	}
+	return (0);
+}
+
+/*
 ** name : refining_factory
 ** aim : process string outside of small quote.
 ** @big quote: there's difference when charector inside big quote and outside
@@ -65,7 +86,7 @@ int		is_redirect(char *buff, char *line, t_var *v)
 ** 					it is for redirection
 */
 
-int		refining_factory(char *buff, char *line, t_var *v, char **envlist)
+int			refining_factory(char *buff, char *line, t_var *v, char **envlist)
 {
 	if (line[v->i] == '"')
 		change_flag(&v->flag_bq);
@@ -76,6 +97,10 @@ int		refining_factory(char *buff, char *line, t_var *v, char **envlist)
 	}
 	else if (line[v->i] == '\\')
 		back_slash(buff, line, v);
+	else if (line[v->i] == ' ' && v->flag_bq == 0 && v->flag_sq == 0)
+	{
+		check_double_space(buff, line, v);
+	}
 	else
 	{
 		if (is_redirect(buff, line, v) == 1)
