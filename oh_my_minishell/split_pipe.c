@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:35:17 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 01:35:46 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/23 12:57:25 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,15 @@ void		check_pipe(int *buff, char *substr, t_var *v)
 	{
 		if (substr[v->i] == '|')
 		{
-			if (v->flag_bq == 0 && v->flag_sq == 0 && v->flag_pipe == 0)
+			if (v->flag_bq == 0 && v->flag_sq == 0)
 			{
+				if (v->i == 0 || substr[v->i - 1] == '|')
+				{
+					v->i++;
+					g_except[SYNTAX] = '|';
+					continue;
+				}
 				buff[(v->k)++] = v->i;
-				v->flag_pipe = 1;
 			}
 		}
 		else
@@ -67,7 +72,6 @@ void		check_pipe(int *buff, char *substr, t_var *v)
 				change_flag(&(v->flag_bq));
 			else if (substr[v->i] == '\'')
 				change_flag(&(v->flag_sq));
-			v->flag_pipe = 0;
 		}
 		(v->i)++;
 	}

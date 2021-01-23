@@ -58,7 +58,7 @@ fclean	:	clean
 			$(RM) $(NAME)
 
 debug	:
-			$(CC) $(CFLAGS) libft/*.c gnl/*.c *.c -o minishell
+			$(CC) $(CFLAGS) libft/*.c gnl/*.c *.c -o minishell -g
 
 re		:	fclean all
 
