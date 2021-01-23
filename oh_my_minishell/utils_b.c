@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_b.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:51:44 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 15:04:53 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/23 12:54:40 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ char		*ft_strdup_by_index(char *str, int start, int end)
 
 	if (str == NULL || start < 0 || start > end || ft_strlen(str) < end)
 		return (0);
-	if (start == end)
-		ft_strdup(" ");
 	new = malloc(sizeof(char) * (end - start + 2));
 	i = start;
 	j = 0;

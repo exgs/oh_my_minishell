@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:17:21 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/22 01:51:24 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/23 12:46:06 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static void	error_except(void)
 
 static int	check_delimeter(char **str)
 {
+	if (g_except[SYNTAX] == '|')
+		return (-1);
 	if (str[0] == NULL)
 	{
 		g_except[SYNTAX] = '|';
