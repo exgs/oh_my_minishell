@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/22 01:41:27 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/23 02:05:20 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ typedef int	(*t_builtin)(const char *, char *const[], char *const[]);
 **	get_commands_from_gnl.c
 */
 
-char				*ft_strsep(char **stringp, const char *delim);
 void				del(void *content);
 char				*string_tolower(char *str);
 void				get_commands_from_gnl(t_list **cmd, char *line);
