@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:06:26 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/23 01:59:38 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/26 02:41:34 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int				execute_echo(const char *path, char *const argv[],
 	if (ft_strncmp(get_param()->cmd_trimed, "/bin/echo", 9) == 0)
 		i = 10;
 	echo_line = refine_line(get_param()->cmd_trimed);
-	skip_n_option(echo_line, &i, &flag_n);
 	if (echo_line == NULL)
 		return (0);
+	skip_n_option(echo_line, &i, &flag_n);
 	while (echo_line[i] != '\0')
 		ft_putchar_fd(echo_line[i++], 1);
 	if (flag_n != 1)

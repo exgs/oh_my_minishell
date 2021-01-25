@@ -48,6 +48,9 @@ $(NAME) :	$(SRCS)
 			$(MAKE) bonus -C $(LIBFT)/
 			$(CC) $(CFLAGS) $(LIBFT)/$(LIBFT).a $^ -o $@
 
+fsan	:
+			$(CC) -fsanitize=address -g libft/*.c gnl/*.c *.c -o minishell
+
 all		:	$(NAME)
 
 clean	:
