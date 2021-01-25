@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:17:21 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/23 12:46:06 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/25 14:53:11 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	error_except(void)
 {
 	if (g_except[SYNTAX] != 0)
 	{
+		g_status = 258 * 256;
 		ft_putstr_fd("minishell: syntax error near unexpected token '", 2);
 		if (g_except[SYNTAX] == 10)
 			ft_putstr_fd("newline", 2);
