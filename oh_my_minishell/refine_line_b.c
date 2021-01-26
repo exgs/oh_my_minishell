@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   refine_line_b.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/26 02:23:21 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 02:13:14 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ static void	back_slash(char *buff, char *line, t_var *v)
 	else if (v->flag_bq == 1 && line[(v->i) + 1] == '"')
 		(v->i)++;
 	else if (v->flag_bq == 1 && line[(v->i) + 1] == '\\')
-		(v->i)++;	
+		(v->i)++;
+	else if (line[(v->i) + 1] == '$')
+		(v->i)++;
 	buff[v->k] = line[v->i];
 	(v->k)++;
 }
