@@ -36,7 +36,8 @@ SRCS		=	gnl/get_next_line.c\
 				execute_cd_utils.c\
 				redirection_utils.c\
 				init.c\
-				exit.c
+				exit.c\
+				ft_split_minishell.c
 
 NAME		=	minishell
 LIBFT		=	libft
