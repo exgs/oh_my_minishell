@@ -61,6 +61,11 @@ exec_test 'echo -n test tout'
 exec_test 'echo -n -n -n test tout'
 exec_test 'echo -n -n-ntest tout'
 exec_test 'echo -a -b-ntest tout'
+exec_test 'echo      a       b        c'
+exec_test 'echo    "sdf $PWDhome sdfsd"'
+exec_test 'echo    "sdf \$PWDhome"'
+exec_test 'echo \$PWDhome'
+exec_test 'echo "The quote for today is "\"TGIF\"'
 
 
 # CD TESTS
