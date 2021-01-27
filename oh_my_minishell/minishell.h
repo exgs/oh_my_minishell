@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/23 02:05:20 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/27 04:30:27 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,4 +355,9 @@ int					msg_invalid(char *program, char *cmd,
 
 void				unseal_firstquotes(char **splited);
 
+/*
+**	ft_split_minishell.c
+*/
+
+char				**ft_split_minishell(char const *s, char c);
 #endif
