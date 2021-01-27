@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 05:17:20 by ykoh              #+#    #+#             */
-/*   Updated: 2021/01/21 05:17:21 by ykoh             ###   ########.fr       */
+/*   Updated: 2021/01/27 19:31:31 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	is_valid(char str[])
 	return (1);
 }
 
-static void	change_argv(char **argv)
+void	change_argv(char **argv)
 {
 	int		i;
 	char	*tmp;

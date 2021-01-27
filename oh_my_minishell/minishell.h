@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/27 04:30:27 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 19:39:38 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,4 +360,10 @@ void				unseal_firstquotes(char **splited);
 */
 
 char				**ft_split_minishell(char const *s, char c);
+
+/*
+**	execute_unset.c
+*/
+
+void				change_argv(char **argv);
 #endif

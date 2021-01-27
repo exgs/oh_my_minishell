@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_export_a.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ykoh <ykoh@student.42seoul.kr>             +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 05:17:00 by ykoh              #+#    #+#             */
-/*   Updated: 2021/01/21 05:17:01 by ykoh             ###   ########.fr       */
+/*   Updated: 2021/01/27 19:37:33 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,31 +73,13 @@ static int	is_exist(char *envp[], char argv[])
 	return (0);
 }
 
-static void	change_argv(const char *path, char **argv)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	while (argv[i])
-	{
-		if ((tmp = refine_line(argv[i])))
-		{
-			free(argv[i]);
-			argv[i] = tmp;
-		}
-		i++;
-	}
-	(void)path;
-}
-
 int			execute_export(const char *path, char *const argv[],
 											char *const envp[])
 {
 	int		i;
 	int		j;
 
-	change_argv(path, (char **)++argv);
+	change_argv((char **)++argv);
 	if (vector_size((char **)argv))
 	{
 		i = 0;
@@ -119,4 +101,5 @@ int			execute_export(const char *path, char *const argv[],
 	if (g_status != 256)
 		g_status = 0;
 	return (0);
+	(void)path;
 }
