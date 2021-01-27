@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 03:57:15 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/27 04:37:55 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 18:59:37 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,21 @@ static size_t		split_len(const char *s, char c)
 	unsigned int i;
 	char flag_quotes;
 
-	i = 0;
 	flag_quotes = 0;
+	if (s[0] == '\'')
+		flag_quotes ^= 1;
+	if (s[0] == '\"')
+		flag_quotes ^= 2;
+	i = 1;
 	while ((s[i] && s[i] != c) || (flag_quotes & 0x3))
 	{
-		if (s[i] == '\'')
-			flag_quotes ^= 1;
-		if (s[i] == '\"')
-			flag_quotes ^= 2;
+		if (s[i - 1] != '\\')
+		{
+			if (s[i] == '\'')
+				flag_quotes ^= 1;
+			if (s[i] == '\"')
+				flag_quotes ^= 2;
+		}
 		i++;
 	}
 	return (i);
@@ -38,17 +45,25 @@ static unsigned int	size_array(const char *str, char c)
 
 	i = 0;
 	size = 0;
-	flag_quotes = 0;
 	if (str[0] == '\0')
 		return (size);
 	if (str[0] != c)
-		size += 1;
+		size = 1;
+	flag_quotes = 0;
+	if (str[0] == '\'')
+		flag_quotes ^= 1;
+	if (str[0] == '\"')
+		flag_quotes ^= 2;
+	i = 1;
 	while (str[i])
 	{
-		if (str[i] == '\'')
-			flag_quotes ^= 1;
-		if (str[i] == '\"')
-			flag_quotes ^= 2;
+		if (str[i - 1] != '\\')
+		{
+			if (str[i] == '\'')
+				flag_quotes ^= 1;
+			if (str[i] == '\"')
+				flag_quotes ^= 2;
+		}
 		if ((str[i] == c && str[i + 1] != c) && str[i + 1] != 0 &&
 				(flag_quotes ^ 0x1) && (flag_quotes ^ 0x2))
 			size++;
@@ -66,10 +81,13 @@ static int			input_parts(char *dst, const char *src, char c, int i)
 	flag_quotes = 0;
 	while ((src[i] && src[i] != c) || (flag_quotes & 0x3))
 	{
-		if (src[i] == '\'')
-			flag_quotes ^= 1;
-		if (src[i] == '\"')
-			flag_quotes ^= 2;
+		if (i != 0 && src[i - 1] != '\\')
+		{
+			if (src[i] == '\'')
+				flag_quotes ^= 1;
+			if (src[i] == '\"')
+				flag_quotes ^= 2;
+		}
 		dst[j] = src[i];
 		j++;
 		i++;
