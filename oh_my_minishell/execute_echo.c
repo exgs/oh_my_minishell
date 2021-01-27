@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:06:26 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/26 02:41:34 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 18:46:29 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ void			skip_n_option(char *str, int *i, int *flag_n)
 	}
 }
 
+static void		check_n_option(char *argv, int *flag_n)
+{
+	static int k;
+
+	k = 0;
+	if (argv[0] == '-' && argv[1] == 'n' && argv[2] == '\0')
+		*flag_n = 1;
+}
+
 /*
 ** name : execute_echo
 ** aim : echo, /bin/echo command process
@@ -49,6 +58,23 @@ int				execute_echo(const char *path, char *const argv[],
 	int			flag_n;
 	char		*echo_line;
 
+	i = 0;
+	while (argv[i] != NULL)
+	{
+		ft_putendl_fd(argv[i], 1);
+		i++;
+	}
+	ft_putendl_fd("--------------------", 1);
+	i = 1;
+	while (argv[i] != NULL)
+	{
+		/* -n option 검사 그리고 다음에 넘어오는 것들은 skip 해주어야한다. */
+		check_n_option(argv[1], &flag_n);
+		ft_putstr_fd(refine_line(argv[i]), 1);
+		ft_putstr_fd(" ", 1);
+		i++;
+	}
+	ft_putendl_fd("\n--------------------", 1);
 	i = 5;
 	flag_n = 0;
 	if (ft_strncmp(get_param()->cmd_trimed, "/bin/echo", 9) == 0)

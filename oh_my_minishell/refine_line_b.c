@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   refine_line_b.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/26 02:23:21 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 21:24:32 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,27 @@ static void	back_slash(char *buff, char *line, t_var *v)
 	else if (v->flag_bq == 1 && line[(v->i) + 1] == '"')
 		(v->i)++;
 	else if (v->flag_bq == 1 && line[(v->i) + 1] == '\\')
-		(v->i)++;	
+		(v->i)++;
+	else if (line[(v->i) + 1] == '$')
+		(v->i)++;
 	buff[v->k] = line[v->i];
 	(v->k)++;
+}
+
+void skip_redirect(char *buff, char *line, t_var *v, char c)
+{
+	if (!ft_is_whitespace(line[v->i - 1]))
+			buff[(v->k)++] = ' ';
+	(v->i)++;
+	if (line[v->i] == c)
+		(v->i)++;
+	while (ft_is_whitespace(line[v->i]))
+		(v->i)++;
+	while (!ft_is_whitespace(line[v->i]) && line[v->i])
+		(v->i)++;
+	while (ft_is_whitespace(line[v->i]))
+		(v->i)++;
+	(v->i)--;
 }
 
 /*
@@ -40,18 +58,15 @@ static void	back_slash(char *buff, char *line, t_var *v)
 
 static int	is_redirect(char *buff, char *line, t_var *v)
 {
+	// 가정 : >> 가 아니다.
 	if (line[v->i] == '>' && v->flag_bq == 0)
 	{
-		while (line[v->i] != '\0')
-			(v->i)++;
-		(v->i)--;
+		skip_redirect(buff, line, v, '>');
 		return (1);
 	}
 	else if (line[v->i] == '<' && v->flag_bq == 0)
 	{
-		while (line[v->i] != '\0')
-			(v->i)++;
-		(v->i)--;
+		skip_redirect(buff, line, v, '<');
 		return (1);
 	}
 	return (0);

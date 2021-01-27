@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 17:14:07 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 15:44:59 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,16 @@ static int	is_redirect(char *str, t_index *index)
 	}
 	if (index->f_quote & 1 || index->f_quote & 2)
 		return (FALSE);
-	if (str[0] == '>' || str[0] == '<')
-	{
-		if (!ft_strncmp(str, ">>", 3))
-			return (D_RIGHT);
-		else if (!ft_strncmp(str, ">", 2))
-			return (RIGHT);
-		else if (!ft_strncmp(str, "<", 2))
-			return (LEFT);
-		return (ERROR);
-	}
+	// if (str[0] == '>' || str[0] == '<')
+	// {
+	// 	if (!ft_strncmp(str, ">>", 3))
+	// 		return (D_RIGHT);
+	// 	else if (!ft_strncmp(str, ">", 2))
+	// 		return (RIGHT);
+	// 	else if (!ft_strncmp(str, "<", 2))
+	// 		return (LEFT);
+	// 	return (ERROR);
+	// }
 	return (FALSE);
 }
 

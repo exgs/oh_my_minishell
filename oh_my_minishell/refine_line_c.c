@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:47:13 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/22 00:55:24 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/27 17:56:24 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,7 @@ int			convert_env(char *buff, char *line, t_var *v, char **envlist)
 	}
 	(v->i)--;
 	if (replace_env(temp, envlist) == 1)
-	{
-		ft_putstr_fd("minishell : ", 1);
-		ft_putstr_fd(temp, 1);
-		ft_putendl_fd(" : environment variable error", 2);
-		g_status = 1 * 256;
-		return (1);
-	}
+		return (0);
 	take_buff(buff, temp, &v->k);
 	return (0);
 }
