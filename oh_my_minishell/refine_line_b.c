@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/27 02:13:14 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/27 21:32:56 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ static void	back_slash(char *buff, char *line, t_var *v)
 	(v->k)++;
 }
 
+void		skip_redirect(char *buff, char *line, t_var *v, char c)
+{
+	if (!ft_is_whitespace(line[v->i - 1]))
+		buff[(v->k)++] = ' ';
+	(v->i)++;
+	if (line[v->i] == c)
+		(v->i)++;
+	while (ft_is_whitespace(line[v->i]))
+		(v->i)++;
+	while (!ft_is_whitespace(line[v->i]) && line[v->i])
+		(v->i)++;
+	while (ft_is_whitespace(line[v->i]))
+		(v->i)++;
+	(v->i)--;
+}
+
 /*
 ** name : is_redirect
 ** aim : ends string when meets "<", ">" without quote
@@ -44,16 +60,12 @@ static int	is_redirect(char *buff, char *line, t_var *v)
 {
 	if (line[v->i] == '>' && v->flag_bq == 0)
 	{
-		while (line[v->i] != '\0')
-			(v->i)++;
-		(v->i)--;
+		skip_redirect(buff, line, v, '>');
 		return (1);
 	}
 	else if (line[v->i] == '<' && v->flag_bq == 0)
 	{
-		while (line[v->i] != '\0')
-			(v->i)++;
-		(v->i)--;
+		skip_redirect(buff, line, v, '<');
 		return (1);
 	}
 	return (0);
