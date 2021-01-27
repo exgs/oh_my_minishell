@@ -23,7 +23,8 @@ void		get_commands_from_gnl(t_list **cmd, char *line)
 	t_list	*new;
 	int		i;
 
-	check_semicolon(line);
+	if (check_semicolon(line) == -1)
+		return ;
 	i = 0;
 	while (TRUE)
 	{

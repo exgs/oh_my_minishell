@@ -175,7 +175,7 @@ void				change_flag(int *flag);
 **	utils_b.c
 */
 
-void				check_semicolon(char *str);
+int					check_semicolon(char *str);
 char				*ft_strdup_by_index(char *str, int start, int end);
 void				free_init(char **data, char *init);
 void				init_value(char *buff, t_var *v);
@@ -349,7 +349,7 @@ int					msg_error(char *program, char *cmd,
 								char *arg, int exit_status);
 int					msg_invalid(char *program, char *cmd,
 								char *arg, int exit_status);
-
+int					msg_syntax(char *program, char arg, int exit_status);
 /*
 **	unseal_firstquotes.c
 */
