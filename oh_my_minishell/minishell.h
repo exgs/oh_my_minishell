@@ -3,16 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/01/27 19:39:38 by yunslee          ###   ########.fr       */
-=======
-/*   Updated: 2021/01/23 02:05:20 by jikang           ###   ########.fr       */
->>>>>>> cf613f23003f7713feb216bcc247e2cf93b01cea
+/*   Updated: 2021/01/27 19:59:10 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H

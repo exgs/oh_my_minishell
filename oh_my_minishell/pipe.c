@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/27 19:58:38 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 20:00:27 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,9 @@ static void	set_get_param(char *one_cmd)
 	// {
 	// 	printf("%s\n", get_param()->cmd_splited[i]);
 	// }
-	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
 	parsing_redirect(get_param()->cmd_trimed);
-	get_param()->cmd_splited = ft_split(g_buf, ' ');
-	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
+	for_redirection = ft_split(g_buf, ' ');
+	get_param()->cmd_redirect = splited_by_redirect(for_redirection,
 												&get_param()->symbol_array);
 }
 
