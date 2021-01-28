@@ -75,7 +75,7 @@ void		splited_by_redirect_norm(char ***divid, char **split,
 			index->j = 0;
 			while (index->before < index->i)
 			{
-				divid[index->cnt][index->j] = strdup(split[index->before]);
+				divid[index->cnt][index->j] = ft_strdup(split[index->before]);
 				index->before++;
 				index->j++;
 			}
@@ -105,7 +105,7 @@ char		***splited_by_redirect(char **one_cmd_splited, char **array)
 	while (index.before < index.i)
 	{
 		temp = one_cmd_splited[index.before];
-		divid[index.cnt][p++] = strdup(one_cmd_splited[index.before]);
+		divid[index.cnt][p++] = ft_strdup(one_cmd_splited[index.before]);
 		index.before++;
 	}
 	divid[index.cnt][p] = NULL;

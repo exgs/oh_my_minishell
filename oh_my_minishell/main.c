@@ -18,7 +18,7 @@ static void	ft_addchr(char **s, char c)
 	int		count;
 
 	if (*s)
-		count = strlen(*s) + 2;
+		count = ft_strlen(*s) + 2;
 	else
 		count = 2;
 	ret = ft_calloc(count, sizeof(char));
