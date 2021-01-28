@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 03:57:15 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 04:47:19 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 05:12:14 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,22 @@
 
 static size_t		split_len(const char *str, char c)
 {
-	unsigned int i;
-	char flag_quotes;
+	unsigned int	i;
+	int				temp;
+	char			flag_quotes;
 
 	flag_quotes = 0;
-	if (str[0] == '\0' || str[0] == c)
-		return (0);
-	else if (str[0] == '\'')
-		flag_quotes ^= 1;
-	else if (str[0] == '\"')
-		flag_quotes ^= 2;
-	if ((str[1] == '\0' || str[1] == c) && (flag_quotes ^ 0x1 && flag_quotes ^ 0x2))
-		return (1);
-	else if (str[1] == '\'' && str[0] != '\\')
-		flag_quotes ^= 1;
-	else if (str[1] == '\"' && str[0] != '\\')
-		flag_quotes ^= 2;
+	if (SKIP != (temp = index_one_two_split_len(str, c, &flag_quotes)))
+		return (temp);
 	i = 2;
 	while ((str[i] && str[i] != c) || flag_quotes & 0x3)
 	{
 		if (str[i] == '\0')
-			break;
+			break ;
 		if (str[i - 1] != '\\')
-		{
-			if (str[i] == '\'')
-				flag_quotes ^= 1;
-			if (str[i] == '\"')
-				flag_quotes ^= 2;
-		}
-		if (str[i - 1] == '\\' && str[i - 2] == '\\')
-		{
-			if (str[i] == '\'')
-				flag_quotes ^= 1;
-			if (str[i] == '\"')
-				flag_quotes ^= 2;
-		}
+			change_flag_quotes(str, i, &flag_quotes);
+		else if (str[i - 1] == '\\' && str[i - 2] == '\\')
+			change_flag_quotes(str, i, &flag_quotes);
 		i++;
 	}
 	// printf("len:%d\n", i);
@@ -57,44 +38,23 @@ static size_t		split_len(const char *str, char c)
 
 static unsigned int	size_array(const char *str, char c)
 {
-	int size;
-	int i;
-	char flag_quotes;
+	int		size;
+	int		i;
+	char	flag_quotes;
+	int		temp;
 
 	i = 0;
 	size = 0;
-	if (str[0] == '\0')
-		return (size);
-	if (str[0] != c)
-		size += 1;
 	flag_quotes = 0;
-	if (str[0] == '\'')
-		flag_quotes ^= 1;
-	if (str[0] == '\"')
-		flag_quotes ^= 2;
-	if (str[1] == '\'' && str[0] != '\\')
-		flag_quotes ^= 1;
-	if (str[1] == '\"' && str[0] != '\\')
-		flag_quotes ^= 2;
-	if (str[1] != c && str[0] == c)
-		size += 1;
+	if (SKIP != (temp = index_one_two_size_array(str, c, &flag_quotes, &size)))
+		return (temp);
 	i = 2;
 	while (str[i])
 	{
 		if (str[i - 1] != '\\')
-		{
-			if (str[i] == '\'')
-				flag_quotes ^= 1;
-			if (str[i] == '\"')
-				flag_quotes ^= 2;
-		}
+			change_flag_quotes(str, i, &flag_quotes);
 		if (str[i - 1] == '\\' && str[i - 2] == '\\')
-		{
-			if (str[i] == '\'')
-				flag_quotes ^= 1;
-			if (str[i] == '\"')
-				flag_quotes ^= 2;
-		}
+			change_flag_quotes(str, i, &flag_quotes);
 		if (((str[i] == c && str[i + 1] != c) && str[i + 1] != 0) &&
 				(flag_quotes ^ 0x1) && (flag_quotes ^ 0x2))
 			size++;
@@ -154,7 +114,7 @@ char				**ft_split_minishell(char const *str, char c)
 			free_all(split);
 			return (NULL);
 		}
-		i = input_parts(split[row], str, split_len((str+i),c), i);
+		i = input_parts(split[row], str, split_len((str + i), c), i);
 		row++;
 	}
 	split[array_size] = NULL;

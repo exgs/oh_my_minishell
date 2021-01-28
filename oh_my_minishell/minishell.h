@@ -6,10 +6,9 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/27 19:59:10 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 05:10:06 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,6 +50,11 @@
 */
 
 # define BUFF_MAX	1000
+
+/*
+** FT_SPLIT_MINISHELL
+*/
+# define SKIP -1
 
 enum				e_except
 {
@@ -361,6 +365,17 @@ void				unseal_firstquotes(char **splited);
 */
 
 char				**ft_split_minishell(char const *s, char c);
+
+/*
+**	ft_split_minishell_utils.c
+*/
+
+int					index_one_two_split_len(const char *str, char c,
+												char *flag_quotes);
+void				change_flag_quotes(const char *str, int i,
+											char *flag_quotes);
+int					index_one_two_size_array(const char *str, char c,
+												char *flag_quotes, int *size);
 
 /*
 **	execute_unset.c
