@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 03:57:15 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/28 22:50:06 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 00:26:22 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ static size_t		split_len(const char *s, char c)
 	if (s[0] == '\"')
 		flag_quotes ^= 2;
 	i = 1;
-	while ((s[i] && s[i] != c) || (flag_quotes & 0x3))
+	while ((s[i] && s[i] != c) || flag_quotes & 0x3)
 	{
+		if (s[i] == '\0')
+			break;
 		if (s[i - 1] != '\\')
 		{
 			if (s[i] == '\'' && flag_quotes & 0x1)
@@ -69,6 +71,7 @@ static unsigned int	size_array(const char *str, char c)
 			size++;
 		i++;
 	}
+	printf("size:%d\n",size);
 	return (size);
 }
 
@@ -81,6 +84,8 @@ static int			input_parts(char *dst, const char *src, char c, int i)
 	flag_quotes = 0;
 	while ((src[i] && src[i] != c) || (flag_quotes & 0x3))
 	{
+		if (src[i] == '\0')
+			break;
 		if (i != 0 && src[i - 1] != '\\')
 		{
 			if (src[i] == '\'')
