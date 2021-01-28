@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/28 20:40:05 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/28 20:45:43 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,17 @@
 
 static void	back_slash(char *buff, char *line, t_var *v)
 {
-	if (v->flag_bq == 0 && line[(v->i) + 1] != '\0')
-		(v->i)++;
-	if (v->flag_bq == 1 && line[(v->i) + 1] == '"')
-		(v->i)++;
-	else if (v->flag_bq == 1 && line[(v->i) + 1] == '\\')
-		(v->i)++;
-	else if (line[(v->i) + 1] == '$')
-		(v->i)++;
+	if (line[(v->i) + 1] != '\0')
+	{
+		if (v->flag_bq == 0)
+			(v->i)++;
+		else if (v->flag_bq == 1 && line[(v->i) + 1] == '"')
+			(v->i)++;
+		else if (v->flag_bq == 1 && line[(v->i) + 1] == '\\')
+			(v->i)++;
+		else if (line[(v->i) + 1] == '$')
+			(v->i)++;
+	}
 	buff[v->k] = line[v->i];
 	(v->k)++;
 }
