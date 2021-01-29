@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_minishell.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 03:57:15 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 16:27:24 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 17:35:32 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static size_t		split_len(const char *str, char c)
 			change_flag_quotes(str, i, &flag_quotes);
 		i++;
 	}
-	// printf("len:%d\n", i);
 	return (i);
 }
 
@@ -60,7 +59,6 @@ static unsigned int	size_array(const char *str, char c)
 			size++;
 		i++;
 	}
-	// printf("size:%d\n",size);
 	return (size);
 }
 

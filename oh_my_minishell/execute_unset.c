@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 05:17:20 by ykoh              #+#    #+#             */
-/*   Updated: 2021/01/27 19:31:31 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:27:29 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	is_valid(char str[])
 	return (1);
 }
 
-void		change_argv(char **argv)
+void		change_argv(char **argv, char *path)
 {
 	int		i;
 	char	*tmp;
@@ -67,6 +67,7 @@ void		change_argv(char **argv)
 		}
 		i++;
 	}
+	(void)path;
 }
 
 int			execute_unset(const char *path, char *const argv[],
@@ -75,7 +76,7 @@ int			execute_unset(const char *path, char *const argv[],
 	int		i;
 	int		j;
 
-	change_argv((char **)++argv);
+	change_argv((char **)++argv, (char *)path);
 	i = 0;
 	while (argv[i])
 	{

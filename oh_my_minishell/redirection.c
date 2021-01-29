@@ -6,28 +6,19 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 16:09:15 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 18:05:24 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_redirect(char *str, t_index *index)
+static int	is_redirect(char *str)
 {
 	int i;
 
 	i = 0;
 	if (str == NULL)
 		return (-1);
-	// while (str[i])
-	// {
-	// 	if (str[i] == '\'')
-	// 		index->f_quote ^= 1;
-	// 	if (str[i++] == '\"')
-	// 		index->f_quote ^= 2;
-	// }
-	// if (index->f_quote & 1 || index->f_quote & 2)
-	// 	return (FALSE);
 	if (str[0] == '>' || str[0] == '<')
 	{
 		if (!ft_strncmp(str, ">>", 3))
@@ -39,10 +30,9 @@ static int	is_redirect(char *str, t_index *index)
 		return (ERROR);
 	}
 	return (FALSE);
-	(void) index;
 }
 
-static int	redirect_num(char **one_cmd_splited, t_index *index)
+static int	redirect_num(char **one_cmd_splited)
 {
 	int i;
 	int cnt;
@@ -51,7 +41,7 @@ static int	redirect_num(char **one_cmd_splited, t_index *index)
 	cnt = 0;
 	while (one_cmd_splited[i])
 	{
-		if (is_redirect(one_cmd_splited[i], index) != 0)
+		if (is_redirect(one_cmd_splited[i]) != 0)
 			cnt++;
 		i++;
 	}
@@ -68,7 +58,7 @@ void		splited_by_redirect_norm(char ***divid, char **split,
 	while (split[index->i])
 	{
 		str = split[index->i];
-		if (is_redirect(split[index->i], index) != 0)
+		if (is_redirect(split[index->i]) != 0)
 		{
 			input_symbol(split, symbol_array, index);
 			divid[index->cnt] = malloc(sizeof(char *) *
@@ -97,7 +87,7 @@ char		***splited_by_redirect(char **one_cmd_splited, char **array)
 	t_index	index;
 
 	s_index_bzero(&index);
-	index.redir_num = redirect_num(one_cmd_splited, &index);
+	index.redir_num = redirect_num(one_cmd_splited);
 	divid = malloc(sizeof(char **) * (index.redir_num + 1 + 1));
 	symbol_array = malloc(sizeof(char) * (index.redir_num + 1));
 	splited_by_redirect_norm(divid, one_cmd_splited, symbol_array, &index);
