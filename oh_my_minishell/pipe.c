@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 00:46:05 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:07:34 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,16 @@
 
 static void	set_get_param(char *one_cmd)
 {
-	char **for_redirection;
-
 	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
-	get_param()->cmd_splited = ft_split_minishell(get_param()->cmd_trimed, ' ');
+	parsing_redirect(get_param()->cmd_trimed);
+	// printf("g_buf:%s\n", g_buf);
+	get_param()->cmd_splited = ft_split_minishell(g_buf, ' ');
 	// for (size_t i = 0; get_param()->cmd_splited[i]; i++)
 	// {
 	// 	printf("%s\n", get_param()->cmd_splited[i]);
 	// }
-	parsing_redirect(get_param()->cmd_trimed);
-	for_redirection = ft_split(g_buf, ' ');
-	get_param()->cmd_redirect = splited_by_redirect(for_redirection,
+	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
-	free_split(for_redirection);
 }
 
 int			execute_command_nopipe(char *one_cmd)
