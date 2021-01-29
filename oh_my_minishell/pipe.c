@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 16:43:48 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 17:34:09 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -17,12 +16,7 @@ static void	set_get_param(char *one_cmd)
 {
 	get_param()->cmd_trimed = check_first_redir(ft_strtrim(one_cmd, " "));
 	parsing_redirect(get_param()->cmd_trimed);
-	// printf("g_buf:%s\n", g_buf);
 	get_param()->cmd_splited = ft_split_minishell(g_buf, ' ');
-	// for (size_t i = 0; get_param()->cmd_splited[i]; i++)
-	// {
-	// 	printf("%s\n", get_param()->cmd_splited[i]);
-	// }
 	get_param()->cmd_redirect = splited_by_redirect(get_param()->cmd_splited,
 												&get_param()->symbol_array);
 }

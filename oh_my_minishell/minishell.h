@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 16:39:41 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 17:26:47 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -382,7 +382,7 @@ int					index_one_two_size_array(const char *str, char c,
 **	execute_unset.c
 */
 
-void				change_argv(char **argv);
+void				change_argv(char **argv, char *path);
 
 /*
 **	check_first_rdir_a.c.c

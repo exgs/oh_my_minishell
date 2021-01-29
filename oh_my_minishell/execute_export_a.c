@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 05:17:00 by ykoh              #+#    #+#             */
-/*   Updated: 2021/01/27 19:37:33 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:26:26 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int			execute_export(const char *path, char *const argv[],
 	int		i;
 	int		j;
 
-	change_argv((char **)++argv);
+	change_argv((char **)++argv, (char *)path);
 	if (vector_size((char **)argv))
 	{
 		i = 0;
@@ -101,5 +101,4 @@ int			execute_export(const char *path, char *const argv[],
 	if (g_status != 256)
 		g_status = 0;
 	return (0);
-	(void)path;
 }

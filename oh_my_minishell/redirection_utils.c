@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 03:40:40 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 15:11:12 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:33:37 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void		input_symbol(char **split, char *symbol_array, t_index *index)
 		symbol_array[index->z++] = ERROR;
 }
 
-void		input_space_between_redirect(char *str, int *i, int *k, char *flag_quotes)
+void		input_space_between_redirect(char *str, int *i, int *k,
+											char *flag_quotes)
 {
 	if ((str[*i] == '<' || str[*i] == '>') &&
 			(str[*i + 1] == '<' || str[*i + 1] == '>'))
@@ -72,9 +73,9 @@ void		input_space_between_redirect(char *str, int *i, int *k, char *flag_quotes)
 
 int			parsing_redirect(char *str)
 {
-	int	i;
-	int	k;
-	char flag_quotes;
+	int		i;
+	int		k;
+	char	flag_quotes;
 
 	flag_quotes = 0;
 	ft_memset(g_buf, 0, 1000);
@@ -82,9 +83,9 @@ int			parsing_redirect(char *str)
 	k = 0;
 	while (str[i] != '\0')
 	{
-		if (i != 0 && i!= 1 && str[i - 1] != '\\')
+		if (i != 0 && i != 1 && str[i - 1] != '\\')
 			change_flag_quotes(str, i, &flag_quotes);
-		else if (i != 0 && i !=1 && str[i - 1] == '\\' && str[i - 2] == '\\')
+		else if (i != 0 && i != 1 && str[i - 1] == '\\' && str[i - 2] == '\\')
 			change_flag_quotes(str, i, &flag_quotes);
 		g_buf[k++] = str[i];
 		input_space_between_redirect(str, &i, &k, &flag_quotes);

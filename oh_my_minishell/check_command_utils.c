@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/20 23:15:10 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/27 19:32:17 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:27:44 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void			ft_execve(const char *path, char *const argv[],
 	struct stat	buf;
 
 	ft_bzero(&buf, sizeof(struct stat));
-	change_argv((char **)argv);
+	change_argv((char **)argv, (char *)path);
 	if (-1 == (pid = fork()))
 		return ;
 	if (pid == 0)
