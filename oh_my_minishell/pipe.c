@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 00:30:26 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 16:07:34 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:43:48 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 static void	set_get_param(char *one_cmd)
 {
-	get_param()->cmd_trimed = ft_strtrim(one_cmd, " ");
+	get_param()->cmd_trimed = check_first_redir(ft_strtrim(one_cmd, " "));
 	parsing_redirect(get_param()->cmd_trimed);
 	// printf("g_buf:%s\n", g_buf);
 	get_param()->cmd_splited = ft_split_minishell(g_buf, ' ');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_minishell_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 04:43:22 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 05:08:44 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:27:22 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

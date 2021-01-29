@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_b.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:51:44 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/23 12:54:40 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:43:27 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ char		*ft_strdup_by_index(char *str, int start, int end)
 }
 
 /*
-** name : free_init
+** name : free_swap
 ** aim : change string by free and get new string address
 */
 
-void		free_init(char **data, char *init)
+void		free_swap(char **data, char *init)
 {
 	free(*data);
 	*data = init;
@@ -65,6 +65,7 @@ void		init_value(char *buff, t_var *v)
 	v->flag_backslash = 0;
 	v->flag_pipe = 0;
 	v->i = 0;
+	v->j = 0;
 	v->k = 0;
 	v->l = 0;
 }

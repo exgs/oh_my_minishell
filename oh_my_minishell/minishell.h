@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 05:10:06 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:39:41 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int					g_dup_stdout;
 typedef struct		s_var
 {
 	int				i;
+	int				j;
 	int				k;
 	int				l;
 	int				flag_bq;
@@ -181,7 +182,7 @@ void				change_flag(int *flag);
 
 int					check_semicolon(char *str);
 char				*ft_strdup_by_index(char *str, int start, int end);
-void				free_init(char **data, char *init);
+void				free_swap(char **data, char *init);
 void				init_value(char *buff, t_var *v);
 
 /*
@@ -382,4 +383,17 @@ int					index_one_two_size_array(const char *str, char c,
 */
 
 void				change_argv(char **argv);
+
+/*
+**	check_first_rdir_a.c.c
+*/
+
+char				*check_first_redir(char *str);
+
+/*
+**	check_first_rdir_a.c.c
+*/
+
+void				drag_redir_to_right_place(char *line, char *str, t_var *v);
+
 #endif
