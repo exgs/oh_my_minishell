@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:40:53 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/28 20:45:43 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 18:51:23 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		skip_redirect(char *buff, char *line, t_var *v, char c)
 		(v->i)++;
 	while (ft_is_whitespace(line[v->i]))
 		(v->i)++;
-	while (!ft_is_whitespace(line[v->i]) && line[v->i])
+	while (!ft_is_whitespace(line[v->i]) && line[v->i] && line[v->i] != '>')
 		(v->i)++;
 	while (ft_is_whitespace(line[v->i]))
 		(v->i)++;
