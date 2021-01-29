@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_minishell_utils.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
+/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 04:43:22 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 16:27:22 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 19:47:12 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ int		index_one_two_size_array(const char *str, char c,
 		*flag_quotes ^= 2;
 	if (str[1] == '\0')
 		return (*size);
+	else if (str[1] == c && str[2] != c)
+	{
+		if (str[2] != '\0')
+			*size += 1;
+	}
 	if (str[1] == '\'' && str[0] != '\\')
 		*flag_quotes ^= 1;
 	if (str[1] == '\"' && str[0] != '\\')
