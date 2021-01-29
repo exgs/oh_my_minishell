@@ -52,7 +52,7 @@ static int	is_valid(char str[])
 	return (1);
 }
 
-void	change_argv(char **argv)
+void		change_argv(char **argv)
 {
 	int		i;
 	char	*tmp;

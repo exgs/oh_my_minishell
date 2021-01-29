@@ -38,3 +38,17 @@ int	msg_invalid(char *program, char *cmd, char *arg, int exit_status)
 	g_status = exit_status * 256;
 	return (-1);
 }
+
+int	msg_syntax(char *program, char arg, int exit_status)
+{
+	ft_putstr_fd(program, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd("syntax error near unexpected token `", 2);
+	if (arg == '>' || arg == '<')
+		ft_putstr_fd("newline", 2);
+	else
+		ft_putchar_fd(arg, 2);
+	ft_putendl_fd("'", 2);
+	g_status = exit_status * 256;
+	return (-1);
+}

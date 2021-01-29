@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 15:17:21 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 16:20:57 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 16:27:29 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,6 @@ static int	check_delimeter(char **str)
 	if (ft_strncmp(str[0], ";", 1) == 0)
 	{
 		g_except[SYNTAX] = ';';
-		return (-1);
-	}
-	if (ft_strncmp(str[0], "<", 1) == 0)
-	{
-		g_except[SYNTAX] = 10;
-		return (-1);
-	}
-	if (ft_strncmp(str[0], ">", ft_strlen(str[0])) == 0)
-	{
-		g_except[SYNTAX] = 10;
 		return (-1);
 	}
 	return (0);

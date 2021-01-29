@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/29 15:49:59 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 15:59:50 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 16:40:19 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char *check_first_redir(char *str)
 	char *line;
 
 	line = conv_first_redir(str);
-	free_init(&str, line);
+	free_swap(&str, line);
 	line = NULL;
 	return (str);
 }

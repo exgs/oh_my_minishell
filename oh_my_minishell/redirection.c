@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 17:14:07 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 16:09:15 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ static int	is_redirect(char *str, t_index *index)
 	i = 0;
 	if (str == NULL)
 		return (-1);
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			index->f_quote ^= 1;
-		if (str[i++] == '\"')
-			index->f_quote ^= 2;
-	}
-	if (index->f_quote & 1 || index->f_quote & 2)
-		return (FALSE);
+	// while (str[i])
+	// {
+	// 	if (str[i] == '\'')
+	// 		index->f_quote ^= 1;
+	// 	if (str[i++] == '\"')
+	// 		index->f_quote ^= 2;
+	// }
+	// if (index->f_quote & 1 || index->f_quote & 2)
+	// 	return (FALSE);
 	if (str[0] == '>' || str[0] == '<')
 	{
 		if (!ft_strncmp(str, ">>", 3))
@@ -39,6 +39,7 @@ static int	is_redirect(char *str, t_index *index)
 		return (ERROR);
 	}
 	return (FALSE);
+	(void) index;
 }
 
 static int	redirect_num(char **one_cmd_splited, t_index *index)
@@ -75,7 +76,7 @@ void		splited_by_redirect_norm(char ***divid, char **split,
 			index->j = 0;
 			while (index->before < index->i)
 			{
-				divid[index->cnt][index->j] = strdup(split[index->before]);
+				divid[index->cnt][index->j] = ft_strdup(split[index->before]);
 				index->before++;
 				index->j++;
 			}
@@ -105,7 +106,7 @@ char		***splited_by_redirect(char **one_cmd_splited, char **array)
 	while (index.before < index.i)
 	{
 		temp = one_cmd_splited[index.before];
-		divid[index.cnt][p++] = strdup(one_cmd_splited[index.before]);
+		divid[index.cnt][p++] = ft_strdup(one_cmd_splited[index.before]);
 		index.before++;
 	}
 	divid[index.cnt][p] = NULL;

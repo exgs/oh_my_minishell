@@ -6,7 +6,7 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 21:30:41 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/21 15:04:37 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 16:43:20 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void				change_split(char **argv)
 	char *str;
 
 	str = refine_line(argv[1]);
-	free_init(&argv[1], str);
+	free_swap(&argv[1], str);
 }
 
 /*

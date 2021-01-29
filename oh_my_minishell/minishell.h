@@ -6,10 +6,9 @@
 /*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 15:56:54 by jikang           ###   ########.fr       */
+/*   Updated: 2021/01/29 16:39:41 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -51,6 +50,11 @@
 */
 
 # define BUFF_MAX	1000
+
+/*
+** FT_SPLIT_MINISHELL
+*/
+# define SKIP -1
 
 enum				e_except
 {
@@ -176,9 +180,9 @@ void				change_flag(int *flag);
 **	utils_b.c
 */
 
-void				check_semicolon(char *str);
+int					check_semicolon(char *str);
 char				*ft_strdup_by_index(char *str, int start, int end);
-void				free_init(char **data, char *init);
+void				free_swap(char **data, char *init);
 void				init_value(char *buff, t_var *v);
 
 /*
@@ -350,7 +354,7 @@ int					msg_error(char *program, char *cmd,
 								char *arg, int exit_status);
 int					msg_invalid(char *program, char *cmd,
 								char *arg, int exit_status);
-
+int					msg_syntax(char *program, char arg, int exit_status);
 /*
 **	unseal_firstquotes.c
 */
@@ -362,6 +366,17 @@ void				unseal_firstquotes(char **splited);
 */
 
 char				**ft_split_minishell(char const *s, char c);
+
+/*
+**	ft_split_minishell_utils.c
+*/
+
+int					index_one_two_split_len(const char *str, char c,
+												char *flag_quotes);
+void				change_flag_quotes(const char *str, int i,
+											char *flag_quotes);
+int					index_one_two_size_array(const char *str, char c,
+												char *flag_quotes, int *size);
 
 /*
 **	execute_unset.c

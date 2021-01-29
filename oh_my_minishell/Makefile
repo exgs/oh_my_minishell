@@ -39,7 +39,9 @@ SRCS		=	gnl/get_next_line.c\
 				exit.c\
 				ft_split_minishell.c\
 				check_first_rdir_a.c\
-				check_first_rdir_b.c
+				check_first_rdir_b.c\
+				ft_split_minishell_utils.c\
+				check_semicolon.c
 
 NAME		=	minishell
 LIBFT		=	libft
