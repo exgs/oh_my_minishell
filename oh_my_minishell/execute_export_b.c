@@ -12,7 +12,18 @@
 
 #include "minishell.h"
 
-void	print_envp(char **envp)
+static void	print_value(char *str)
+{
+	while (*str)
+	{
+		if (*str == '\\')
+			write(1, "\\", 1);
+		write(1, str, 1);
+		str++;
+	}
+}
+
+void		print_envp(char **envp)
 {
 	const char	**tmp = (const char **)vector_dup(envp);
 	char		*eq;
@@ -29,7 +40,7 @@ void	print_envp(char **envp)
 			{
 				write(1, tmp[i], eq - tmp[i] + 1);
 				ft_putchar_fd('"', 1);
-				write(1, eq + 1, ft_strlen(eq) - 1);
+				print_value(eq + 1);
 				ft_putchar_fd('"', 1);
 			}
 			else
