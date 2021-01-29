@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 17:55:29 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 18:05:24 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	is_redirect(char *str)
 	return (FALSE);
 }
 
-static int	redirect_num(char **one_cmd_splited, t_index *index)
+static int	redirect_num(char **one_cmd_splited)
 {
 	int i;
 	int cnt;
@@ -87,7 +87,7 @@ char		***splited_by_redirect(char **one_cmd_splited, char **array)
 	t_index	index;
 
 	s_index_bzero(&index);
-	index.redir_num = redirect_num(one_cmd_splited, &index);
+	index.redir_num = redirect_num(one_cmd_splited);
 	divid = malloc(sizeof(char **) * (index.redir_num + 1 + 1));
 	symbol_array = malloc(sizeof(char) * (index.redir_num + 1));
 	splited_by_redirect_norm(divid, one_cmd_splited, symbol_array, &index);
