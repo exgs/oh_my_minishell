@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_path_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 03:11:30 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 16:43:23 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/30 00:04:13 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int		command_not_found_g_status(char *str)
 {
-	ft_putendl_fd(str, 2);
 	ft_putstr_fd("minishell: ", 2);
 	ft_putnbr_fd(g_status / 256, 2);
 	ft_putendl_fd(": command not found", 2);
 	g_status = 127 * 256;
+	(void)str;
 	return (0);
 }
 
