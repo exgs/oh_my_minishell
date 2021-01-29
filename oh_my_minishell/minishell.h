@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/29 17:26:47 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 19:27:32 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -395,5 +395,5 @@ char				*check_first_redir(char *str);
 */
 
 void				drag_redir_to_right_place(char *line, char *str, t_var *v);
-
+#include <stdio.h>
 #endif

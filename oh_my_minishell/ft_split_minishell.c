@@ -6,7 +6,7 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/27 03:57:15 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 17:35:32 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 19:42:03 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static size_t		split_len(const char *str, char c)
 			change_flag_quotes(str, i, &flag_quotes);
 		i++;
 	}
+	printf("len:%d\n", i);
 	return (i);
 }
 
@@ -46,7 +47,10 @@ static unsigned int	size_array(const char *str, char c)
 	size = 0;
 	flag_quotes = 0;
 	if (SKIP != (temp = index_one_two_size_array(str, c, &flag_quotes, &size)))
+	{
+		printf("size:%d\n", size);
 		return (temp);
+	}
 	i = 2;
 	while (str[i])
 	{
@@ -59,6 +63,7 @@ static unsigned int	size_array(const char *str, char c)
 			size++;
 		i++;
 	}
+	printf("size:%d\n", size);
 	return (size);
 }
 
