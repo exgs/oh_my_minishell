@@ -37,13 +37,15 @@ SRCS		=	gnl/get_next_line.c\
 				redirection_utils.c\
 				init.c\
 				exit.c\
-				ft_split_minishell.c
+				ft_split_minishell.c\
+				check_first_rdir_a.c\
+				check_first_rdir_b.c
 
 NAME		=	minishell
 LIBFT		=	libft
 RM			=	rm -f
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g3
 
 $(NAME) :	$(SRCS)
 			$(MAKE) bonus -C $(LIBFT)/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_b.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:51:44 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/23 12:54:40 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 15:41:27 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		init_value(char *buff, t_var *v)
 	v->flag_backslash = 0;
 	v->flag_pipe = 0;
 	v->i = 0;
+	v->j = 0;
 	v->k = 0;
 	v->l = 0;
 }

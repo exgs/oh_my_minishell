@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 16:09:05 by jikang            #+#    #+#             */
-/*   Updated: 2021/01/27 19:59:10 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 15:56:54 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int					g_dup_stdout;
 typedef struct		s_var
 {
 	int				i;
+	int				j;
 	int				k;
 	int				l;
 	int				flag_bq;
@@ -367,4 +368,17 @@ char				**ft_split_minishell(char const *s, char c);
 */
 
 void				change_argv(char **argv);
+
+/*
+**	check_first_rdir_a.c.c
+*/
+
+char				*check_first_redir(char *str);
+
+/*
+**	check_first_rdir_a.c.c
+*/
+
+void				drag_redir_to_right_place(char *line, char *str, t_var *v);
+
 #endif

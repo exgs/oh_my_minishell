@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_execute_part.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
+/*   By: jikang <jikang@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:27:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/21 01:37:43 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/27 21:35:30 by jikang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ static int	redirect_left(int i)
 	char	*path;
 
 	path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
+	// if (get_param()->cmd_redirect[i + 1][1] != NULL)
+	// 	return (-1);
 	fd = open(path, O_RDONLY);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
@@ -32,8 +32,8 @@ static int	redirect_right(int i)
 	char	*path;
 
 	path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
+	// if (get_param()->cmd_redirect[i + 1][1] != NULL)
+	// 	return (-1);
 	fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
@@ -46,8 +46,8 @@ static int	redirect_d_right(int i)
 	char	*path;
 
 	path = get_param()->cmd_redirect[i + 1][0];
-	if (get_param()->cmd_redirect[i + 1][1] != NULL)
-		return (-1);
+	// if (get_param()->cmd_redirect[i + 1][1] != NULL)
+	// 	return (-1);
 	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0755);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
