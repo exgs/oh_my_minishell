@@ -6,28 +6,19 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 03:40:40 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 17:33:37 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:55:08 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_redirect(char *str, t_index *index)
+static int	is_redirect(char *str)
 {
 	int i;
 
 	i = 0;
 	if (str == NULL)
 		return (-1);
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			index->f_quote ^= 1;
-		if (str[i++] == '\"')
-			index->f_quote ^= 2;
-	}
-	if (index->f_quote & 1 || index->f_quote & 2)
-		return (FALSE);
 	if (str[0] == '>' || str[0] == '<')
 	{
 		if (!ft_strncmp(str, ">>", 3))
@@ -43,11 +34,11 @@ static int	is_redirect(char *str, t_index *index)
 
 void		input_symbol(char **split, char *symbol_array, t_index *index)
 {
-	if (is_redirect(split[index->i], index) == LEFT)
+	if (is_redirect(split[index->i]) == LEFT)
 		symbol_array[index->z++] = LEFT;
-	else if (is_redirect(split[index->i], index) == RIGHT)
+	else if (is_redirect(split[index->i]) == RIGHT)
 		symbol_array[index->z++] = RIGHT;
-	else if (is_redirect(split[index->i], index) == D_RIGHT)
+	else if (is_redirect(split[index->i]) == D_RIGHT)
 		symbol_array[index->z++] = D_RIGHT;
 	else
 		symbol_array[index->z++] = ERROR;

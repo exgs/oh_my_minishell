@@ -6,13 +6,13 @@
 /*   By: yunslee <yunslee@student.42seoul.kr>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/21 01:25:54 by yunslee           #+#    #+#             */
-/*   Updated: 2021/01/29 17:30:36 by yunslee          ###   ########.fr       */
+/*   Updated: 2021/01/29 17:55:29 by yunslee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_redirect(char *str, t_index *index)
+static int	is_redirect(char *str)
 {
 	int i;
 
@@ -30,7 +30,6 @@ static int	is_redirect(char *str, t_index *index)
 		return (ERROR);
 	}
 	return (FALSE);
-	(void)index;
 }
 
 static int	redirect_num(char **one_cmd_splited, t_index *index)
@@ -42,7 +41,7 @@ static int	redirect_num(char **one_cmd_splited, t_index *index)
 	cnt = 0;
 	while (one_cmd_splited[i])
 	{
-		if (is_redirect(one_cmd_splited[i], index) != 0)
+		if (is_redirect(one_cmd_splited[i]) != 0)
 			cnt++;
 		i++;
 	}
@@ -59,7 +58,7 @@ void		splited_by_redirect_norm(char ***divid, char **split,
 	while (split[index->i])
 	{
 		str = split[index->i];
-		if (is_redirect(split[index->i], index) != 0)
+		if (is_redirect(split[index->i]) != 0)
 		{
 			input_symbol(split, symbol_array, index);
 			divid[index->cnt] = malloc(sizeof(char *) *
