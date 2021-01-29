@@ -41,18 +41,6 @@ static int	check_delimeter(char **str)
 		g_except[SYNTAX] = ';';
 		return (-1);
 	}
-	/*
-	if (ft_strncmp(str[0], "<", 1) == 0)
-	{
-		g_except[SYNTAX] = 10;
-		return (-1);
-	}
-	if (ft_strncmp(str[0], ">", 1) == 0)
-	{
-		g_except[SYNTAX] = 10;
-		return (-1);
-	}
-	*/
 	return (0);
 }
 
