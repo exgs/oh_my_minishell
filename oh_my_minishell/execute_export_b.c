@@ -18,6 +18,8 @@ static void	print_value(char *str)
 	{
 		if (*str == '\\')
 			write(1, "\\", 1);
+		else if (*str == '"')
+			write(1, "\\", 1);
 		write(1, str, 1);
 		str++;
 	}
